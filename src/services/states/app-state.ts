@@ -3,16 +3,32 @@ import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
 import { IZiekenhuis } from '../../models/ziekenhuis';
 import ziekenhuizen from '../../data/ziekenhuizen.json';
+import ziekenhuizen2019 from '../../data/ziekenhuizen2019.json';
 import verzorgingshuizen from '../../data/verzorgingshuizen.json';
 import ggz from '../../data/ggz.json';
 import ghz from '../../data/ghz.json';
 import vvt from '../../data/vvt.json';
+import rwzis from '../../data/rwzis.json';
+import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
+import wko_diepte from '../../data/WKO Restrictie Diepte.json';
+//import wko_natuur from '../../data/WKO Restrictie Natuur.json';
+import wko_ordening from '../../data/WKO Restrictie Ordening.json';
+//import wko_specprovbeleid from '../../data/WKO Restrictie SpecProvBeleid.json';
+import wko_verbod from '../../data/WKO Verbodsgebieden.json';
 import { createBoundingBox, createIcon, processWater, ziekenhuisIconX } from '../../utils';
 import { FeatureCollection, Feature, Point } from 'geojson';
 import { top10nl } from '..';
 
-// Add curline
+// Add curline        // (RS): What is curline??
 ziekenhuizen.features = ziekenhuizen.features.map((z: any) => ({
+  ...z,
+  properties: {
+    ...z.properties,
+    active: true,
+  },
+}));
+
+ziekenhuizen2019.features = ziekenhuizen2019.features.map((z: any) => ({
   ...z,
   properties: {
     ...z.properties,
@@ -28,12 +44,20 @@ export interface IAppStateModel {
     vvt: FeatureCollection<Point>;
     ggz: FeatureCollection<Point>;
     ghz: FeatureCollection<Point>;
+    rwzis: FeatureCollection<Point>;
+    gl_wk_bu: FeatureCollection;
+    wko_diepte: FeatureCollection;
+    //wko_natuur: FeatureCollection;
+    wko_ordening: FeatureCollection;
+    //wko_specprovbeleid: FeatureCollection;
+    wko_verbod: FeatureCollection;
     /** Bounding box size */
     size: number;
     selectedItem: Feature<Point>;
     selectedWaterItem: Feature;
     verzorgingshuizen: FeatureCollection<Point>;
     hospitals: FeatureCollection<Point, IZiekenhuis>;
+    hospitals2019: FeatureCollection<Point, IZiekenhuis>;
   }>;
 }
 
@@ -56,7 +80,15 @@ export const appStateMgmt = {
       vvt,
       ggz,
       ghz,
+      rwzis,
+      gl_wk_bu,
+      wko_diepte,
+      //wko_natuur,
+      wko_ordening,
+      //wko_specprovbeleid,
+      wko_verbod,
       verzorgingshuizen,
+      hospitals2019: ziekenhuizen2019 as GeoJSON.FeatureCollection<GeoJSON.Point, IZiekenhuis>,
       hospitals: ziekenhuizen as GeoJSON.FeatureCollection<GeoJSON.Point, IZiekenhuis>,
       baseline: (ziekenhuizen as GeoJSON.FeatureCollection<GeoJSON.Point, IZiekenhuis>).features.reduce(
         (acc, cur) => {

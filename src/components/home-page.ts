@@ -13,17 +13,26 @@ import { Feature, Point } from 'geojson';
 export const HomePage: MeiosisComponent = () => {
   let map: L.Map;
   let ziekenhuisLayer: L.GeoJSON;
+  let ziekenhuis2019Layer: L.GeoJSON;
   let verzorgingshuizenLayer: L.GeoJSON;
   let vvtLayer: L.GeoJSON;
   let ggzLayer: L.GeoJSON;
   let ghzLayer: L.GeoJSON;
+  let rwzisLayer: L.GeoJSON;
+  let gl_wk_buLayer: L.GeoJSON;
+  let wko_diepteLayer: L.GeoJSON;
+  //let wko_natuurLayer: L.GeoJSON;
+  let wko_ordeningLayer: L.GeoJSON;
+  //let wko_specprovbeleidLayer: L.GeoJSON;  
+  let wko_verbodLayer: L.GeoJSON;
   let waterLayer: L.GeoJSON;
   // let selectedHospitalLayer: L.Marker;
 
   return {
     view: ({ attrs: { state, actions } }) => {
       console.log(state);
-      const { hospitals, selectedItem, selectedWaterItem, water, verzorgingshuizen, ggz, ghz, vvt } = state.app;
+      const { hospitals, hospitals2019, selectedItem, selectedWaterItem, water, verzorgingshuizen, ggz, ghz, vvt,
+              rwzis, gl_wk_bu, wko_diepte, wko_ordening, wko_verbod } = state.app;
 
       if (water) {
         waterLayer.clearLayers();
@@ -82,8 +91,36 @@ export const HomePage: MeiosisComponent = () => {
               vvtLayer = L.geoJSON(vvt, { pointToLayer, onEachFeature });
               ghzLayer = L.geoJSON(ghz, { pointToLayer, onEachFeature });
               ggzLayer = L.geoJSON(ggz, { pointToLayer, onEachFeature });
+              rwzisLayer = L.geoJSON(rwzis, { pointToLayer, onEachFeature });
+              //rwzisLayer = L.geoJSON(rwzis, { pointToSewageLayer, onEachFeature });
+              gl_wk_buLayer = L.geoJSON(gl_wk_bu, { pointToLayer, onEachFeature });
+              wko_diepteLayer = L.geoJSON(wko_diepte, { pointToLayer, onEachFeature });
+              //wko_natuurLayer = L.geoJSON(wko_natuur, { pointToLayer, onEachFeature });
+              wko_ordeningLayer = L.geoJSON(wko_ordening, { pointToLayer, onEachFeature });
+              //wko_specprovbeleidLayer = L.geoJSON(wko_specprovbeleid, { pointToLayer, onEachFeature });
+              wko_verbodLayer = L.geoJSON(wko_verbod, { pointToLayer, onEachFeature });
               verzorgingshuizenLayer = L.geoJSON(verzorgingshuizen, { pointToLayer, onEachFeature });
 
+              ziekenhuis2019Layer = L.geoJSON<IZiekenhuis>(hospitals2019, {
+                pointToLayer: (feature, latlng) => {
+                  const { locatie, organisatie, active } = feature.properties;
+                  const title = `${locatie} (${organisatie})`;
+                  return new L.Marker(
+                    latlng,
+                    active === false
+                      ? {
+                          icon: ziekenhuisIconX,
+                          title,
+                        }
+                      : {
+                          icon: ziekenhuisIconV,
+                          title,
+                        }
+                  );
+                },
+                onEachFeature,
+              }).addTo(map);
+              
               ziekenhuisLayer = L.geoJSON<IZiekenhuis>(hospitals, {
                 pointToLayer: (feature, latlng) => {
                   const { locatie, organisatie, active } = feature.properties;
@@ -132,6 +169,7 @@ export const HomePage: MeiosisComponent = () => {
                 label: 'Kaartlagen',
                 children: [
                   { label: 'Ziekenhuizen', layer: ziekenhuisLayer },
+                  { label: 'Ziekenhuizen 2019', layer: ziekenhuis2019Layer },
                   { label: 'Water', layer: waterLayer },
                   {
                     label: 'Tehuizen',
@@ -140,6 +178,21 @@ export const HomePage: MeiosisComponent = () => {
                       { label: 'ggz', layer: ggzLayer },
                       { label: 'ghz', layer: ghzLayer },
                       { label: 'verzorgingshuizen', layer: verzorgingshuizenLayer },
+                    ],
+                  },
+                  {
+                    label: 'Divers',
+                    children: [
+                      { label: 'rioolwaterzuiveringen', layer: rwzisLayer },
+                      { label: 'gasloze wijken en buurten', layer: gl_wk_buLayer },
+                    ],
+                  },
+                  {
+                    label: 'WKO restricties',
+                    children: [
+                      { label: 'WKO Diepte', layer: wko_diepteLayer },
+                      { label: 'WKO Ordening', layer: wko_ordeningLayer },
+                      { label: 'WKO Verbodsgebieden', layer: wko_verbodLayer },
                     ],
                   },
                 ],
