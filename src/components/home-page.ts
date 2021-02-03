@@ -4,7 +4,7 @@ import 'leaflet.control.layers.tree/L.Control.Layers.Tree.css';
 import 'leaflet.control.layers.tree';
 import 'leaflet/dist/leaflet.css';
 // import 'leaflet-hash';
-import { ziekenhuisIconX, ziekenhuisIconV, verzorgingstehuisIcon } from '../utils';
+import { ziekenhuisIconX, ziekenhuisIconV, verzorgingstehuisIcon, sewageIcon } from '../utils';
 import { IZiekenhuis } from '../models/ziekenhuis';
 import { MeiosisComponent } from '../services/meiosis';
 import { InfoPanel } from './info-panel';
@@ -82,6 +82,13 @@ export const HomePage: MeiosisComponent = () => {
                 });
               };
 
+              const pointToSewageLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                return new L.Marker(latlng, {
+                  icon: sewageIcon,
+                  title: feature.properties.Name,
+                });
+              };
+
               const onEachFeature = (feature: Feature<Point, any>, layer: L.Layer) => {
                 layer.on('click', () => {
                   actions.selectFeature(feature as Feature<Point>);
@@ -91,7 +98,7 @@ export const HomePage: MeiosisComponent = () => {
               vvtLayer = L.geoJSON(vvt, { pointToLayer, onEachFeature });
               ghzLayer = L.geoJSON(ghz, { pointToLayer, onEachFeature });
               ggzLayer = L.geoJSON(ggz, { pointToLayer, onEachFeature });
-              rwzisLayer = L.geoJSON(rwzis, { pointToLayer, onEachFeature });
+              rwzisLayer = L.geoJSON(rwzis, { pointToLayer: pointToSewageLayer, onEachFeature });
               //rwzisLayer = L.geoJSON(rwzis, { pointToSewageLayer, onEachFeature });
               gl_wk_buLayer = L.geoJSON(gl_wk_bu, { pointToLayer, onEachFeature });
               wko_diepteLayer = L.geoJSON(wko_diepte, { pointToLayer, onEachFeature });
@@ -189,6 +196,7 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   {
                     label: 'WKO restricties',
+                    selectAllCheckbox: true,
                     children: [
                       { label: 'WKO Diepte', layer: wko_diepteLayer },
                       { label: 'WKO Ordening', layer: wko_ordeningLayer },
