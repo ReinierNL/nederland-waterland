@@ -5,6 +5,8 @@ import area from '@turf/area';
 import centroid from '@turf/centroid';
 import verzorgingstehuis from '../assets/verzorgingstehuis.png';
 import sewage from '../assets/sewage_64.png';
+import wko_installatie from '../assets/wko_installatie.png';
+import wko_gwo from '../assets/wko_gwo.png';
 
 export const formatNumber = (x: number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
@@ -103,8 +105,24 @@ export const verzorgingstehuisIcon = L.icon({
 export const sewageIcon = L.icon({
   className: 'leaflet-data-marker',
   iconUrl: sewage,
-  iconAnchor: [12, 12],
-  iconSize: [25, 25],
+  iconAnchor: [32, 32],
+  iconSize: [64, 64],
+  popupAnchor: [0, -30],
+});
+
+export const wko_installatieIcon = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: wko_installatie,
+  iconAnchor: [20, 20],
+  iconSize: [40, 40],
+  popupAnchor: [0, -30],
+});
+
+export const wko_gwoIcon = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: wko_gwo,
+  iconAnchor: [16, 16],
+  iconSize: [32, 32],
   popupAnchor: [0, -30],
 });
 

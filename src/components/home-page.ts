@@ -4,7 +4,8 @@ import 'leaflet.control.layers.tree/L.Control.Layers.Tree.css';
 import 'leaflet.control.layers.tree';
 import 'leaflet/dist/leaflet.css';
 // import 'leaflet-hash';
-import { ziekenhuisIconX, ziekenhuisIconV, verzorgingstehuisIcon, sewageIcon } from '../utils';
+import { ziekenhuisIconX, ziekenhuisIconV, verzorgingstehuisIcon, 
+         sewageIcon, wko_installatieIcon, wko_gwoIcon } from '../utils';
 import { IZiekenhuis } from '../models/ziekenhuis';
 import { MeiosisComponent } from '../services/meiosis';
 import { InfoPanel } from './info-panel';
@@ -98,6 +99,20 @@ export const HomePage: MeiosisComponent = () => {
                 });
               };
 
+              const pointToWkoInstallatieLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                return new L.Marker(latlng, {
+                  icon: wko_installatieIcon,
+                  title: feature.properties.Name,
+                });
+              };
+
+              const pointToWkoGwoLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                return new L.Marker(latlng, {
+                  icon: wko_gwoIcon,
+                  title: feature.properties.Name,
+                });
+              };
+
               const onEachFeature = (feature: Feature<Point, any>, layer: L.Layer) => {
                 layer.on('click', () => {
                   actions.selectFeature(feature as Feature<Point>);
@@ -112,8 +127,8 @@ export const HomePage: MeiosisComponent = () => {
               effluentLayer = L.geoJSON(effluent, { pointToLayer, onEachFeature });
               rioolleidingenLayer = L.geoJSON(effluent, { pointToLayer, onEachFeature });
               gl_wk_buLayer = L.geoJSON(gl_wk_bu, { pointToLayer, onEachFeature });
-              wko_gwiLayer = L.geoJSON(wko_gwi, { pointToLayer: pointToSewageLayer, onEachFeature });
-              wko_gwioLayer = L.geoJSON(wko_gwio, { pointToLayer: pointToSewageLayer, onEachFeature });
+              wko_gwiLayer = L.geoJSON(wko_gwi, { pointToLayer: pointToWkoInstallatieLayer, onEachFeature });
+              wko_gwioLayer = L.geoJSON(wko_gwio, { pointToLayer: pointToWkoGwoLayer, onEachFeature });
               wko_gwoLayer = L.geoJSON(wko_gwo, { pointToLayer: pointToSewageLayer, onEachFeature });
               wko_gbesLayer = L.geoJSON(wko_gbes, { pointToLayer: pointToSewageLayer, onEachFeature });
               wko_obesLayer = L.geoJSON(wko_obes, { pointToLayer: pointToSewageLayer, onEachFeature });
