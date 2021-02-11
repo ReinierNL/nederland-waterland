@@ -8,12 +8,25 @@ import verzorgingshuizen from '../../data/verzorgingshuizen.json';
 import ggz from '../../data/ggz.json';
 import ghz from '../../data/ghz.json';
 import vvt from '../../data/vvt.json';
-import rwzis from '../../data/rwzis.json';
+import wateren from '../../data/wateren potentie excl zee.json'
+import rwzis from '../../data/Syntraal_rwzis.json';
+import effluent from '../../data/Syntraal_effluent.json';
+//import rioolleidingen from '../../data/Syntraal_rioolleidingen.json'; # cannot parcel  (out of memory)
+import rioolleidingen from '../../data/Syntraal_effluent.json';
 import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
+// wko point layers
+import wko_gwi from '../../data/WKO_GWI.json';
+import wko_gwio from '../../data/WKO_GWIO.json';
+import wko_gwo from '../../data/WKO_GWI.json';   // cannot parcel WKO_GWI.JSON (out of memory)
+import wko_gbes from '../../data/WKO_GWI.json';  //loading takes too long
+import wko_obes from '../../data/WKO_OBES.json';
+// wko restriction layers
 import wko_diepte from '../../data/WKO Restrictie Diepte.json';
-//import wko_natuur from '../../data/WKO Restrictie Natuur.json';
+//import wko_natuur from '../../data/WKO Restrictie Natuur.json';  # cannot parcel  (out of memory)
+import wko_natuur from '../../data/WKO Restrictie Ordening.json';
 import wko_ordening from '../../data/WKO Restrictie Ordening.json';
-//import wko_specprovbeleid from '../../data/WKO Restrictie SpecProvBeleid.json';
+//import wko_specprovbeleid from '../../data/WKO Restrictie SpecProvBeleid.json'; # cannot parcel  (out of memory)
+import wko_specprovbeleid from '../../data/WKO Restrictie Ordening.json';
 import wko_verbod from '../../data/WKO Verbodsgebieden.json';
 import { createBoundingBox, createIcon, processWater, ziekenhuisIconX } from '../../utils';
 import { FeatureCollection, Feature, Point } from 'geojson';
@@ -44,12 +57,20 @@ export interface IAppStateModel {
     vvt: FeatureCollection<Point>;
     ggz: FeatureCollection<Point>;
     ghz: FeatureCollection<Point>;
+    wateren: FeatureCollection;
     rwzis: FeatureCollection<Point>;
+    effluent: FeatureCollection;
+    rioolleidingen: FeatureCollection;
     gl_wk_bu: FeatureCollection;
+    wko_gwi: FeatureCollection;
+    wko_gwio: FeatureCollection;
+    wko_gwo: FeatureCollection;
+    wko_gbes: FeatureCollection;
+    wko_obes: FeatureCollection;
     wko_diepte: FeatureCollection;
-    //wko_natuur: FeatureCollection;
+    wko_natuur: FeatureCollection;
     wko_ordening: FeatureCollection;
-    //wko_specprovbeleid: FeatureCollection;
+    wko_specprovbeleid: FeatureCollection;
     wko_verbod: FeatureCollection;
     /** Bounding box size */
     size: number;
@@ -80,12 +101,20 @@ export const appStateMgmt = {
       vvt,
       ggz,
       ghz,
+      wateren,
       rwzis,
+      effluent,
+      rioolleidingen,
       gl_wk_bu,
+      wko_gwi,
+      wko_gwio,
+      wko_gwo,
+      wko_gbes,
+      wko_obes,
       wko_diepte,
-      //wko_natuur,
+      wko_natuur,
       wko_ordening,
-      //wko_specprovbeleid,
+      wko_specprovbeleid,
       wko_verbod,
       verzorgingshuizen,
       hospitals2019: ziekenhuizen2019 as GeoJSON.FeatureCollection<GeoJSON.Point, IZiekenhuis>,
