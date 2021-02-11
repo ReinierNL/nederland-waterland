@@ -10,7 +10,8 @@
     "clean": "rimraf ./public ./.cache ./dist",
     "cleanup": "npm run clean",
     "start": "parcel index.html --port 1235",
-    "build:domain": "npm run clean && parcel build index.html --out-dir ./docs --public-url https://reiniernl.github.io/nederland-waterland"
+    "build:domain": "npm run clean && parcel build index.html --out-dir ./docs --public-url https://reiniernl.github.io/nederland-waterland",
+    "build:local": "parcel build index.html --out-dir ./docs_local"
   },
   "repository": {
     "type": "git",
