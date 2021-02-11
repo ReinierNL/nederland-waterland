@@ -18,12 +18,20 @@ export const HomePage: MeiosisComponent = () => {
   let vvtLayer: L.GeoJSON;
   let ggzLayer: L.GeoJSON;
   let ghzLayer: L.GeoJSON;
+  let waterenLayer: L.GeoJSON;
   let rwzisLayer: L.GeoJSON;
+  let effluentLayer: L.GeoJSON;
+  let rioolleidingenLayer: L.GeoJSON;  
   let gl_wk_buLayer: L.GeoJSON;
+  let wko_gwiLayer: L.GeoJSON;
+  let wko_gwioLayer: L.GeoJSON;
+  let wko_gwoLayer: L.GeoJSON;
+  let wko_gbesLayer: L.GeoJSON;
+  let wko_obesLayer: L.GeoJSON;
   let wko_diepteLayer: L.GeoJSON;
-  //let wko_natuurLayer: L.GeoJSON;
+  let wko_natuurLayer: L.GeoJSON;
   let wko_ordeningLayer: L.GeoJSON;
-  //let wko_specprovbeleidLayer: L.GeoJSON;  
+  let wko_specprovbeleidLayer: L.GeoJSON;  
   let wko_verbodLayer: L.GeoJSON;
   let waterLayer: L.GeoJSON;
   // let selectedHospitalLayer: L.Marker;
@@ -32,7 +40,8 @@ export const HomePage: MeiosisComponent = () => {
     view: ({ attrs: { state, actions } }) => {
       console.log(state);
       const { hospitals, hospitals2019, selectedItem, selectedWaterItem, water, verzorgingshuizen, ggz, ghz, vvt,
-              rwzis, gl_wk_bu, wko_diepte, wko_ordening, wko_verbod } = state.app;
+              wateren, rwzis, effluent, rioolleidingen, gl_wk_bu, wko_gwi, wko_gwio, wko_gwo, wko_gbes, wko_obes, 
+              wko_diepte, wko_natuur, wko_ordening, wko_specprovbeleid, wko_verbod } = state.app;
 
       if (water) {
         waterLayer.clearLayers();
@@ -98,13 +107,25 @@ export const HomePage: MeiosisComponent = () => {
               vvtLayer = L.geoJSON(vvt, { pointToLayer, onEachFeature });
               ghzLayer = L.geoJSON(ghz, { pointToLayer, onEachFeature });
               ggzLayer = L.geoJSON(ggz, { pointToLayer, onEachFeature });
+              waterenLayer = L.geoJSON(wateren, { pointToLayer, onEachFeature });
               rwzisLayer = L.geoJSON(rwzis, { pointToLayer: pointToSewageLayer, onEachFeature });
-              //rwzisLayer = L.geoJSON(rwzis, { pointToSewageLayer, onEachFeature });
+              effluentLayer = L.geoJSON(effluent, { pointToLayer, onEachFeature });
+              rioolleidingenLayer = L.geoJSON(effluent, { pointToLayer, onEachFeature });
               gl_wk_buLayer = L.geoJSON(gl_wk_bu, { pointToLayer, onEachFeature });
+              wko_gwiLayer = L.geoJSON(wko_gwi, { pointToLayer: pointToSewageLayer, onEachFeature });
+              wko_gwioLayer = L.geoJSON(wko_gwio, { pointToLayer: pointToSewageLayer, onEachFeature });
+              wko_gwoLayer = L.geoJSON(wko_gwo, { pointToLayer: pointToSewageLayer, onEachFeature });
+              wko_gbesLayer = L.geoJSON(wko_gbes, { pointToLayer: pointToSewageLayer, onEachFeature });
+              wko_obesLayer = L.geoJSON(wko_obes, { pointToLayer: pointToSewageLayer, onEachFeature });
               wko_diepteLayer = L.geoJSON(wko_diepte, { pointToLayer, onEachFeature });
-              //wko_natuurLayer = L.geoJSON(wko_natuur, { pointToLayer, onEachFeature });
-              wko_ordeningLayer = L.geoJSON(wko_ordening, { pointToLayer, onEachFeature });
-              //wko_specprovbeleidLayer = L.geoJSON(wko_specprovbeleid, { pointToLayer, onEachFeature });
+              wko_natuurLayer = L.geoJSON(wko_natuur, { pointToLayer, onEachFeature });
+              wko_ordeningLayer = L.geoJSON(wko_ordening, { pointToLayer, onEachFeature, style: (f) => {
+                const fillColor = f?.properties.fid % 2 === 0 ? 'red' : 'green';
+                return {
+                  fillColor
+                }
+              }});
+              wko_specprovbeleidLayer = L.geoJSON(wko_specprovbeleid, { pointToLayer, onEachFeature });
               wko_verbodLayer = L.geoJSON(wko_verbod, { pointToLayer, onEachFeature });
               verzorgingshuizenLayer = L.geoJSON(verzorgingshuizen, { pointToLayer, onEachFeature });
 
@@ -178,6 +199,7 @@ export const HomePage: MeiosisComponent = () => {
                   { label: 'Ziekenhuizen', layer: ziekenhuisLayer },
                   { label: 'Ziekenhuizen 2019', layer: ziekenhuis2019Layer },
                   { label: 'Water', layer: waterLayer },
+                  { label: 'Wateren potentie', layer: waterenLayer },
                   {
                     label: 'Tehuizen',
                     children: [
@@ -191,15 +213,30 @@ export const HomePage: MeiosisComponent = () => {
                     label: 'Divers',
                     children: [
                       { label: 'rioolwaterzuiveringen', layer: rwzisLayer },
+                      { label: 'effluentleidingen', layer: effluentLayer },
+                      { label: 'rioolleidingen', layer: rioolleidingenLayer },
                       { label: 'gasloze wijken en buurten', layer: gl_wk_buLayer },
                     ],
                   },
                   {
-                    label: 'WKO restricties',
+                    label: 'WKO: installaties',
+                    selectAllCheckbox: true,
+                    children: [
+                      { label: 'WKO GWI', layer: wko_gwiLayer },
+                      { label: 'WKO GWIO', layer: wko_gwioLayer },
+                      { label: 'WKO grondwateronttrekkingen', layer: wko_gwoLayer },
+                      { label: 'WKO gesloten bodemenergiesysteem', layer: wko_gbesLayer },
+                      { label: 'WKO open bodemenergiesystemen', layer: wko_obesLayer },
+                    ],
+                  },
+                  {
+                    label: 'WKO: restricties',
                     selectAllCheckbox: true,
                     children: [
                       { label: 'WKO Diepte', layer: wko_diepteLayer },
+                      { label: 'WKO Natuur', layer: wko_natuurLayer },
                       { label: 'WKO Ordening', layer: wko_ordeningLayer },
+                      { label: 'WKO SpecProvBeleid', layer: wko_specprovbeleidLayer },
                       { label: 'WKO Verbodsgebieden', layer: wko_verbodLayer },
                     ],
                   },
