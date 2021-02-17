@@ -1,4 +1,4 @@
-import { FactoryComponent } from 'mithril';
+import m, { FactoryComponent } from 'mithril';
 import Stream from 'mithril/stream';
 import { merge } from '../utils/mergerino';
 import { appStateMgmt, IAppStateActions, IAppStateModel } from './states';
@@ -7,7 +7,7 @@ export interface IAppModel extends IAppStateModel {}
 
 export interface IActions extends IAppStateActions {}
 
-export type ModelUpdateFunction = Partial<IAppModel>;
+export type ModelUpdateFunction = Partial<IAppModel> | any;
 
 export type UpdateStream = Stream<ModelUpdateFunction>;
 
@@ -25,3 +25,7 @@ const app = {
 const update = Stream<ModelUpdateFunction>();
 export const states = Stream.scan(merge, app.initial, update);
 export const actions = app.actions(update, states);
+
+states.map(() => {
+  m.redraw();
+});
