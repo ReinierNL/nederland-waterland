@@ -12,7 +12,7 @@ export const InfoPanel: MeiosisComponent = () => {
       },
     }) => {
       return [
-        m('h2', `Nederland-Waterland`),
+        m('h2', `Zorgvastgoed en aquathermie`),
         m('label[for=size]', [
           'Afmeting bounding box in meter:',
           m('input[id=size][type=number][min=100][max=10000]', {
