@@ -5,13 +5,14 @@ import { IZiekenhuis } from '../../models/ziekenhuis';
 import ziekenhuizen from '../../data/ziekenhuizen.json';
 import ziekenhuizen2019 from '../../data/ziekenhuizen2019.json';
 import verzorgingshuizen from '../../data/verzorgingshuizen.json';
+import ziekenhuizen_rk from '../../data/ziekenhuizen_routekaarten.json';
 import ggz from '../../data/ggz.json';
 import ghz from '../../data/ghz.json';
 import vvt from '../../data/vvt.json';
-import wateren from '../../data/wateren potentie excl zee.json'
+import wateren from '../../data/wateren.json'
 import rwzis from '../../data/Syntraal_rwzis.json';
 import effluent from '../../data/Syntraal_effluent.json';
-//import rioolleidingen from '../../data/Syntraal_rioolleidingen.json'; # cannot parcel  (out of memory)
+// import rioolleidingen from '../../data/Syntraal_rioolleidingen.json'; // cannot parcel  (out of memory)
 import rioolleidingen from '../../data/Syntraal_effluent.json';
 import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
 // wko point layers
@@ -29,7 +30,7 @@ import wko_ordening from '../../data/WKO Restrictie Ordening.json';
 import wko_specprovbeleid from '../../data/WKO Restrictie Ordening.json';
 import wko_verbod from '../../data/WKO Verbodsgebieden.json';
 import { createBoundingBox, createIcon, processWater, ziekenhuisIconX } from '../../utils';
-import { FeatureCollection, Feature, Point } from 'geojson';
+import { FeatureCollection, Feature, Point, Polygon } from 'geojson';
 import { top10nl } from '..';
 
 // Add curline        // (RS): What is curline??
@@ -77,8 +78,9 @@ export interface IAppStateModel {
     selectedItem: Feature<Point>;
     selectedWaterItem: Feature;
     verzorgingshuizen: FeatureCollection<Point>;
+    ziekenhuizen_rk: FeatureCollection<Point>;
     hospitals: FeatureCollection<Point, IZiekenhuis>;
-    hospitals2019: FeatureCollection<Point, IZiekenhuis>;
+    ziekenhuizen2019: FeatureCollection<Point>;
   }>;
 }
 
@@ -93,11 +95,11 @@ export interface IAppState {
   initial: IAppStateModel;
   actions: (us: UpdateStream, states: Stream<IAppModel>) => IAppStateActions;
 }
-
+const size = 5000;
 export const appStateMgmt = {
   initial: {
     app: {
-      size: 5000,
+      size,
       vvt,
       ggz,
       ghz,
@@ -117,7 +119,8 @@ export const appStateMgmt = {
       wko_specprovbeleid,
       wko_verbod,
       verzorgingshuizen,
-      hospitals2019: ziekenhuizen2019 as GeoJSON.FeatureCollection<GeoJSON.Point, IZiekenhuis>,
+      ziekenhuizen_rk,
+      ziekenhuizen2019,
       hospitals: ziekenhuizen as GeoJSON.FeatureCollection<GeoJSON.Point, IZiekenhuis>,
       baseline: (ziekenhuizen as GeoJSON.FeatureCollection<GeoJSON.Point, IZiekenhuis>).features.reduce(
         (acc, cur) => {

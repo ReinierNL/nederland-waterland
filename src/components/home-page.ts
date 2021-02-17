@@ -16,6 +16,7 @@ export const HomePage: MeiosisComponent = () => {
   let ziekenhuisLayer: L.GeoJSON;
   let ziekenhuis2019Layer: L.GeoJSON;
   let verzorgingshuizenLayer: L.GeoJSON;
+  let ziekenhuis_rkLayer: L.GeoJSON;
   let vvtLayer: L.GeoJSON;
   let ggzLayer: L.GeoJSON;
   let ghzLayer: L.GeoJSON;
@@ -40,8 +41,9 @@ export const HomePage: MeiosisComponent = () => {
   return {
     view: ({ attrs: { state, actions } }) => {
       console.log(state);
-      const { hospitals, hospitals2019, selectedItem, selectedWaterItem, water, verzorgingshuizen, ggz, ghz, vvt,
-              wateren, rwzis, effluent, rioolleidingen, gl_wk_bu, wko_gwi, wko_gwio, wko_gwo, wko_gbes, wko_obes, 
+      const { hospitals, ziekenhuizen2019, selectedItem, selectedWaterItem, water, 
+              verzorgingshuizen, ziekenhuizen_rk, wateren, ggz, ghz, vvt,
+              rwzis, effluent, rioolleidingen, gl_wk_bu, wko_gwi, wko_gwio, wko_gwo, wko_gbes, wko_obes, 
               wko_diepte, wko_natuur, wko_ordening, wko_specprovbeleid, wko_verbod } = state.app;
 
       if (water) {
@@ -143,8 +145,9 @@ export const HomePage: MeiosisComponent = () => {
               wko_specprovbeleidLayer = L.geoJSON(wko_specprovbeleid, { pointToLayer, onEachFeature });
               wko_verbodLayer = L.geoJSON(wko_verbod, { pointToLayer, onEachFeature });
               verzorgingshuizenLayer = L.geoJSON(verzorgingshuizen, { pointToLayer, onEachFeature });
+              ziekenhuis_rkLayer = L.geoJSON(ziekenhuizen_rk, { pointToLayer, onEachFeature });
 
-              ziekenhuis2019Layer = L.geoJSON<IZiekenhuis>(hospitals2019, {
+              ziekenhuis2019Layer = L.geoJSON<IZiekenhuis>(ziekenhuizen2019, {
                 pointToLayer: (feature, latlng) => {
                   const { locatie, organisatie, active } = feature.properties;
                   const title = `${locatie} (${organisatie})`;
@@ -211,17 +214,18 @@ export const HomePage: MeiosisComponent = () => {
               const overlayTree = {
                 label: 'Kaartlagen',
                 children: [
-                  { label: 'Ziekenhuizen', layer: ziekenhuisLayer },
-                  { label: 'Ziekenhuizen 2019', layer: ziekenhuis2019Layer },
                   { label: 'Water', layer: waterLayer },
                   { label: 'Wateren potentie', layer: waterenLayer },
                   {
-                    label: 'Tehuizen',
+                    label: 'Instellingen',
                     children: [
+                      { label: 'Ziekenhuizen', layer: ziekenhuisLayer },
+                      { label: 'Ziekenhuizen 2019', layer: ziekenhuis2019Layer },
                       { label: 'vvt', layer: vvtLayer },
                       { label: 'ggz', layer: ggzLayer },
                       { label: 'ghz', layer: ghzLayer },
                       { label: 'verzorgingshuizen', layer: verzorgingshuizenLayer },
+                      { label: 'Ziekenhuizen routekaarten', layer: ziekenhuis_rkLayer },
                     ],
                   },
                   {
