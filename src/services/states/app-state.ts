@@ -140,20 +140,23 @@ export const appStateMgmt = {
           });
         },
         style: (f) => {
-          // this doesn't work:
-          // const value = f?.properties.AVGwocGJ_1;
-          // let color = 0x808080;
-          // if (value > 10000) {
-          //   color = 0xff0000;  
-          // } else {
-          //   color = 0xff8080;
-          // };
-          const color = f?.properties.AVGwocGJ_1 > 10000 ? 'red' : 'green';
-          //const color = f?.properties.AVGwocGJ_1 > 10000 ? '0xff0000' : '0x00ff00';   // this does not work
-          const fillColor = f?.properties.AVGwocGJ_1 > 10000 ? 'red' : 'green';
+          const value = f?.properties.AVGwocGJ_1;
+          let color = '#808080';
+          if (value < 50000) {
+            color = '#ffc0c0';
+          } else if (value < 100000) {
+            color = '#ff9090';
+          } else if (value < 200000) {
+            color = '#ff4040';
+          } else {
+            color = '#ff0000';
+          };
+          const fillColor = color;
+          const fillOpacity = 0.8;
           return {
             color,
             fillColor,
+            fillOpacity,
           };
         },
         name: 'wateren_potentie_gt1ha',
