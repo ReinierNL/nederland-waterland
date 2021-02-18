@@ -9,8 +9,8 @@ import ziekenhuizen_rk from '../../data/ziekenhuizen_routekaarten.json';
 import ggz from '../../data/ggz.json';
 import ghz from '../../data/ghz.json';
 import vvt from '../../data/vvt.json';
-// import rwzis from '../../data/Syntraal_rwzis.json';
-// import effluent from '../../data/Syntraal_effluent.json';
+import rwzis from '../../data/Syntraal_rwzis.json';
+import effluent from '../../data/Syntraal_effluent.json';
 // import rioolleidingen from '../../data/Syntraal_rioolleidingen.json'; // cannot parcel  (out of memory)
 // import rioolleidingen from '../../data/Syntraal_effluent.json';
 // import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
@@ -24,7 +24,7 @@ import vvt from '../../data/vvt.json';
 // import wko_diepte from '../../data/WKO Restrictie Diepte.json';
 // //import wko_natuur from '../../data/WKO Restrictie Natuur.json';  # cannot parcel  (out of memory)
 // import wko_natuur from '../../data/WKO Restrictie Ordening.json';
-// import wko_ordening from '../../data/WKO Restrictie Ordening.json';
+import wko_ordening from '../../data/WKO Restrictie Ordening.json';
 // //import wko_specprovbeleid from '../../data/WKO Restrictie SpecProvBeleid.json'; # cannot parcel  (out of memory)
 // import wko_specprovbeleid from '../../data/WKO Restrictie Ordening.json';
 // import wko_verbod from '../../data/WKO Verbodsgebieden.json';
@@ -55,14 +55,14 @@ ziekenhuizen2019.features = ziekenhuizen2019.features.map((z: any) => ({
 
 export interface IAppStateModel {
   app: Partial<{
-    water?: FeatureCollection;
+    // water?: FeatureCollection;
     vvt: FeatureCollection<Point>;
     ggz: FeatureCollection<Point>;
     ghz: FeatureCollection<Point>;
     wateren_potentie_gt1haLayer: L.GeoJSON;
     rwzis: FeatureCollection<Point>;
     effluent: FeatureCollection;
-    rioolleidingen: FeatureCollection;
+    rioolleidingenLayer: L.GeoJSON;
     gl_wk_bu: FeatureCollection;
     wko_gwi: FeatureCollection;
     wko_gwio: FeatureCollection;
@@ -111,9 +111,16 @@ export const appStateMgmt = {
       ggz,
       ghz,
       // wateren,
-      // rwzis,
-      // effluent,
-      // rioolleidingen,
+      rwzis,
+      effluent,
+      rioolleidingenLayer: L.geoJSON(undefined, {
+        onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+          layer.on('click', () => {
+            actions.selectFeature(feature as Feature<Point>);
+          });
+        },
+        name: 'rioolleidingen',
+      } as NamedGeoJSONOptions),
       // gl_wk_bu,
       // wko_gwi,
       // wko_gwio,
@@ -122,7 +129,8 @@ export const appStateMgmt = {
       // wko_obes,
       // wko_diepte,
       // wko_natuur,
-      // wko_ordening,
+
+      wko_ordening,       //  this one has a style assignment in home-page.ts 
       // wko_specprovbeleid,
       // wko_verbod,
       wateren_potentie_gt1haLayer: L.geoJSON(undefined, {
@@ -130,6 +138,23 @@ export const appStateMgmt = {
           layer.on('click', () => {
             actions.selectFeature(feature as Feature<Point>);
           });
+        },
+        style: (f) => {
+          // this doesn't work:
+          // const value = f?.properties.AVGwocGJ_1;
+          // let color = 0x808080;
+          // if (value > 10000) {
+          //   color = 0xff0000;  
+          // } else {
+          //   color = 0xff8080;
+          // };
+          const color = f?.properties.AVGwocGJ_1 > 10000 ? 'red' : 'green';
+          //const color = f?.properties.AVGwocGJ_1 > 10000 ? '0xff0000' : '0x00ff00';   // this does not work
+          const fillColor = f?.properties.AVGwocGJ_1 > 10000 ? 'red' : 'green';
+          return {
+            color,
+            fillColor,
+          };
         },
         name: 'wateren_potentie_gt1ha',
       } as NamedGeoJSONOptions),

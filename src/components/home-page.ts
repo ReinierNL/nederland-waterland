@@ -44,7 +44,6 @@ export const HomePage: MeiosisComponent = () => {
   let wko_ordeningLayer: L.GeoJSON;
   let wko_specprovbeleidLayer: L.GeoJSON;
   let wko_verbodLayer: L.GeoJSON;
-  let waterLayer: L.GeoJSON;
   // let selectedHospitalLayer: L.Marker;
 
   return {
@@ -65,7 +64,7 @@ export const HomePage: MeiosisComponent = () => {
         vvt,
         rwzis,
         effluent,
-        // rioolleidingen,
+        rioolleidingenLayer,
         gl_wk_bu,
         wko_gwi,
         wko_gwio,
@@ -79,10 +78,6 @@ export const HomePage: MeiosisComponent = () => {
         wko_verbod,
       } = state.app;
 
-      if (water) {
-        waterLayer.clearLayers();
-        waterLayer.addData(water);
-      }
       const { updateActiveLayers } = actions;
 
       const props = selectedItem && selectedItem.properties;
@@ -171,11 +166,11 @@ export const HomePage: MeiosisComponent = () => {
                 onEachFeature,
                 name: 'effluent',
               } as NamedGeoJSONOptions);
-              rioolleidingenLayer = L.geoJSON(effluent, {
-                pointToLayer,
-                onEachFeature,
-                name: 'effluent',
-              } as NamedGeoJSONOptions);
+              // rioolleidingenLayer = L.geoJSON(rioolleidingen, {
+              //   pointToLayer,
+              //   onEachFeature,
+              //   name: 'rioolleidingen',
+              // } as NamedGeoJSONOptions);
               gl_wk_buLayer = L.geoJSON(gl_wk_bu, {
                 pointToLayer,
                 onEachFeature,
@@ -220,8 +215,10 @@ export const HomePage: MeiosisComponent = () => {
                 pointToLayer,
                 onEachFeature,
                 style: (f) => {
+                  const color = f?.properties.fid % 2 === 0 ? 'red' : 'green';
                   const fillColor = f?.properties.fid % 2 === 0 ? 'red' : 'green';
                   return {
+                    color,
                     fillColor,
                   };
                 },
@@ -292,23 +289,6 @@ export const HomePage: MeiosisComponent = () => {
                 onEachFeature,
               });
               // }).addTo(map);
-
-              waterLayer = L.geoJSON(undefined, {
-                pointToLayer: (f, latlng) =>
-                  L.circleMarker(latlng, {
-                    // color: 'black',
-                    stroke: false,
-                    fillColor: f.properties.cat === 0 ? 'green' : f.properties.cat === 1 ? 'orange' : 'red',
-                    fillOpacity: 1,
-                    radius: Math.min(10, f.properties.births / 10),
-                  }),
-                onEachFeature: (feature, layer) => {
-                  layer.bindPopup(JSON.stringify(feature.properties, null, 2));
-                  layer.on('click', () => {
-                    actions.selectWaterFeature(feature);
-                  });
-                },
-              }).addTo(map);
 
               const baseTree = {
                 label: 'Achtergrondkaart',
