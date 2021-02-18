@@ -130,7 +130,7 @@ export const appStateMgmt = {
       // wko_diepte,
       // wko_natuur,
 
-      wko_ordening,       //  this one has a style assignment in home-page.ts 
+      wko_ordening, //  this one has a style assignment in home-page.ts
       // wko_specprovbeleid,
       // wko_verbod,
       wateren_potentie_gt1haLayer: L.geoJSON(undefined, {
@@ -141,22 +141,19 @@ export const appStateMgmt = {
         },
         style: (f) => {
           const value = f?.properties.AVGwocGJ_1;
-          let color = '#808080';
-          if (value < 50000) {
-            color = '#ffc0c0';
-          } else if (value < 100000) {
-            color = '#ff9090';
-          } else if (value < 200000) {
-            color = '#ff4040';
-          } else {
-            color = '#ff0000';
-          };
-          const fillColor = color;
-          const fillOpacity = 0.8;
+          const color = value
+            ? value < 50000
+              ? '#ffc0c0'
+              : value < 100000
+              ? '#ff9090'
+              : value < 200000
+              ? '#ff4040'
+              : '#ff0000'
+            : '#808080';
           return {
             color,
-            fillColor,
-            fillOpacity,
+            fillColor: color,
+            fillOpacity: 0.8,
           };
         },
         name: 'wateren_potentie_gt1ha',
