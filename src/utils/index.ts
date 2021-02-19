@@ -182,3 +182,5 @@ export const processWater = (lat: number, lng: number, water?: FeatureCollection
   water.features = features;
   return water;
 };
+
+export const capitalize = (s: string) => s && s.charAt(0).toUpperCase() + s.slice(1);

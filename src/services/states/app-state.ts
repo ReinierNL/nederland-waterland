@@ -28,11 +28,12 @@ import wko_ordening from '../../data/WKO Restrictie Ordening.json';
 // //import wko_specprovbeleid from '../../data/WKO Restrictie SpecProvBeleid.json'; # cannot parcel  (out of memory)
 // import wko_specprovbeleid from '../../data/WKO Restrictie Ordening.json';
 // import wko_verbod from '../../data/WKO Verbodsgebieden.json';
-import { createBoundingBox, createIcon, processWater, ziekenhuisIconX } from '../../utils';
-import { FeatureCollection, Feature, Point } from 'geojson';
-import { actions, top10nl } from '..';
-import L from 'leaflet';
+import { createIcon, ziekenhuisIconX } from '../../utils';
+import { FeatureCollection, Feature, Point, GeoJsonObject } from 'geojson';
+import { actions } from '..';
+import L, { LeafletEvent } from 'leaflet';
 import { NamedGeoJSONOptions } from '../../components';
+import { toColorFactory } from '../../models';
 
 // Add curline        // (RS): What is curline??
 ziekenhuizen.features = ziekenhuizen.features.map((z: any) => ({
@@ -76,7 +77,10 @@ export interface IAppStateModel {
     wko_verbod: FeatureCollection;
     /** Bounding box size */
     size: number;
+    /** Last item that was clicked */
     selectedItem: Feature<Point>;
+    /** Last item's layer name */
+    selectedLayer: string;
     selectedHospital: Feature<Point>;
     selectedWaterItem: Feature;
     verzorgingshuizen: FeatureCollection<Point>;
@@ -90,7 +94,7 @@ export interface IAppStateModel {
 }
 
 export interface IAppStateActions {
-  selectFeature: (f: Feature<Point>) => void;
+  selectFeature: (f: Feature<Point>, layerName?: string) => void;
   selectHospital: (f: Feature<Point>) => Promise<void>;
   selectWaterFeature: (f: Feature) => void;
   toggleHospitalActivity: (id: number, layer?: L.GeoJSON) => void;
@@ -103,6 +107,28 @@ export interface IAppState {
   actions: (us: UpdateStream, states: Stream<IAppModel>) => IAppStateActions;
 }
 const size = 5000;
+
+const createLeafletLayer = (name: string, colorPropName: string, initialData?: GeoJsonObject) => {
+  const getColor = toColorFactory(name);
+  return L.geoJSON(initialData, {
+    onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+      layer.on('click', (e: LeafletEvent) => {
+        actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
+      });
+    },
+    // filter: (f) => true,
+    style: (f) => {
+      const color = getColor(f?.properties[colorPropName]);
+      return {
+        color,
+        fillColor: color,
+        fillOpacity: 0.8,
+      };
+    },
+    name,
+  } as NamedGeoJSONOptions);
+};
+
 export const appStateMgmt = {
   initial: {
     app: {
@@ -133,31 +159,7 @@ export const appStateMgmt = {
       wko_ordening, //  this one has a style assignment in home-page.ts
       // wko_specprovbeleid,
       // wko_verbod,
-      wateren_potentie_gt1haLayer: L.geoJSON(undefined, {
-        onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-          layer.on('click', () => {
-            actions.selectFeature(feature as Feature<Point>);
-          });
-        },
-        style: (f) => {
-          const value = f?.properties.AVGwocGJ_1;
-          const color = value
-            ? value < 50000
-              ? '#ffc0c0'
-              : value < 100000
-              ? '#ff9090'
-              : value < 200000
-              ? '#ff4040'
-              : '#ff0000'
-            : '#808080';
-          return {
-            color,
-            fillColor: color,
-            fillOpacity: 0.8,
-          };
-        },
-        name: 'wateren_potentie_gt1ha',
-      } as NamedGeoJSONOptions),
+      wateren_potentie_gt1haLayer: createLeafletLayer('wateren_potentie_gt1ha', 'AVGwocGJ_1'),
       verzorgingshuizen,
       ziekenhuizen_rk,
       ziekenhuizen2019,
@@ -184,7 +186,7 @@ export const appStateMgmt = {
         update({ app: { selectedWaterItem: f } });
         m.redraw();
       },
-      selectFeature: async (f) => {
+      selectFeature: async (f, selectedLayer?: string) => {
         // const {
         //   app: { size = 5000 },
         // } = states();
@@ -194,7 +196,7 @@ export const appStateMgmt = {
         // const geojson = await top10nl(bbox);
         // const geojson = await overpass(bbox);
         // update({ app: { selectedItem: () => f, water: processWater(lat, lng, geojson) } });
-        update({ app: { selectedItem: () => f } });
+        update({ app: { selectedItem: () => f, selectedLayer } });
       },
       selectHospital: async (f) => {
         const { app } = states();
@@ -210,7 +212,7 @@ export const appStateMgmt = {
             .forEach((key) => (acc[key] = cur[key]));
           return acc;
         }, {} as { [key: string]: L.GeoJSON });
-        update({ app: { selectedHospital: () => f, ...result } });
+        update({ app: { selectedHospital: () => f, selectedItem: undefined, selectedLayer: undefined, ...result } });
       },
       toggleHospitalActivity: (id: number, layer?: L.GeoJSON) => {
         const {

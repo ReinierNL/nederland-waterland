@@ -189,6 +189,38 @@ label {
 }
 
 table {
-  text-align: right;
+  /* text-align: right; */
   width: 100%;
+}
+
+table.feature-props {
+  font-size: 0.83rem;
+  margin-left: -5px;
+}
+
+.info-panel {
+  font-size: 0.83em;
+}
+.info-panel,
+.legend {
+  left: 70vw;
+  margin-left: 5px;
+}
+.legend-rectangle {
+  display: inline-block;
+  width: 30px;
+  height: 1rem;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.legend-item {
+  font-size: 0.83em;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.toright {
+  text-align: right;
 }

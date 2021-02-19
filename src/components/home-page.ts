@@ -1,5 +1,5 @@
 import m from 'mithril';
-import L, { GeoJSONOptions, ILayerTree, InteractiveLayerOptions, LayersControlEvent } from 'leaflet';
+import L, { GeoJSONOptions, ILayerTree } from 'leaflet';
 import 'leaflet.control.layers.tree/L.Control.Layers.Tree.css';
 import 'leaflet.control.layers.tree';
 import 'leaflet/dist/leaflet.css';
@@ -16,6 +16,7 @@ import { IZiekenhuis } from '../models/ziekenhuis';
 import { MeiosisComponent } from '../services/meiosis';
 import { InfoPanel } from './info-panel';
 import { Feature, Point } from 'geojson';
+import { Legend } from './legend';
 
 export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
   name: string;
@@ -80,7 +81,6 @@ export const HomePage: MeiosisComponent = () => {
 
       const { updateActiveLayers } = actions;
 
-      const props = selectedItem && selectedItem.properties;
       const waterProps = selectedWaterItem && selectedWaterItem.properties;
       // console.table(waterProps);
       return [
@@ -339,7 +339,7 @@ export const HomePage: MeiosisComponent = () => {
                     selectAllCheckbox: true,
                     children: [
                       { label: 'WKO Diepte', layer: wko_diepteLayer },
-                      { label: 'WKO Natuur', layer: wko_natuurLayer },
+                      { label: '<span style="color: green">WKO Natuur</span>', layer: wko_natuurLayer },
                       { label: 'WKO Ordening', layer: wko_ordeningLayer },
                       { label: 'WKO SpecProvBeleid', layer: wko_specprovbeleidLayer },
                       { label: 'WKO Verbodsgebieden', layer: wko_verbodLayer },
@@ -357,16 +357,13 @@ export const HomePage: MeiosisComponent = () => {
             style: 'position: absolute; top: 0; left: 70vw; padding: 5px;',
           },
           [
+            m('h3', `Zorgvastgoed en aquathermie`),
+            selectedHospital && selectedHospital.properties && m('h4', selectedHospital.properties.Name),
             m(InfoPanel, { state, actions }),
-            selectedHospital && selectedHospital.properties && m('h2', selectedHospital.properties.Name),
-            props &&
-              m('table', [
-                m('tr', [m('th', 'Kenmerk'), m('th', 'Waarde')]),
-                ...Object.keys(props).map((key) => m('tr', [m('td', key), m('td', props[key])])),
-              ]),
-            m('ul', waterProps && Object.keys(waterProps).map((key) => m('li', `${key}: ${waterProps[key]}`))),
+            // m('ul', waterProps && Object.keys(waterProps).map((key) => m('li', `${key}: ${waterProps[key]}`))),
           ]
         ),
+        m(Legend, { state, actions }),
       ];
     },
   };
