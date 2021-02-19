@@ -9,10 +9,12 @@ export const Legend: MeiosisComponent = () => {
         state: {
           app: { selectedLayer },
         },
+        actions: { refreshLayer },
       },
     }) => {
       const propertyStyle = selectedLayer && propertyStyles[selectedLayer];
       const legend = propertyStyle && propertyStyle.legend;
+      const canUncheckItem = legend && legend.items.reduce((acc, cur) => (acc += cur[0] ? 1 : 0), 0) > 1;
       return (
         legend &&
         m('.legend', { style: 'position: absolute; bottom: 10px;' }, [
@@ -20,9 +22,17 @@ export const Legend: MeiosisComponent = () => {
           legend.items.map((item) =>
             m('.legend-item', [
               m('.legend-rectangle', {
-                style: `background-color: ${item[1]}`,
+                style: `background-color: ${item[2]}`,
               }),
-              m('span', item[2]),
+              m('input[type=checkbox].legend-checkbox', {
+                disabled: item[0] && !canUncheckItem,
+                checked: item[0] ? 'checked' : undefined,
+                onclick: () => {
+                  item[0] = !item[0];
+                  refreshLayer(selectedLayer);
+                },
+              }),
+              m('span', item[3]),
             ])
           ),
         ])

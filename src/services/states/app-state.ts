@@ -33,7 +33,7 @@ import { FeatureCollection, Feature, Point, GeoJsonObject } from 'geojson';
 import { actions } from '..';
 import L, { LeafletEvent } from 'leaflet';
 import { NamedGeoJSONOptions } from '../../components';
-import { toColorFactory } from '../../models';
+import { toColorFactory, toFilterFactory } from '../../models';
 
 // Add curline        // (RS): What is curline??
 ziekenhuizen.features = ziekenhuizen.features.map((z: any) => ({
@@ -100,6 +100,7 @@ export interface IAppStateActions {
   toggleHospitalActivity: (id: number, layer?: L.GeoJSON) => void;
   setBoundingBoxSizeInMeter: (size: number) => void;
   updateActiveLayers: (layer: string, add: boolean) => Promise<void>;
+  refreshLayer: (layer?: string) => Promise<void>;
 }
 
 export interface IAppState {
@@ -108,17 +109,18 @@ export interface IAppState {
 }
 const size = 5000;
 
-const createLeafletLayer = (name: string, colorPropName: string, initialData?: GeoJsonObject) => {
-  const getColor = toColorFactory(name);
+const createLeafletLayer = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
+  const getColor = toColorFactory(name, legendPropName);
+  const filter = toFilterFactory(name, legendPropName);
   return L.geoJSON(initialData, {
     onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
       layer.on('click', (e: LeafletEvent) => {
         actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
       });
     },
-    // filter: (f) => true,
+    filter,
     style: (f) => {
-      const color = getColor(f?.properties[colorPropName]);
+      const color = getColor(f);
       return {
         color,
         fillColor: color,
@@ -259,6 +261,13 @@ export const appStateMgmt = {
         } else {
           update({ app: { activeLayers } });
         }
+      },
+      refreshLayer: async (layer?: string) => {
+        const { app } = states();
+        const { selectedHospital } = app;
+        if (!selectedHospital || !layer) return;
+        const result = await loadGeoJSON(layer, selectedHospital, app);
+        update({ app: { ...result } });
       },
     } as IAppStateActions;
   },
