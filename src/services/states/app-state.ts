@@ -2,8 +2,6 @@ import m from 'mithril';
 import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
 import { IZiekenhuis } from '../../models/ziekenhuis';
-import ziekenhuizen from '../../data/ziekenhuizen.json';
-import ziekenhuizen2019 from '../../data/ziekenhuizen2019.json';
 import verzorgingshuizen from '../../data/verzorgingshuizen.json';
 import ziekenhuizen_rk from '../../data/ziekenhuizen_routekaarten.json';
 import ziekenhuizen_v3 from '../../data/ziekenhuizen.v3.json';
@@ -29,7 +27,7 @@ import wko_ordening from '../../data/WKO Restrictie Ordening.json';
 // //import wko_specprovbeleid from '../../data/WKO Restrictie SpecProvBeleid.json'; # cannot parcel  (out of memory)
 // import wko_specprovbeleid from '../../data/WKO Restrictie Ordening.json';
 // import wko_verbod from '../../data/WKO Verbodsgebieden.json';
-import { createIcon, ziekenhuisIconX } from '../../utils';
+import { createIcon, ziekenhuisIcon } from '../../utils';
 import { FeatureCollection, Feature, Point, GeoJsonObject } from 'geojson';
 import { actions } from '..';
 import L, { LeafletEvent } from 'leaflet';
@@ -37,7 +35,8 @@ import { NamedGeoJSONOptions } from '../../components';
 import { toColorFactory, toFilterFactory } from '../../models';
 
 // Add curline        // (RS): What is curline??
-ziekenhuizen.features = ziekenhuizen.features.map((z: any) => ({
+// is this to add a property 'active' so we can use it elsewhere?
+ziekenhuizen_v3.features = ziekenhuizen_v3.features.map((z: any) => ({
   ...z,
   properties: {
     ...z.properties,
@@ -45,13 +44,6 @@ ziekenhuizen.features = ziekenhuizen.features.map((z: any) => ({
   },
 }));
 
-ziekenhuizen2019.features = ziekenhuizen2019.features.map((z: any) => ({
-  ...z,
-  properties: {
-    ...z.properties,
-    active: true,
-  },
-}));
 
 /** Application state */
 
@@ -85,8 +77,6 @@ export interface IAppStateModel {
     selectedHospital: Feature<Point>;
     selectedWaterItem: Feature;
     verzorgingshuizen: FeatureCollection<Point>;
-    hospitals: FeatureCollection<Point, IZiekenhuis>;
-    ziekenhuizen2019: FeatureCollection<Point>;
     ziekenhuizen_rk: FeatureCollection<Point>;
     ziekenhuizen_v3: FeatureCollection<Point>;
     /** Layers that are loaded */
@@ -166,19 +156,7 @@ export const appStateMgmt = {
       wateren_potentie_gt1haLayer: createLeafletLayer('wateren_potentie_gt1ha', 'AVGwocGJ_1'),
       verzorgingshuizen,
       ziekenhuizen_rk,
-      ziekenhuizen2019,
       ziekenhuizen_v3,
-      hospitals: ziekenhuizen as GeoJSON.FeatureCollection<GeoJSON.Point, IZiekenhuis>,
-      baseline: (ziekenhuizen as GeoJSON.FeatureCollection<GeoJSON.Point, IZiekenhuis>).features.reduce(
-        (acc, cur) => {
-          return [acc[0] + cur.properties.t25, acc[1] + cur.properties.t30, acc[2] + cur.properties.tOv] as [
-            number,
-            number,
-            number
-          ];
-        },
-        [0, 0, 0] as [number, number, number]
-      ),
       isSearching: false,
       searchQuery: '',
       activeLayers: new Set(),
@@ -238,7 +216,7 @@ export const appStateMgmt = {
             if (curHospital.active) {
               (l as L.Marker).setIcon(createIcon('black')).setOpacity(1);
             } else {
-              (l as L.Marker).setIcon(ziekenhuisIconX).setOpacity(0.3);
+              (l as L.Marker).setIcon(ziekenhuisIcon).setOpacity(0.3);
             }
             i++;
           });

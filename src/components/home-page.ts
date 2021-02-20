@@ -5,8 +5,6 @@ import 'leaflet.control.layers.tree';
 import 'leaflet/dist/leaflet.css';
 // import 'leaflet-hash';
 import {
-  ziekenhuisIconX,
-  ziekenhuisIconV,
   verzorgingstehuisIcon,
   sewageIcon,
   wko_installatieIcon,
@@ -25,8 +23,6 @@ export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
 
 export const HomePage: MeiosisComponent = () => {
   let map: L.Map;
-  //let ziekenhuizenLayer: L.GeoJSON;
-  //let ziekenhuizen2019Layer: L.GeoJSON;
   let ziekenhuizen_rkLayer: L.GeoJSON;
   let ziekenhuizen_v3Layer: L.GeoJSON;
   let verzorgingshuizenLayer: L.GeoJSON;
@@ -53,19 +49,16 @@ export const HomePage: MeiosisComponent = () => {
     view: ({ attrs: { state, actions } }) => {
       console.log(state);
       const {
-        hospitals,
-        ziekenhuizen2019,
-        ziekenhuizen_v3,
         selectedItem,
         selectedHospital,
         selectedWaterItem,
-        water,
-        verzorgingshuizen,
-        ziekenhuizen_rk,
         wateren_potentie_gt1haLayer,
+        ziekenhuizen_v3,
+        verzorgingshuizen,
         ggz,
         ghz,
         vvt,
+        ziekenhuizen_rk,
         rwzis,
         effluent,
         rioolleidingenLayer,
@@ -265,51 +258,6 @@ export const HomePage: MeiosisComponent = () => {
                 name: 'ziekenhuizen_v3',
               } as NamedGeoJSONOptions);
 
-              // ziekenhuizen2019Layer = L.geoJSON<IZiekenhuis>(ziekenhuizen2019, {
-              //   pointToLayer: (feature, latlng) => {
-              //     const { locatie, organisatie, active } = feature.properties;
-              //     const title = `${locatie} (${organisatie})`;
-              //     return new L.Marker(
-              //       latlng,
-              //       active === false
-              //         ? {
-              //             icon: ziekenhuisIconX,
-              //             title,
-              //           }
-              //         : {
-              //             icon: ziekenhuisIconV,
-              //             title,
-              //           }
-              //     );
-              //   },
-              //   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-              //     layer.on('click', () => {
-              //       actions.selectHospital(feature as Feature<Point>);
-              //     });
-              //   },
-              // }).addTo(map);
-
-              // ziekenhuizenLayer = L.geoJSON<IZiekenhuis>(hospitals, {
-              //   pointToLayer: (feature, latlng) => {
-              //     const { locatie, organisatie, active } = feature.properties;
-              //     const title = `${locatie} (${organisatie})`;
-              //     return new L.Marker(
-              //       latlng,
-              //       active === false
-              //         ? {
-              //             icon: ziekenhuisIconX,
-              //             title,
-              //           }
-              //         : {
-              //             icon: ziekenhuisIconV,
-              //             title,
-              //           }
-              //     );
-              //   },
-              //   onEachFeature,
-              // });
-              // }).addTo(map);
-
               const baseTree = {
                 label: 'Achtergrondkaart',
                 children: [
@@ -325,8 +273,6 @@ export const HomePage: MeiosisComponent = () => {
                   {
                     label: 'Instellingen',
                     children: [
-                      // { label: 'Ziekenhuizen', layer: ziekenhuizenLayer },
-                      // { label: 'Ziekenhuizen 2019', layer: ziekenhuizen2019Layer },
                       { label: 'Ziekenhuizen v3', layer: ziekenhuizen_v3Layer },
                       { label: 'vvt', layer: vvtLayer },
                       { label: 'ggz', layer: ggzLayer },
