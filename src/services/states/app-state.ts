@@ -6,6 +6,7 @@ import ziekenhuizen from '../../data/ziekenhuizen.json';
 import ziekenhuizen2019 from '../../data/ziekenhuizen2019.json';
 import verzorgingshuizen from '../../data/verzorgingshuizen.json';
 import ziekenhuizen_rk from '../../data/ziekenhuizen_routekaarten.json';
+import ziekenhuizen_v3 from '../../data/ziekenhuizen.v3.json';
 import ggz from '../../data/ggz.json';
 import ghz from '../../data/ghz.json';
 import vvt from '../../data/vvt.json';
@@ -87,6 +88,7 @@ export interface IAppStateModel {
     hospitals: FeatureCollection<Point, IZiekenhuis>;
     ziekenhuizen2019: FeatureCollection<Point>;
     ziekenhuizen_rk: FeatureCollection<Point>;
+    ziekenhuizen_v3: FeatureCollection<Point>;
     /** Layers that are loaded */
     activeLayers: Set<string>;
     [key: string]: L.GeoJSON | any;
@@ -165,6 +167,7 @@ export const appStateMgmt = {
       verzorgingshuizen,
       ziekenhuizen_rk,
       ziekenhuizen2019,
+      ziekenhuizen_v3,
       hospitals: ziekenhuizen as GeoJSON.FeatureCollection<GeoJSON.Point, IZiekenhuis>,
       baseline: (ziekenhuizen as GeoJSON.FeatureCollection<GeoJSON.Point, IZiekenhuis>).features.reduce(
         (acc, cur) => {

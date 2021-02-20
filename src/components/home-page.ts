@@ -11,6 +11,7 @@ import {
   sewageIcon,
   wko_installatieIcon,
   wko_gwoIcon,
+  ziekenhuisIcon,
 } from '../utils';
 import { IZiekenhuis } from '../models/ziekenhuis';
 import { MeiosisComponent } from '../services/meiosis';
@@ -24,10 +25,11 @@ export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
 
 export const HomePage: MeiosisComponent = () => {
   let map: L.Map;
-  let ziekenhuisLayer: L.GeoJSON;
-  let ziekenhuis2019Layer: L.GeoJSON;
+  let ziekenhuizenLayer: L.GeoJSON;
+  let ziekenhuizen2019Layer: L.GeoJSON;
+  let ziekenhuizen_rkLayer: L.GeoJSON;
+  let ziekenhuizen_v3Layer: L.GeoJSON;
   let verzorgingshuizenLayer: L.GeoJSON;
-  let ziekenhuis_rkLayer: L.GeoJSON;
   let vvtLayer: L.GeoJSON;
   let ggzLayer: L.GeoJSON;
   let ghzLayer: L.GeoJSON;
@@ -53,6 +55,7 @@ export const HomePage: MeiosisComponent = () => {
       const {
         hospitals,
         ziekenhuizen2019,
+        ziekenhuizen_v3,
         selectedItem,
         selectedHospital,
         selectedWaterItem,
@@ -142,6 +145,13 @@ export const HomePage: MeiosisComponent = () => {
               const pointToWkoGwoLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
                 return new L.Marker(latlng, {
                   icon: wko_gwoIcon,
+                  title: feature.properties.Name,
+                });
+              };
+
+              const pointToZHv3Layer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                return new L.Marker(latlng, {
+                  icon: ziekenhuisIcon,
                   title: feature.properties.Name,
                 });
               };
@@ -239,13 +249,19 @@ export const HomePage: MeiosisComponent = () => {
                 onEachFeature,
                 name: 'verzorgingshuizen',
               } as NamedGeoJSONOptions);
-              ziekenhuis_rkLayer = L.geoJSON(ziekenhuizen_rk, {
+              ziekenhuizen_rkLayer = L.geoJSON(ziekenhuizen_rk, {
                 pointToLayer,
                 onEachFeature,
                 name: 'ziekenhuizen_rk',
               } as NamedGeoJSONOptions);
 
-              ziekenhuis2019Layer = L.geoJSON<IZiekenhuis>(ziekenhuizen2019, {
+              ziekenhuizen_v3Layer = L.geoJSON(ziekenhuizen_v3, {
+                pointToLayer: pointToZHv3Layer,
+                onEachFeature,
+                name: 'ziekenhuizen_v3',
+              } as NamedGeoJSONOptions);
+
+              ziekenhuizen2019Layer = L.geoJSON<IZiekenhuis>(ziekenhuizen2019, {
                 pointToLayer: (feature, latlng) => {
                   const { locatie, organisatie, active } = feature.properties;
                   const title = `${locatie} (${organisatie})`;
@@ -269,7 +285,7 @@ export const HomePage: MeiosisComponent = () => {
                 },
               }).addTo(map);
 
-              ziekenhuisLayer = L.geoJSON<IZiekenhuis>(hospitals, {
+              ziekenhuizenLayer = L.geoJSON<IZiekenhuis>(hospitals, {
                 pointToLayer: (feature, latlng) => {
                   const { locatie, organisatie, active } = feature.properties;
                   const title = `${locatie} (${organisatie})`;
@@ -305,13 +321,14 @@ export const HomePage: MeiosisComponent = () => {
                   {
                     label: 'Instellingen',
                     children: [
-                      { label: 'Ziekenhuizen', layer: ziekenhuisLayer },
-                      { label: 'Ziekenhuizen 2019', layer: ziekenhuis2019Layer },
+                      { label: 'Ziekenhuizen', layer: ziekenhuizenLayer },
+                      { label: 'Ziekenhuizen 2019', layer: ziekenhuizen2019Layer },
+                      { label: 'Ziekenhuizen v3', layer: ziekenhuizen_v3Layer },
                       { label: 'vvt', layer: vvtLayer },
                       { label: 'ggz', layer: ggzLayer },
                       { label: 'ghz', layer: ghzLayer },
                       { label: 'verzorgingshuizen', layer: verzorgingshuizenLayer },
-                      { label: 'Ziekenhuizen routekaarten', layer: ziekenhuis_rkLayer },
+                      { label: 'Ziekenhuizen routekaarten', layer: ziekenhuizen_rkLayer },
                     ],
                   },
                   {

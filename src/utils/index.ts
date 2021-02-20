@@ -7,6 +7,7 @@ import verzorgingstehuis from '../assets/verzorgingstehuis.png';
 import sewage from '../assets/sewage_64.png';
 import wko_installatie from '../assets/wko_installatie.png';
 import wko_gwo from '../assets/wko_gwo.png';
+import ziekenhuis from '../assets/ziekenhuis_32.png';
 
 export const formatNumber = (x: number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
@@ -94,19 +95,19 @@ export const ziekenhuisIconX = L.divIcon({
   popupAnchor: [0, -30],
 });
 
-export const verzorgingstehuisIcon = L.icon({
-  className: 'leaflet-data-marker',
-  iconUrl: verzorgingstehuis,
-  iconAnchor: [12, 12],
-  iconSize: [25, 25],
-  popupAnchor: [0, -30],
-});
-
 export const sewageIcon = L.icon({
   className: 'leaflet-data-marker',
   iconUrl: sewage,
   iconAnchor: [32, 32],
   iconSize: [64, 64],
+  popupAnchor: [0, -30],
+});
+
+export const verzorgingstehuisIcon = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: verzorgingstehuis,
+  iconAnchor: [12, 12],
+  iconSize: [25, 25],
   popupAnchor: [0, -30],
 });
 
@@ -121,6 +122,14 @@ export const wko_installatieIcon = L.icon({
 export const wko_gwoIcon = L.icon({
   className: 'leaflet-data-marker',
   iconUrl: wko_gwo,
+  iconAnchor: [16, 16],
+  iconSize: [32, 32],
+  popupAnchor: [0, -30],
+});
+
+export const ziekenhuisIcon = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: ziekenhuis,
   iconAnchor: [16, 16],
   iconSize: [32, 32],
   popupAnchor: [0, -30],
