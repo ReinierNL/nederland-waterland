@@ -10,23 +10,20 @@ import ghz from '../../data/ghz.json';
 import vvt from '../../data/vvt.json';
 import rwzis from '../../data/Syntraal_rwzis.json';
 import effluent from '../../data/Syntraal_effluent.json';
-// import rioolleidingen from '../../data/Syntraal_rioolleidingen.json'; // cannot parcel  (out of memory)
-// import rioolleidingen from '../../data/Syntraal_effluent.json';
+// import rioolleidingen:  loaded dynamically. see rioolleidingenLayer
 // import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
-// wko point layers
-// import wko_gwi from '../../data/WKO_GWI.json';
-// import wko_gwio from '../../data/WKO_GWIO.json';
-// import wko_gwo from '../../data/WKO_GWI.json'; // cannot parcel WKO_GWI.JSON (out of memory)
-// import wko_gbes from '../../data/WKO_GWI.json'; //loading takes too long
-// import wko_obes from '../../data/WKO_OBES.json';
+// // wko point layers
+import wko_gwi from '../../data/WKO_GWI.json';
+import wko_gwio from '../../data/WKO_GWIO.json';
+import wko_gwo from '../../data/WKO_GWO.json';
+import wko_gbes from '../../data/WKO_GBES.json'; 
+import wko_obes from '../../data/WKO_OBES.json';
 // // wko restriction layers
-// import wko_diepte from '../../data/WKO Restrictie Diepte.json';
-// //import wko_natuur from '../../data/WKO Restrictie Natuur.json';  # cannot parcel  (out of memory)
-// import wko_natuur from '../../data/WKO Restrictie Ordening.json';
+import wko_diepte from '../../data/WKO Restrictie Diepte.json';
+// import wko_natuur: loaded dynamcally. see wko_natuurLayer
 import wko_ordening from '../../data/WKO Restrictie Ordening.json';
-// //import wko_specprovbeleid from '../../data/WKO Restrictie SpecProvBeleid.json'; # cannot parcel  (out of memory)
-// import wko_specprovbeleid from '../../data/WKO Restrictie Ordening.json';
-// import wko_verbod from '../../data/WKO Verbodsgebieden.json';
+// import wko_specprovbeleid: loaded dynamcally. see wko_spec_prov_beleidLayer
+import wko_verbod from '../../data/WKO Verbodsgebieden.json';
 import { createIcon, ziekenhuisIcon } from '../../utils';
 import { FeatureCollection, Feature, Point, GeoJsonObject } from 'geojson';
 import { actions } from '..';
@@ -64,9 +61,9 @@ export interface IAppStateModel {
     wko_gbes: FeatureCollection;
     wko_obes: FeatureCollection;
     wko_diepte: FeatureCollection;
-    wko_natuur: FeatureCollection;
+    wko_natuurLayer: L.GeoJSON;
     wko_ordening: FeatureCollection;
-    wko_specprovbeleid: FeatureCollection;
+    wko_specprovbeleidLayer: L.GeoJSON;
     wko_verbod: FeatureCollection;
     /** Bounding box size */
     size: number;
@@ -142,17 +139,44 @@ export const appStateMgmt = {
         name: 'rioolleidingen',
       } as NamedGeoJSONOptions),
       // gl_wk_bu,
-      // wko_gwi,
-      // wko_gwio,
-      // wko_gwo,
-      // wko_gbes,
-      // wko_obes,
-      // wko_diepte,
-      // wko_natuur,
+      wko_gwi,
+      wko_gwio,
+      wko_gwo,
+      wko_gbes,
+      wko_obes,
+      wko_diepte,   //  this layer has a style assignment in home-page.ts
+      wko_natuurLayer: L.geoJSON(undefined, {
+        onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+          layer.on('click', () => {
+            actions.selectFeature(feature as Feature<Point>);
+          });
+        },
+        style: (f) => {
+          return {
+            color: 'green',
+            fillColor: 'green',
+          };
+        },
+        name: 'wko_natuur',
+      } as NamedGeoJSONOptions),
+      wko_ordening, //  this layer has a style assignment in home-page.ts
 
-      wko_ordening, //  this one has a style assignment in home-page.ts
-      // wko_specprovbeleid,
-      // wko_verbod,
+      wko_specprovbeleidLayer: L.geoJSON(undefined, {
+        onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+          layer.on('click', () => {
+            actions.selectFeature(feature as Feature<Point>);
+          });
+        },
+        style: (f) => {
+          return {
+            color: 'orange',
+            fillColor: 'orange',
+          };
+        },
+        name: 'wko_specprovbeleid',
+      } as NamedGeoJSONOptions),
+
+      wko_verbod,
       wateren_potentie_gt1haLayer: createLeafletLayer('wateren_potentie_gt1ha', 'AVGwocGJ_1'),
       verzorgingshuizen,
       ziekenhuizen_rk,
@@ -170,15 +194,6 @@ export const appStateMgmt = {
         m.redraw();
       },
       selectFeature: async (f, selectedLayer?: string) => {
-        // const {
-        //   app: { size = 5000 },
-        // } = states();
-        // const lng = f.geometry.coordinates[0];
-        // const lat = f.geometry.coordinates[1];
-        // const bbox = createBoundingBox(lat, lng, size);
-        // const geojson = await top10nl(bbox);
-        // const geojson = await overpass(bbox);
-        // update({ app: { selectedItem: () => f, water: processWater(lat, lng, geojson) } });
         update({ app: { selectedItem: () => f, selectedLayer } });
       },
       selectHospital: async (f) => {
