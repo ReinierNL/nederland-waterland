@@ -14,7 +14,7 @@ import effluent from '../../data/Syntraal_effluent.json';
 // // wko point layers
 import wko_gwi from '../../data/WKO_GWI.json';
 import wko_gwio from '../../data/WKO_GWIO.json';
-import wko_gwo from '../../data/WKO_GWO.json';
+// import wko_gwo:  loaded dynamically. see wko_gwoLayer
 import wko_gbes from '../../data/WKO_GBES.json'; 
 import wko_obes from '../../data/WKO_OBES.json';
 // import wko_installaties:  loaded dynamically. see wko_installatiesLayer
@@ -57,7 +57,7 @@ export interface IAppStateModel {
     gl_wk_bu: FeatureCollection;
     wko_gwi: FeatureCollection;
     wko_gwio: FeatureCollection;
-    wko_gwo: FeatureCollection;
+    wko_gwoLayer: L.GeoJSON;
     wko_gbes: FeatureCollection;
     wko_obes: FeatureCollection;
     wko_installatiesLayer: L.GeoJSON;
@@ -130,6 +130,15 @@ const pointToGrayCircleMarkerLayer = (feature: Feature<Point, any>, latlng: L.La
   });
 };
 
+const pointToGreenCircleMarkerLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
+  return new L.CircleMarker(latlng, {
+    radius: 5,
+    stroke: false,
+    fillColor: 'green',
+    fillOpacity: 0.8,
+  });
+};
+
 export const appStateMgmt = {
   initial: {
     app: {
@@ -151,7 +160,15 @@ export const appStateMgmt = {
       // gl_wk_bu,
       wko_gwi,
       wko_gwio,
-      wko_gwo,
+      wko_gwoLayer: L.geoJSON(undefined, {
+        pointToLayer: pointToGreenCircleMarkerLayer,
+        onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+          layer.on('click', () => {
+            actions.selectFeature(feature as Feature<Point>);
+          });
+        },
+        name: 'wko_gwo',
+      } as NamedGeoJSONOptions),
       wko_gbes,
       wko_obes,
       wko_installatiesLayer: L.geoJSON(undefined, {

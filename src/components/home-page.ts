@@ -34,7 +34,7 @@ export const HomePage: MeiosisComponent = () => {
   let gl_wk_buLayer: L.GeoJSON;
   let wko_gwiLayer: L.GeoJSON;
   let wko_gwioLayer: L.GeoJSON;
-  let wko_gwoLayer: L.GeoJSON;
+  // let wko_gwoLayer: L.GeoJSON;  // dynamic
   let wko_gbesLayer: L.GeoJSON;
   let wko_obesLayer: L.GeoJSON;
   //let wko_installatiesLayer: L.GeoJSON; // dynamic
@@ -65,7 +65,7 @@ export const HomePage: MeiosisComponent = () => {
         gl_wk_bu,
         wko_gwi,
         wko_gwio,
-        wko_gwo,
+        wko_gwoLayer,
         wko_gbes,
         wko_obes,
         wko_installatiesLayer,
@@ -181,11 +181,7 @@ export const HomePage: MeiosisComponent = () => {
                 onEachFeature,
                 name: 'wko_gwio',
               } as NamedGeoJSONOptions);
-              wko_gwoLayer = L.geoJSON(wko_gwo, {
-                pointToLayer: pointToCircleMarkerLayer,
-                onEachFeature,
-                name: 'wko_gwo',
-              } as NamedGeoJSONOptions);
+              // wko_gwoLayer : dyamic layer, declared in app-state (as part of state)
               wko_gbesLayer = L.geoJSON(wko_gbes, {
                 pointToLayer: pointToCircleMarkerLayer,
                 onEachFeature,
