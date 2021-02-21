@@ -7,8 +7,6 @@ import 'leaflet/dist/leaflet.css';
 import {
   verzorgingstehuisIcon,
   sewageIcon,
-  wko_installatieIcon,
-  wko_gwoIcon,
   ziekenhuisIcon,
 } from '../utils';
 import { IZiekenhuis } from '../models/ziekenhuis';
@@ -39,6 +37,7 @@ export const HomePage: MeiosisComponent = () => {
   let wko_gwoLayer: L.GeoJSON;
   let wko_gbesLayer: L.GeoJSON;
   let wko_obesLayer: L.GeoJSON;
+  //let wko_installatiesLayer: L.GeoJSON; // dynamic
   let wko_diepteLayer: L.GeoJSON;
   //let wko_natuurLayer: L.GeoJSON; // dynamic
   let wko_ordeningLayer: L.GeoJSON;
@@ -69,6 +68,7 @@ export const HomePage: MeiosisComponent = () => {
         wko_gwo,
         wko_gbes,
         wko_obes,
+        wko_installatiesLayer,
         wko_diepte,
         wko_natuurLayer,
         wko_ordening,
@@ -118,9 +118,7 @@ export const HomePage: MeiosisComponent = () => {
               const pointToCircleMarkerLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
                 return new L.CircleMarker(latlng, {
                   radius: 5,
-                  // radius: 10,
                   stroke: false,
-                  // fillColor: 'gray',
                   fillColor: 'green',
                   fillOpacity: 0.8,
                 });
@@ -136,20 +134,6 @@ export const HomePage: MeiosisComponent = () => {
               const pointToSewageLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
                 return new L.Marker(latlng, {
                   icon: sewageIcon,
-                  title: feature.properties.Name,
-                });
-              };
-
-              const pointToWkoInstallatieLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                return new L.Marker(latlng, {
-                  icon: wko_installatieIcon,
-                  title: feature.properties.Name,
-                });
-              };
-
-              const pointToWkoGwoLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                return new L.Marker(latlng, {
-                  icon: wko_gwoIcon,
                   title: feature.properties.Name,
                 });
               };
@@ -212,6 +196,7 @@ export const HomePage: MeiosisComponent = () => {
                 onEachFeature,
                 name: 'wko_obes',
               } as NamedGeoJSONOptions);
+              // wko_installatiesLayer : dyamic layer, declared in app-state (as part of state)
               wko_diepteLayer = L.geoJSON(wko_diepte, {
                 pointToLayer,
                 onEachFeature,
@@ -312,6 +297,7 @@ export const HomePage: MeiosisComponent = () => {
                       { label: 'WKO grondwateronttrekkingen', layer: wko_gwoLayer },
                       { label: 'WKO gesloten bodemenergiesysteem', layer: wko_gbesLayer },
                       { label: 'WKO open bodemenergiesystemen', layer: wko_obesLayer },
+                      { label: 'WKO Installaties', layer: wko_installatiesLayer },
                     ],
                   },
                   {

@@ -1,7 +1,6 @@
 import m from 'mithril';
 import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
-import { IZiekenhuis } from '../../models/ziekenhuis';
 import verzorgingshuizen from '../../data/verzorgingshuizen.json';
 import ziekenhuizen_rk from '../../data/ziekenhuizen_routekaarten.json';
 import ziekenhuizen_v3 from '../../data/ziekenhuizen.v3.json';
@@ -18,6 +17,7 @@ import wko_gwio from '../../data/WKO_GWIO.json';
 import wko_gwo from '../../data/WKO_GWO.json';
 import wko_gbes from '../../data/WKO_GBES.json'; 
 import wko_obes from '../../data/WKO_OBES.json';
+// import wko_installaties:  loaded dynamically. see wko_installatiesLayer
 // // wko restriction layers
 import wko_diepte from '../../data/WKO Restrictie Diepte.json';
 // import wko_natuur: loaded dynamcally. see wko_natuurLayer
@@ -60,6 +60,7 @@ export interface IAppStateModel {
     wko_gwo: FeatureCollection;
     wko_gbes: FeatureCollection;
     wko_obes: FeatureCollection;
+    wko_installatiesLayer: L.GeoJSON;
     wko_diepte: FeatureCollection;
     wko_natuurLayer: L.GeoJSON;
     wko_ordening: FeatureCollection;
@@ -120,6 +121,15 @@ const createLeafletLayer = (name: string, legendPropName: string, initialData?: 
   } as NamedGeoJSONOptions);
 };
 
+const pointToGrayCircleMarkerLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
+  return new L.CircleMarker(latlng, {
+    radius: 10,
+    stroke: false,
+    fillColor: 'gray',
+    fillOpacity: 0.6,
+  });
+};
+
 export const appStateMgmt = {
   initial: {
     app: {
@@ -144,11 +154,20 @@ export const appStateMgmt = {
       wko_gwo,
       wko_gbes,
       wko_obes,
+      wko_installatiesLayer: L.geoJSON(undefined, {
+        pointToLayer: pointToGrayCircleMarkerLayer,
+        onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+          layer.on('click', () => {
+            actions.selectFeature(feature as Feature<Point>);
+          });
+        },
+        name: 'wko_installaties',
+      } as NamedGeoJSONOptions),
       wko_diepte,   //  this layer has a style assignment in home-page.ts
       wko_natuurLayer: L.geoJSON(undefined, {
         onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
           layer.on('click', () => {
-            actions.selectFeature(feature as Feature<Point>);
+            actions.selectFeature(feature as Feature<Polygon>);
           });
         },
         style: (f) => {
@@ -160,11 +179,10 @@ export const appStateMgmt = {
         name: 'wko_natuur',
       } as NamedGeoJSONOptions),
       wko_ordening, //  this layer has a style assignment in home-page.ts
-
       wko_specprovbeleidLayer: L.geoJSON(undefined, {
         onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
           layer.on('click', () => {
-            actions.selectFeature(feature as Feature<Point>);
+            actions.selectFeature(feature as Feature<Polygon>);
           });
         },
         style: (f) => {
@@ -276,7 +294,8 @@ const loadGeoJSON = async (layer: string, selectedHospital: Feature, app: { [key
   if (geojson) {
     const record = await m.request<{ id: number; data: FeatureCollection }>({
       method: 'GET',
-      url: `${process.env.SERVER || 'http://localhost:3366/api/'}${layer}/id/${id}`,
+      //url: `${process.env.SERVER || 'http://localhost:3366/api/'}${layer}/id/${id}`,
+      url: `${process.env.SERVER || 'http://163.158.64.118:3366/api/'}${layer}/id/${id}`,
     });
     if (record && record.data) {
       geojson.clearLayers();
