@@ -4,7 +4,7 @@ import { FeatureCollection } from 'geojson';
 import area from '@turf/area';
 import centroid from '@turf/centroid';
 import verzorgingstehuis from '../assets/verzorgingstehuis.png';
-import sewage from '../assets/sewage_64.png';
+import sewage from '../assets/sewage_v2a.png';
 import ziekenhuis from '../assets/ziekenhuis_32.png';
 
 export const formatNumber = (x: number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -96,8 +96,12 @@ export const ziekenhuisIconX = L.divIcon({
 export const sewageIcon = L.icon({
   className: 'leaflet-data-marker',
   iconUrl: sewage,
-  iconAnchor: [32, 32],
-  iconSize: [64, 64],
+  iconAnchor: [17, 10],
+  iconSize: [35, 20],
+  // iconAnchor: [23, 13],
+  // iconSize: [46, 26],
+  // iconAnchor: [12, 7],
+  // iconSize: [23, 13],
   popupAnchor: [0, -30],
 });
 

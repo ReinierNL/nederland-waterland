@@ -67,6 +67,19 @@ export const propertyStyles = {
       },
     },
   },
+  wko_gwi: {
+    legend: {
+      items: [
+      ],
+      title: 'wko value',
+    },
+    properties: {
+      s: {
+        title: () => 'status',
+        value: (s:string) => capitalize(s),
+      }
+    }
+  },
 } as Record<
   string,
   {

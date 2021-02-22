@@ -14,6 +14,10 @@ import { MeiosisComponent } from '../services/meiosis';
 import { InfoPanel } from './info-panel';
 import { Feature, Point } from 'geojson';
 import { Legend } from './legend';
+import logoDeltares from '../assets/Deltares.png'
+import logoSyntraal from '../assets/Syntraal.png'
+import logoTNO from '../assets/TNO.png'
+import white_10x10 from '../assets/White_10x10.png'
 
 export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
   name: string;
@@ -163,11 +167,15 @@ export const HomePage: MeiosisComponent = () => {
               effluentLayer = L.geoJSON(effluent, {
                 pointToLayer,
                 onEachFeature,
+                style: (f) => {
+                  return {
+                    color: 'blue',
+                  };
+                },
                 name: 'effluent',
               } as NamedGeoJSONOptions);
               // rioolleidingenLayer : dyamic layer, declared in app-state (as part of state)
               gl_wk_buLayer = L.geoJSON(gl_wk_bu, {
-                pointToLayer,
                 onEachFeature,
                 name: 'gl_wk_bu',
               } as NamedGeoJSONOptions);
@@ -262,7 +270,7 @@ export const HomePage: MeiosisComponent = () => {
                   {
                     label: 'Instellingen',
                     children: [
-                      { label: 'Ziekenhuizen v3', layer: ziekenhuizen_v3Layer },
+                      { label: 'Ziekenhuizen', layer: ziekenhuizen_v3Layer },
                       { label: 'vvt', layer: vvtLayer },
                       { label: 'ggz', layer: ggzLayer },
                       { label: 'ghz', layer: ghzLayer },
@@ -270,18 +278,23 @@ export const HomePage: MeiosisComponent = () => {
                       { label: 'Ziekenhuizen routekaarten', layer: ziekenhuizen_rkLayer },
                     ],
                   },
-                  { label: 'Oppervlaktewater', 
+                  { label: 'Oppervlaktewater (TEO)', 
                     children: [
                       { label: 'Wateren potentie', layer: wateren_potentie_gt1haLayer },
                     ]
                   },
                   {
-                    label: 'Divers',
+                    label: 'Afvalwater (TEA)',
                     children: [
                       { label: 'rioolwaterzuiveringen', layer: rwzisLayer },
                       { label: 'effluentleidingen', layer: effluentLayer },
                       { label: 'rioolleidingen', layer: rioolleidingenLayer },
-                      { label: 'gasloze wijken en buurten', layer: gl_wk_buLayer },
+                    ],
+                  },
+                  {
+                    label: 'Divers',
+                    children: [
+                      { label: 'aardgasvrije wijken en buurten', layer: gl_wk_buLayer },
                     ],
                   },
                   {
@@ -301,10 +314,10 @@ export const HomePage: MeiosisComponent = () => {
                     selectAllCheckbox: true,
                     children: [
                       { label: '&nbsp; &#x1F7E6; &nbsp;WKO Diepte', layer: wko_diepteLayer },
-                      { label: '&nbsp; &#x1F7E9; &nbsp;WKO Natuur</span>', layer: wko_natuurLayer },
-                      { label: '&nbsp; &#x1F7EA; &nbsp;WKO Ordening</span>', layer: wko_ordeningLayer },
-                      { label: '&nbsp; &#x1F7E7; &nbsp;WKO SpecProvBeleid</span>', layer: wko_specprovbeleidLayer },
-                      { label: '&nbsp; &#x1F7E8; &nbsp;WKO Verbodsgebieden</span>', layer: wko_verbodLayer },
+                      { label: '&nbsp; &#x1F7E9; &nbsp;WKO Natuur', layer: wko_natuurLayer },
+                      { label: '&nbsp; &#x1F7EA; &nbsp;WKO Ordening', layer: wko_ordeningLayer },
+                      { label: '&nbsp; &#x1F7E7; &nbsp;WKO SpecProvBeleid', layer: wko_specprovbeleidLayer },
+                      { label: '&nbsp; &#x1F7E8; &nbsp;WKO Verbodsgebieden', layer: wko_verbodLayer },
                     ],
                   },
                 ],
@@ -320,7 +333,13 @@ export const HomePage: MeiosisComponent = () => {
           },
           [
             m('h3', `Zorgvastgoed en aquathermie`),
+            m('img', { src: logoTNO, alt: 'logo TNO', width: '220px', height: '60px' }),
+            m('p', ''),
+            m('img', { src: logoDeltares, alt: 'logo Deltares', width: '165px', height: '44px' }),
+            m('img', { src: white_10x10, alt: 'whitespace', width: '20px', height: '40px' }),
+            m('img', { src: logoSyntraal, alt: 'logo Syntraal', width: '140px', height: '40px' }),
             selectedHospital && selectedHospital.properties && m('h4', selectedHospital.properties.Name),
+            selectedHospital && selectedHospital.properties && m('h4', selectedHospital.properties.Organisatie),
             m(InfoPanel, { state, actions }),
             // m('ul', waterProps && Object.keys(waterProps).map((key) => m('li', `${key}: ${waterProps[key]}`))),
           ]
