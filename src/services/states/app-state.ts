@@ -10,7 +10,7 @@ import vvt from '../../data/vvt.json';
 import rwzis from '../../data/Syntraal_rwzis.json';
 import effluent from '../../data/Syntraal_effluent.json';
 // import rioolleidingen:  loaded dynamically. see rioolleidingenLayer
-// import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
+import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
 // // wko point layers
 import wko_gwi from '../../data/WKO_GWI.json';
 import wko_gwio from '../../data/WKO_GWIO.json';
@@ -157,7 +157,7 @@ export const appStateMgmt = {
         },
         name: 'rioolleidingen',
       } as NamedGeoJSONOptions),
-      // gl_wk_bu,
+      gl_wk_bu,
       wko_gwi,
       wko_gwio,
       wko_gwoLayer: L.geoJSON(undefined, {
