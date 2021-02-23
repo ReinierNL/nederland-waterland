@@ -36,13 +36,13 @@ export const propertyStyles = {
   wateren_potentie_gt1ha: {
     legend: {
       items: [
-        [true, 0, '#808080', 'Ontbrekende waarde'],
+        // [true, 0, '#808080', 'Ontbrekende waarde'],
         [true, 5000, '#ffc0c0', 'Tussen 0 en 5.000 GJ'],
         [true, 100000, '#ff9090', 'Tussen 5.000 en 10.000 GJ'],
         [true, 200000, '#ff4040', 'Tussen 10.000 en 20.000 GJ'],
         [true, Number.MAX_VALUE, '#ff0000', 'Boven 20.000 GJ'],
       ],
-      title: 'Water potentie',
+      title: 'Oppervlaktewater potentie (TEO)',
     },
     properties: {
       FUNCTIE: {
@@ -67,6 +67,29 @@ export const propertyStyles = {
       },
     },
   },
+
+  rwzi: {
+    legend: {
+      items: [
+      ],
+      title: 'rwzi value',
+    },
+    properties: {
+      Name: {
+        title: () => 'naam',
+        value: (s: string) => capitalize(s),
+      },
+      ws: {
+        title: () => 'Waterschap',
+        value: (s: string) => capitalize(s),
+      },
+      gemeentena: {
+        title: () => 'Gemeente',
+        value: (s: string) => capitalize(s),
+      }
+    }
+  },
+
   wko_gwi: {
     legend: {
       items: [
@@ -76,7 +99,7 @@ export const propertyStyles = {
     properties: {
       s: {
         title: () => 'status',
-        value: (s:string) => capitalize(s),
+        value: (s: string) => capitalize(s),
       }
     }
   },

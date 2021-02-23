@@ -1,5 +1,5 @@
 import m from 'mithril';
-import L, { GeoJSONOptions, ILayerTree } from 'leaflet';
+import L, { GeoJSONOptions, ILayerTree, LeafletEvent } from 'leaflet';
 import 'leaflet.control.layers.tree/L.Control.Layers.Tree.css';
 import 'leaflet.control.layers.tree';
 import 'leaflet/dist/leaflet.css';
@@ -8,6 +8,8 @@ import {
   verzorgingstehuisIcon,
   sewageIcon,
   ziekenhuisIcon,
+  ziekenhuisIconGreen,
+  ziekenhuisIconYellow,
 } from '../utils';
 import { IZiekenhuis } from '../models/ziekenhuis';
 import { MeiosisComponent } from '../services/meiosis';
@@ -26,7 +28,7 @@ export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
 export const HomePage: MeiosisComponent = () => {
   let map: L.Map;
   let ziekenhuizen_rkLayer: L.GeoJSON;
-  let ziekenhuizen_v3Layer: L.GeoJSON;
+  let ziekenhuizenLayer: L.GeoJSON;
   let verzorgingshuizenLayer: L.GeoJSON;
   let vvtLayer: L.GeoJSON;
   let ggzLayer: L.GeoJSON;
@@ -57,7 +59,7 @@ export const HomePage: MeiosisComponent = () => {
         selectedHospital,
         selectedWaterItem,
         wateren_potentie_gt1haLayer,
-        ziekenhuizen_v3,
+        ziekenhuizen,
         verzorgingshuizen,
         ggz,
         ghz,
@@ -149,6 +151,18 @@ export const HomePage: MeiosisComponent = () => {
                 });
               };
 
+              const pointToZHrkLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                // for the ziekenhuizen_routekaarten layer: return green or yellow icon
+                var rkIcon = ziekenhuisIconGreen;
+                if (feature.properties && feature.properties['Concept ingeleverd']) {
+                  rkIcon = ziekenhuisIconYellow
+                };
+                return new L.Marker(latlng, {
+                  icon: rkIcon,
+                  title: feature.properties.Name,
+                });
+              };
+
               const onEachFeature = (feature: Feature<Point, any>, layer: L.Layer) => {
                 layer.on('click', () => {
                   actions.selectFeature(feature as Feature<Point>);
@@ -161,7 +175,14 @@ export const HomePage: MeiosisComponent = () => {
 
               rwzisLayer = L.geoJSON(rwzis, {
                 pointToLayer: pointToSewageLayer,
-                onEachFeature,
+                // onEachFeature,
+
+                onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                  layer.on('click', (e: LeafletEvent) => {
+                    actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
+                  });
+                },
+            
                 name: 'rwzis',
               } as NamedGeoJSONOptions);
               effluentLayer = L.geoJSON(effluent, {
@@ -242,19 +263,19 @@ export const HomePage: MeiosisComponent = () => {
                 name: 'verzorgingshuizen',
               } as NamedGeoJSONOptions);
               ziekenhuizen_rkLayer = L.geoJSON(ziekenhuizen_rk, {
-                pointToLayer,
+                pointToLayer: pointToZHrkLayer,
                 onEachFeature,
                 name: 'ziekenhuizen_rk',
               } as NamedGeoJSONOptions);
 
-              ziekenhuizen_v3Layer = L.geoJSON(ziekenhuizen_v3, {
+              ziekenhuizenLayer = L.geoJSON(ziekenhuizen, {
                 pointToLayer: pointToZHv3Layer,
                 onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                   layer.on('click', () => {
                     actions.selectHospital(feature as Feature<Point>);
                   });
                 },
-                name: 'ziekenhuizen_v3',
+                name: 'ziekenhuizen',
               } as NamedGeoJSONOptions);
 
               const baseTree = {
@@ -270,7 +291,7 @@ export const HomePage: MeiosisComponent = () => {
                   {
                     label: 'Instellingen',
                     children: [
-                      { label: 'Ziekenhuizen', layer: ziekenhuizen_v3Layer },
+                      { label: 'Ziekenhuizen', layer: ziekenhuizenLayer },
                       { label: 'vvt', layer: vvtLayer },
                       { label: 'ggz', layer: ggzLayer },
                       { label: 'ghz', layer: ghzLayer },
@@ -280,15 +301,15 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   { label: 'Oppervlaktewater (TEO)', 
                     children: [
-                      { label: 'Wateren potentie', layer: wateren_potentie_gt1haLayer },
+                      { label: 'Wateren potentie *', layer: wateren_potentie_gt1haLayer },
                     ]
                   },
                   {
                     label: 'Afvalwater (TEA)',
                     children: [
                       { label: 'rioolwaterzuiveringen', layer: rwzisLayer },
-                      { label: 'effluentleidingen', layer: effluentLayer },
-                      { label: 'rioolleidingen', layer: rioolleidingenLayer },
+                      { label: '<span style="color:blue"><b>&nbsp;&#x23AF;&nbsp;</b>effluentleidingen</span>', layer: effluentLayer },
+                      { label: '<span style="color:#8080FF"><b>&nbsp;&#x23AF;&nbsp;</b>rioolleidingen</span> *', layer: rioolleidingenLayer },
                     ],
                   },
                   {
@@ -301,12 +322,12 @@ export const HomePage: MeiosisComponent = () => {
                     label: 'WKO: installaties',
                     selectAllCheckbox: true,
                     children: [
-                      { label: 'WKO GWI', layer: wko_gwiLayer },
-                      { label: 'WKO GWIO', layer: wko_gwioLayer },
-                      { label: 'WKO grondwateronttrekkingen', layer: wko_gwoLayer },
+                      { label: 'WKO grondwaterinfiltratie', layer: wko_gwiLayer },
+                      { label: 'WKO grondwaterinfiltratie en -onttrekking', layer: wko_gwioLayer },
+                      { label: 'WKO grondwateronttrekking *', layer: wko_gwoLayer },
                       { label: 'WKO gesloten bodemenergiesysteem', layer: wko_gbesLayer },
                       { label: 'WKO open bodemenergiesystemen', layer: wko_obesLayer },
-                      { label: 'WKO Installaties', layer: wko_installatiesLayer },
+                      { label: 'WKO Installaties *', layer: wko_installatiesLayer },
                     ],
                   },
                   {
@@ -332,7 +353,7 @@ export const HomePage: MeiosisComponent = () => {
             style: 'position: absolute; top: 0; left: 70vw; padding: 5px;',
           },
           [
-            m('h3', `Zorgvastgoed en aquathermie`),
+            m('h3', 'ZZorgvastgoed en aquathermie'),
             m('img', { src: logoTNO, alt: 'logo TNO', width: '220px', height: '60px' }),
             m('p', ''),
             m('img', { src: logoDeltares, alt: 'logo Deltares', width: '165px', height: '44px' }),

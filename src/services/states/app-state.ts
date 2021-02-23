@@ -3,7 +3,7 @@ import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
 import verzorgingshuizen from '../../data/verzorgingshuizen.json';
 import ziekenhuizen_rk from '../../data/ziekenhuizen_routekaarten.json';
-import ziekenhuizen_v3 from '../../data/ziekenhuizen.v3.json';
+import ziekenhuizen from '../../data/ziekenhuizen.json';
 import ggz from '../../data/ggz.json';
 import ghz from '../../data/ghz.json';
 import vvt from '../../data/vvt.json';
@@ -33,7 +33,7 @@ import { toColorFactory, toFilterFactory } from '../../models';
 
 // Add curline        // (RS): What is curline??
 // is this to add a property 'active' so we can use it elsewhere?
-ziekenhuizen_v3.features = ziekenhuizen_v3.features.map((z: any) => ({
+ziekenhuizen.features = ziekenhuizen.features.map((z: any) => ({
   ...z,
   properties: {
     ...z.properties,
@@ -58,7 +58,7 @@ export interface IAppStateModel {
     wko_gwi: FeatureCollection;
     wko_gwio: FeatureCollection;
     wko_gwoLayer: L.GeoJSON;
-    wko_gbes: FeatureCollection;
+    wko_gbes: FeatureCollection<Point>;
     wko_obes: FeatureCollection;
     wko_installatiesLayer: L.GeoJSON;
     wko_diepte: FeatureCollection;
@@ -76,7 +76,7 @@ export interface IAppStateModel {
     selectedWaterItem: Feature;
     verzorgingshuizen: FeatureCollection<Point>;
     ziekenhuizen_rk: FeatureCollection<Point>;
-    ziekenhuizen_v3: FeatureCollection<Point>;
+    ziekenhuizen: FeatureCollection<Point>;
     /** Layers that are loaded */
     activeLayers: Set<string>;
     [key: string]: L.GeoJSON | any;
@@ -215,7 +215,7 @@ export const appStateMgmt = {
       wateren_potentie_gt1haLayer: createLeafletLayer('wateren_potentie_gt1ha', 'AVGwocGJ_1'),
       verzorgingshuizen,
       ziekenhuizen_rk,
-      ziekenhuizen_v3,
+      ziekenhuizen,
       isSearching: false,
       searchQuery: '',
       activeLayers: new Set(),

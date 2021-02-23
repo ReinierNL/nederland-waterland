@@ -6,6 +6,8 @@ import centroid from '@turf/centroid';
 import verzorgingstehuis from '../assets/verzorgingstehuis.png';
 import sewage from '../assets/sewage_v2a.png';
 import ziekenhuis from '../assets/ziekenhuis_32.png';
+import ziekenhuis_green from '../assets/ziekenhuis_32.green.png';
+import ziekenhuis_yellow from '../assets/ziekenhuis_32.yellow.png';
 
 export const formatNumber = (x: number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
@@ -116,6 +118,22 @@ export const verzorgingstehuisIcon = L.icon({
 export const ziekenhuisIcon = L.icon({
   className: 'leaflet-data-marker',
   iconUrl: ziekenhuis,
+  iconAnchor: [16, 16],
+  iconSize: [32, 32],
+  popupAnchor: [0, -30],
+});
+
+export const ziekenhuisIconGreen = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: ziekenhuis_green,
+  iconAnchor: [16, 16],
+  iconSize: [32, 32],
+  popupAnchor: [0, -30],
+});
+
+export const ziekenhuisIconYellow = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: ziekenhuis_yellow,
   iconAnchor: [16, 16],
   iconSize: [32, 32],
   popupAnchor: [0, -30],
