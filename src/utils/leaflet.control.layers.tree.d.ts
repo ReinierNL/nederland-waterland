@@ -2,7 +2,7 @@ declare module 'leaflet.control.layers.tree' {
   module 'leaflet' {
     interface ILayerTreeChildren {
       label: string;
-      layer: L.Layer;
+      layer?: L.Layer;
       selectAllCheckbox?: boolean;
       children?: ILayerTreeChildren[];
     }

@@ -4,22 +4,15 @@ import 'leaflet.control.layers.tree/L.Control.Layers.Tree.css';
 import 'leaflet.control.layers.tree';
 import 'leaflet/dist/leaflet.css';
 // import 'leaflet-hash';
-import {
-  verzorgingstehuisIcon,
-  sewageIcon,
-  ziekenhuisIcon,
-  ziekenhuisIconGreen,
-  ziekenhuisIconYellow,
-} from '../utils';
-import { IZiekenhuis } from '../models/ziekenhuis';
+import { verzorgingstehuisIcon, sewageIcon, ziekenhuisIcon, ziekenhuisIconGreen, ziekenhuisIconYellow } from '../utils';
 import { MeiosisComponent } from '../services/meiosis';
 import { InfoPanel } from './info-panel';
 import { Feature, Point } from 'geojson';
 import { Legend } from './legend';
-import logoDeltares from '../assets/Deltares.png'
-import logoSyntraal from '../assets/Syntraal.png'
-import logoTNO from '../assets/TNO.png'
-import white_10x10 from '../assets/White_10x10.png'
+import logoDeltares from '../assets/Deltares.png';
+import logoSyntraal from '../assets/Syntraal.png';
+import logoTNO from '../assets/TNO.png';
+import white_10x10 from '../assets/White_10x10.png';
 
 export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
   name: string;
@@ -55,9 +48,9 @@ export const HomePage: MeiosisComponent = () => {
     view: ({ attrs: { state, actions } }) => {
       console.log(state);
       const {
-        selectedItem,
+        // selectedItem,
         selectedHospital,
-        selectedWaterItem,
+        // selectedWaterItem,
         wateren_potentie_gt1haLayer,
         ziekenhuizen,
         verzorgingshuizen,
@@ -84,7 +77,7 @@ export const HomePage: MeiosisComponent = () => {
 
       const { updateActiveLayers } = actions;
 
-      const waterProps = selectedWaterItem && selectedWaterItem.properties;
+      // const waterProps = selectedWaterItem && selectedWaterItem.properties;
       // console.table(waterProps);
       return [
         m(
@@ -121,7 +114,10 @@ export const HomePage: MeiosisComponent = () => {
               // Hash in URL
               // new (L as any).Hash(map);
 
-              const pointToCircleMarkerLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
+              const pointToCircleMarkerLayer = (
+                _feature: Feature<Point, any>,
+                latlng: L.LatLng
+              ): L.CircleMarker<any> => {
                 return new L.CircleMarker(latlng, {
                   radius: 5,
                   stroke: false,
@@ -155,8 +151,8 @@ export const HomePage: MeiosisComponent = () => {
                 // for the ziekenhuizen_routekaarten layer: return green or yellow icon
                 var rkIcon = ziekenhuisIconGreen;
                 if (feature.properties && feature.properties['Concept ingeleverd']) {
-                  rkIcon = ziekenhuisIconYellow
-                };
+                  rkIcon = ziekenhuisIconYellow;
+                }
                 return new L.Marker(latlng, {
                   icon: rkIcon,
                   title: feature.properties.Name,
@@ -182,13 +178,13 @@ export const HomePage: MeiosisComponent = () => {
                     actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
                   });
                 },
-            
+
                 name: 'rwzis',
               } as NamedGeoJSONOptions);
               effluentLayer = L.geoJSON(effluent, {
                 pointToLayer,
                 onEachFeature,
-                style: (f) => {
+                style: () => {
                   return {
                     color: 'blue',
                   };
@@ -225,7 +221,7 @@ export const HomePage: MeiosisComponent = () => {
               wko_diepteLayer = L.geoJSON(wko_diepte, {
                 pointToLayer,
                 onEachFeature,
-                style: (f) => {
+                style: () => {
                   return {
                     color: 'blue',
                     fillColor: 'blue',
@@ -237,7 +233,7 @@ export const HomePage: MeiosisComponent = () => {
               wko_ordeningLayer = L.geoJSON(wko_ordening, {
                 pointToLayer,
                 onEachFeature,
-                style: (f) => {
+                style: () => {
                   return {
                     color: 'purple',
                     fillColor: 'purple',
@@ -249,7 +245,7 @@ export const HomePage: MeiosisComponent = () => {
               wko_verbodLayer = L.geoJSON(wko_verbod, {
                 pointToLayer,
                 onEachFeature,
-                style: (f) => {
+                style: () => {
                   return {
                     color: 'yellow',
                     fillColor: 'yellow',
@@ -299,24 +295,27 @@ export const HomePage: MeiosisComponent = () => {
                       { label: 'Ziekenhuizen routekaarten', layer: ziekenhuizen_rkLayer },
                     ],
                   },
-                  { label: 'Oppervlaktewater (TEO)', 
-                    children: [
-                      { label: 'Wateren potentie *', layer: wateren_potentie_gt1haLayer },
-                    ]
+                  {
+                    label: 'Oppervlaktewater (TEO)',
+                    children: [{ label: 'Wateren potentie *', layer: wateren_potentie_gt1haLayer }],
                   },
                   {
                     label: 'Afvalwater (TEA)',
                     children: [
                       { label: 'rioolwaterzuiveringen', layer: rwzisLayer },
-                      { label: '<span style="color:blue"><b>&nbsp;&#x23AF;&nbsp;</b>effluentleidingen</span>', layer: effluentLayer },
-                      { label: '<span style="color:#8080FF"><b>&nbsp;&#x23AF;&nbsp;</b>rioolleidingen</span> *', layer: rioolleidingenLayer },
+                      {
+                        label: '<span style="color:blue"><b>&nbsp;&#x23AF;&nbsp;</b>effluentleidingen</span>',
+                        layer: effluentLayer,
+                      },
+                      {
+                        label: '<span style="color:#8080FF"><b>&nbsp;&#x23AF;&nbsp;</b>rioolleidingen</span> *',
+                        layer: rioolleidingenLayer,
+                      },
                     ],
                   },
                   {
                     label: 'Divers',
-                    children: [
-                      { label: 'aardgasvrije wijken en buurten', layer: gl_wk_buLayer },
-                    ],
+                    children: [{ label: 'aardgasvrije wijken en buurten', layer: gl_wk_buLayer }],
                   },
                   {
                     label: 'WKO: installaties',

@@ -120,7 +120,7 @@ const createLeafletLayer = (name: string, legendPropName: string, initialData?: 
   } as NamedGeoJSONOptions);
 };
 
-const pointToGrayCircleMarkerLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
+const pointToGrayCircleMarkerLayer = (_feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
   return new L.CircleMarker(latlng, {
     radius: 10,
     stroke: false,
@@ -129,7 +129,7 @@ const pointToGrayCircleMarkerLayer = (feature: Feature<Point, any>, latlng: L.La
   });
 };
 
-const pointToGreenCircleMarkerLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
+const pointToGreenCircleMarkerLayer = (_feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
   return new L.CircleMarker(latlng, {
     radius: 5,
     stroke: false,
@@ -186,7 +186,7 @@ export const appStateMgmt = {
             actions.selectFeature(feature as Feature<Polygon>);
           });
         },
-        style: (f) => {
+        style: () => {
           return {
             color: 'green',
             fillColor: 'green',
@@ -201,7 +201,7 @@ export const appStateMgmt = {
             actions.selectFeature(feature as Feature<Polygon>);
           });
         },
-        style: (f) => {
+        style: () => {
           return {
             color: 'orange',
             fillColor: 'orange',
@@ -251,7 +251,7 @@ export const appStateMgmt = {
           app: { hospitals },
         } = states();
         if (!hospitals) return;
-        hospitals.features.some((h) => {
+        hospitals.features.some((h: Feature<Point, { id: number; active: boolean }>) => {
           if (h.properties.id === id) {
             h.properties.active = !h.properties.active;
             return true;
