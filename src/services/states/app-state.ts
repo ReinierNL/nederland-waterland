@@ -244,7 +244,7 @@ export const appStateMgmt = {
             .forEach((key) => (acc[key] = cur[key]));
           return acc;
         }, {} as { [key: string]: L.GeoJSON });
-        update({ app: { selectedHospital: () => f, selectedItem: undefined, selectedLayer: undefined, ...result } });
+        update({ app: { selectedHospital: () => f, selectedItem: undefined, ...result } });
       },
       toggleHospitalActivity: (id: number, layer?: L.GeoJSON) => {
         const {
@@ -272,24 +272,24 @@ export const appStateMgmt = {
         }
         return { app: { hospitals } };
       },
-      updateActiveLayers: async (layer: string, add: boolean) => {
+      updateActiveLayers: async (selectedLayer: string, add: boolean) => {
         const { app } = states();
         const { activeLayers, selectedHospital } = app;
         if (add) {
-          activeLayers!.add(layer);
+          activeLayers!.add(selectedLayer);
         } else {
-          activeLayers!.delete(layer);
+          activeLayers!.delete(selectedLayer);
         }
         console.log(activeLayers);
-        if (add) {
-          if (!selectedHospital || (selectedHospital.properties && !selectedHospital.properties.Locnr)) {
-            console.warn('No item active, so cannot load data. Please select a feature first.');
-          } else {
-            const result = await loadGeoJSON(layer, selectedHospital, app);
-            update({ app: { activeLayers, ...result } });
-          }
+        if (add && selectedHospital && selectedHospital.properties && selectedHospital.properties.Locnr) {
+          // if (!selectedHospital || (selectedHospital.properties && !selectedHospital.properties.Locnr)) {
+          //   // console.warn('No item active, so cannot load data. Please select a feature first.');
+          // } else {
+          const result = await loadGeoJSON(selectedLayer, selectedHospital, app);
+          update({ app: { activeLayers, selectedLayer, ...result } });
+          // }
         } else {
-          update({ app: { activeLayers } });
+          update({ app: { activeLayers, selectedLayer } });
         }
       },
       refreshLayer: async (layer?: string) => {

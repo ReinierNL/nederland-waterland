@@ -200,7 +200,15 @@ table.feature-props {
 
 .info-panel {
   font-size: 0.83em;
+  margin-top: 1rem;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 5px;
 }
+.info-panel .title {
+  border-bottom: 2px solid black;
+}
+
 .info-panel,
 .legend {
   left: 70vw;
