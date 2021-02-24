@@ -20,7 +20,7 @@ export const InfoPanel: MeiosisComponent = () => {
       const properties = propStyle && propStyle.properties;
       return m('.info-panel', [
         // m('p', space),   // attempted to add some space between previous content and organisation and this panel
-        selectedLayer && m('h4.title', 'Geselecteerd: ' + layerTitles[selectedLayer] || selectedLayer),
+        selectedLayer && m('h4.title', `Geselecteerd: ${layerTitles[selectedLayer] || selectedLayer}`),
         props &&
           m('table.feature-props', [
             ...Object.keys(props)
