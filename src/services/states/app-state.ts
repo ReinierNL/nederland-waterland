@@ -162,8 +162,8 @@ export const appStateMgmt = {
       wko_gwoLayer: L.geoJSON(undefined, {
         pointToLayer: pointToGreenCircleMarkerLayer,
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-          layer.on('click', () => {
-            actions.selectFeature(feature as Feature<Point>);
+          layer.on('click', (e) => {
+            actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
           });
         },
         name: 'wko_gwo',
@@ -173,8 +173,8 @@ export const appStateMgmt = {
       wko_installatiesLayer: L.geoJSON(undefined, {
         pointToLayer: pointToGrayCircleMarkerLayer,
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-          layer.on('click', () => {
-            actions.selectFeature(feature as Feature<Point>);
+          layer.on('click', (e) => {
+            actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
           });
         },
         name: 'wko_installaties',
@@ -182,8 +182,8 @@ export const appStateMgmt = {
       wko_diepte, //  this layer has a style assignment in home-page.ts
       wko_natuurLayer: L.geoJSON(undefined, {
         onEachFeature: (feature: Feature<Polygon>, layer: L.Layer) => {
-          layer.on('click', () => {
-            actions.selectFeature(feature as Feature<Polygon>);
+          layer.on('click', (e) => {
+            actions.selectFeature(feature as Feature<Polygon>, e.target?.options?.name);
           });
         },
         style: () => {
@@ -197,8 +197,8 @@ export const appStateMgmt = {
       wko_ordening, //  this layer has a style assignment in home-page.ts
       wko_specprovbeleidLayer: L.geoJSON(undefined, {
         onEachFeature: (feature: Feature<Polygon>, layer: L.Layer) => {
-          layer.on('click', () => {
-            actions.selectFeature(feature as Feature<Polygon>);
+          layer.on('click', (e) => {
+            actions.selectFeature(feature as Feature<Polygon>, e.target?.options?.name);
           });
         },
         style: () => {

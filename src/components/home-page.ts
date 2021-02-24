@@ -160,8 +160,8 @@ export const HomePage: MeiosisComponent = () => {
               };
 
               const onEachFeature = (feature: Feature<Point, any>, layer: L.Layer) => {
-                layer.on('click', () => {
-                  actions.selectFeature(feature as Feature<Point>);
+                layer.on('click', (e) => {
+                  actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
                 });
               };
 
@@ -171,14 +171,11 @@ export const HomePage: MeiosisComponent = () => {
 
               rwzisLayer = L.geoJSON(rwzis, {
                 pointToLayer: pointToSewageLayer,
-                // onEachFeature,
-
                 onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                   layer.on('click', (e: LeafletEvent) => {
                     actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
                   });
                 },
-
                 name: 'rwzis',
               } as NamedGeoJSONOptions);
               effluentLayer = L.geoJSON(effluent, {
@@ -272,7 +269,7 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 },
                 name: 'ziekenhuizen',
-              } as NamedGeoJSONOptions);
+              } as NamedGeoJSONOptions).addTo(map);
 
               const baseTree = {
                 label: 'Achtergrondkaart',
