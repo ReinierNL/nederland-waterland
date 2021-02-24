@@ -15,7 +15,7 @@ import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
 import wko_gwi from '../../data/WKO_GWI.json';
 import wko_gwio from '../../data/WKO_GWIO.json';
 // import wko_gwo:  loaded dynamically. see wko_gwoLayer
-import wko_gbes from '../../data/WKO_GBES.json'; 
+import wko_gbes from '../../data/WKO_GBES.json';
 import wko_obes from '../../data/WKO_OBES.json';
 // import wko_installaties:  loaded dynamically. see wko_installatiesLayer
 // // wko restriction layers
@@ -25,7 +25,7 @@ import wko_ordening from '../../data/WKO Restrictie Ordening.json';
 // import wko_specprovbeleid: loaded dynamcally. see wko_spec_prov_beleidLayer
 import wko_verbod from '../../data/WKO Verbodsgebieden.json';
 import { createIcon, ziekenhuisIcon } from '../../utils';
-import { FeatureCollection, Feature, Point, GeoJsonObject } from 'geojson';
+import { FeatureCollection, Feature, Point, GeoJsonObject, Polygon } from 'geojson';
 import { actions } from '..';
 import L, { LeafletEvent } from 'leaflet';
 import { NamedGeoJSONOptions } from '../../components';
@@ -40,7 +40,6 @@ ziekenhuizen.features = ziekenhuizen.features.map((z: any) => ({
     active: true,
   },
 }));
-
 
 /** Application state */
 
@@ -84,7 +83,7 @@ export interface IAppStateModel {
 }
 
 export interface IAppStateActions {
-  selectFeature: (f: Feature<Point>, layerName?: string) => void;
+  selectFeature: (f: Feature<Point | Polygon>, layerName?: string) => void;
   selectHospital: (f: Feature<Point>) => Promise<void>;
   selectWaterFeature: (f: Feature) => void;
   toggleHospitalActivity: (id: number, layer?: L.GeoJSON) => void;
@@ -150,7 +149,7 @@ export const appStateMgmt = {
       rwzis,
       effluent,
       rioolleidingenLayer: L.geoJSON(undefined, {
-        onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+        onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', () => {
             actions.selectFeature(feature as Feature<Point>);
           });
@@ -162,7 +161,7 @@ export const appStateMgmt = {
       wko_gwio,
       wko_gwoLayer: L.geoJSON(undefined, {
         pointToLayer: pointToGreenCircleMarkerLayer,
-        onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+        onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', () => {
             actions.selectFeature(feature as Feature<Point>);
           });
@@ -173,16 +172,16 @@ export const appStateMgmt = {
       wko_obes,
       wko_installatiesLayer: L.geoJSON(undefined, {
         pointToLayer: pointToGrayCircleMarkerLayer,
-        onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+        onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', () => {
             actions.selectFeature(feature as Feature<Point>);
           });
         },
         name: 'wko_installaties',
       } as NamedGeoJSONOptions),
-      wko_diepte,   //  this layer has a style assignment in home-page.ts
+      wko_diepte, //  this layer has a style assignment in home-page.ts
       wko_natuurLayer: L.geoJSON(undefined, {
-        onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+        onEachFeature: (feature: Feature<Polygon>, layer: L.Layer) => {
           layer.on('click', () => {
             actions.selectFeature(feature as Feature<Polygon>);
           });
@@ -197,7 +196,7 @@ export const appStateMgmt = {
       } as NamedGeoJSONOptions),
       wko_ordening, //  this layer has a style assignment in home-page.ts
       wko_specprovbeleidLayer: L.geoJSON(undefined, {
-        onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+        onEachFeature: (feature: Feature<Polygon>, layer: L.Layer) => {
           layer.on('click', () => {
             actions.selectFeature(feature as Feature<Polygon>);
           });
@@ -312,7 +311,8 @@ const loadGeoJSON = async (layer: string, selectedHospital: Feature, app: { [key
     const record = await m.request<{ id: number; data: FeatureCollection }>({
       method: 'GET',
       //url: `${process.env.SERVER || 'http://localhost:3366/api/'}${layer}/id/${id}`,
-      url: `${process.env.SERVER || 'http://163.158.64.118:3366/api/'}${layer}/id/${id}`,
+      url: `${process.env.GIS_SERVER || 'http://163.158.64.118:3366/api/'}${layer}/id/${id}`,
+      // url: `${process.env.SERVER || 'http://163.158.64.118:3366/api/'}${layer}/id/${id}`,
     });
     if (record && record.data) {
       geojson.clearLayers();
