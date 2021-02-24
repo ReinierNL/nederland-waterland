@@ -4,7 +4,7 @@ import { MeiosisComponent } from '../services/meiosis';
 
 import layerTitles from '../assets/layerTitles.json';
 
-const space = '&nbsp;'
+// const space = '&nbsp;'
 
 export const InfoPanel: MeiosisComponent = () => {
   return {
@@ -20,15 +20,16 @@ export const InfoPanel: MeiosisComponent = () => {
       const properties = propStyle && propStyle.properties;
       return m('.info-panel', [
         // m('p', space),   // attempted to add some space between previous content and organisation and this panel
-        selectedLayer &&
-          m('h4', 'Geselecteerd: ' + layerTitles[selectedLayer]),
+        selectedLayer && layerTitles[selectedLayer] && m('h4', 'Geselecteerd: ' + layerTitles[selectedLayer]),
         props &&
-          properties &&
           m('table.feature-props', [
             ...Object.keys(props)
-              .filter((key) => properties.hasOwnProperty(key))
+              .filter((key) => !properties || properties.hasOwnProperty(key))
               .map((key) =>
-                m('tr', [m('td.bold.toright', properties[key].title(key)), m('td', properties[key].value(props[key]))])
+                m('tr', [
+                  m('td.bold.toright', !properties ? key : properties[key].title(key)),
+                  m('td', !properties ? props[key] : properties[key].value(props[key])),
+                ])
               ),
           ]),
       ]);

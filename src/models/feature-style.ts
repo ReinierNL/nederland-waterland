@@ -70,8 +70,7 @@ export const propertyStyles = {
 
   rwzi: {
     legend: {
-      items: [
-      ],
+      items: [],
       title: 'rwzi value',
     },
     properties: {
@@ -86,22 +85,30 @@ export const propertyStyles = {
       gemeentena: {
         title: () => 'Gemeente',
         value: (s: string) => capitalize(s),
-      }
-    }
+      },
+    },
+  },
+
+  rioolleidingen: {
+    properties: {
+      ws: {
+        title: () => 'Waterschap',
+        value: (s: string) => capitalize(s),
+      },
+    },
   },
 
   wko_gwi: {
     legend: {
-      items: [
-      ],
+      items: [],
       title: 'wko value',
     },
     properties: {
       s: {
         title: () => 'status',
         value: (s: string) => capitalize(s),
-      }
-    }
+      },
+    },
   },
 } as Record<
   string,

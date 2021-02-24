@@ -150,8 +150,8 @@ export const appStateMgmt = {
       effluent,
       rioolleidingenLayer: L.geoJSON(undefined, {
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-          layer.on('click', () => {
-            actions.selectFeature(feature as Feature<Point>);
+          layer.on('click', (e) => {
+            actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
           });
         },
         name: 'rioolleidingen',
