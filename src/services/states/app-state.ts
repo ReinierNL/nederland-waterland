@@ -120,13 +120,15 @@ const createLeafletLayer = (name: string, legendPropName: string, initialData?: 
   } as NamedGeoJSONOptions);
 };
 
-const pointToGrayCircleMarkerLayer = (_feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
-  return new L.CircleMarker(latlng, {
+const pointToGrayCircleMarkerLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
+  const marker = new L.CircleMarker(latlng, {
     radius: 10,
     stroke: false,
     fillColor: 'gray',
     fillOpacity: 0.6,
   });
+  feature.properties && feature.properties.PC6 && marker.bindTooltip(feature.properties.PC6);
+  return marker;
 };
 
 const pointToGreenCircleMarkerLayer = (_feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
