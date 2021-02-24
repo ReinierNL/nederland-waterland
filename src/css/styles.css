@@ -226,3 +226,18 @@ table.feature-props {
 .toright {
   text-align: right;
 }
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  height: 3vh;
+  min-height: 30px;
+  width: 100%;
+  background-color: white;
+}
+
+.footer .logo {
+  display: inline-block;
+  width: 33%;
+  text-align: center;
+}
