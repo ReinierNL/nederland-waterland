@@ -249,3 +249,13 @@ table.feature-props {
   width: 33%;
   text-align: center;
 }
+
+.disclaimer {
+  position: absolute;
+  bottom: 3vh;
+  height: 2vh;
+  min-height: 20px;
+  width: 100%;
+  background-color: white;
+  font-size: 0.65em
+}
