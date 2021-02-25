@@ -24,7 +24,7 @@ export const toFilterFactory = (layerName: string, legendPropName: string): ((f?
   return (f?: Feature) => {
     const value = f && f.properties ? f.properties[legendPropName] : undefined;
     let min = Number.MIN_VALUE;
-    for (let i = 0; i < items.length - 1; i++) {
+    for (let i = 0; i < items.length; i++) {
       if (min < value && value < items[i][1]) return items[i][0];
       min = items[i][1];
     }
@@ -36,11 +36,10 @@ export const propertyStyles = {
   wateren_potentie_gt1ha: {
     legend: {
       items: [
-        // [true, 0, '#808080', 'Ontbrekende waarde'],
-        [true, 5000, '#ffc0c0', 'Tussen 0 en 5.000 GJ'],
-        [true, 100000, '#ff9090', 'Tussen 5.000 en 10.000 GJ'],
-        [true, 200000, '#ff4040', 'Tussen 10.000 en 20.000 GJ'],
-        [true, Number.MAX_VALUE, '#ff0000', 'Boven 20.000 GJ'],
+        [true, 50000, '#ffc0c0', 'Tussen 0 en 50.000 GJ (0 - 1.250 hh)'],
+        [true, 100000, '#ff9090', 'Tussen 50.000 en 100.000 GJ (1.250 - 2.500 hh)'],
+        [true, 200000, '#ff4040', 'Tussen 100.000 en 200.000 GJ (2.500 - 5.000 hh)'],
+        [true, Number.MAX_VALUE, '#ff0000', 'Boven 200.000 GJ (> 5.000 hh)'],
       ],
       title: 'Oppervlaktewater potentie (TEO)',
     },

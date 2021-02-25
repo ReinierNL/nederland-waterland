@@ -349,15 +349,22 @@ export const HomePage: MeiosisComponent = () => {
               style: 'position: absolute; top: 0; left: 70vw; padding: 5px;',
             },
             [
-              m('h3', 'Zorgvastgoed en aquathermie'),
+              m('h3', 'TNO – Aquathermie & Zorgvastgoed Dashboard'),
+              selectedHospital && m('p', 'Geselecteerd ziekenhuis:'),
               selectedHospital && selectedHospital.properties && m('h4', selectedHospital.properties.Name),
-              selectedHospital && selectedHospital.properties && m('h4', selectedHospital.properties.Organisatie),
+              selectedHospital && m('p', 'Organisatie:'),
+              selectedHospital && selectedHospital.properties && m('b', selectedHospital.properties.Organisatie),
               m(InfoPanel, { state, actions }),
               // m('ul', waterProps && Object.keys(waterProps).map((key) => m('li', `${key}: ${waterProps[key]}`))),
             ]
           ),
           m(Legend, { state, actions }),
         ]),
+        m(
+          '.disclaimer',
+          'Data over WKO bronnen is afkomstig van de WKO-bodemenergietool (wkotool.nl). ' +
+            'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
+        ),
         m('.footer', [
           m('.logo', m('img', { src: logoTNO, alt: 'logo TNO', width: '82px' })),
           m('.logo', m('img', { src: logoDeltares, alt: 'logo Deltares', width: '114px' })),
