@@ -85,7 +85,7 @@ export const HomePage: MeiosisComponent = () => {
             { style: 'position: fixed;' },
             m('#map', {
               style:
-                'height: 97vh; width: 70vw; margin: 0; padding: 0; overflow: hidden; box-shadow: (0px 0px 20px rgba(0,0,0,.3))',
+                'height: 96vh; width: 70vw; margin: 0; padding: 0; overflow: hidden; box-shadow: (0px 0px 20px rgba(0,0,0,.3))',
               oncreate: () => {
                 map = L.map('map', {}).setView([52.14, 5.109], 8);
                 map.on('overlayadd', (e: any) => updateActiveLayers(e.layer.options.name, true));

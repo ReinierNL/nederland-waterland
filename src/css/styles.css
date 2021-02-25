@@ -214,6 +214,10 @@ table.feature-props {
   left: 70vw;
   margin-left: 5px;
 }
+.legend {
+  position: absolute;
+  bottom: 5vh;
+}
 .legend-rectangle {
   display: inline-block;
   width: 30px;
