@@ -10,7 +10,7 @@ export const toColorFactory = (layerName: string, legendPropName: string): ((f?:
     if (!value) return items[0][2];
     let min = Number.MIN_VALUE;
     for (let i = 0; i < items.length - 1; i++) {
-      if (min < value && value < items[i][1]) return items[i][2];
+      if (min < value && value <= items[i][1]) return items[i][2];
       min = items[i][1];
     }
     return items[items.length - 1][2];
@@ -23,9 +23,10 @@ export const toFilterFactory = (layerName: string, legendPropName: string): ((f?
   const items = propertyStyle.legend.items;
   return (f?: Feature) => {
     const value = f && f.properties ? f.properties[legendPropName] : undefined;
+    if (!value) return items[0][0];
     let min = Number.MIN_VALUE;
     for (let i = 0; i < items.length; i++) {
-      if (min < value && value < items[i][1]) return items[i][0];
+      if (min < value && value <= items[i][1]) return items[i][0];
       min = items[i][1];
     }
     return items[items.length - 1][0];
