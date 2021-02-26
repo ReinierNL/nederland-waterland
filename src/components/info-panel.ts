@@ -4,8 +4,6 @@ import { MeiosisComponent } from '../services/meiosis';
 
 import layerTitles from '../assets/layerTitles.json';
 
-// const space = '&nbsp;'
-
 export const InfoPanel: MeiosisComponent = () => {
   return {
     view: ({

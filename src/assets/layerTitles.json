@@ -1,5 +1,19 @@
 {
+  "effluent": "Effluentleidingen",
+  "gl_wk_bu": "Aardgasvrije wijken en buurten",
+  "rioolleidingen": "Rioolleidingen",
+  "rwzis": "Rioolwaterzuiveringen",
   "wateren_potentie_gt1ha": "Oppervlaktewater potentie (TEO)",
+  "wko_diepte": "WKO restrictie: Diepte",
+  "wko_gbes": "WKO gesloten bodemenergiesystemen",
+  "wko_gwi": "WKO grondwaterinfiltratie",
+  "wko_gwio": "WKO grondwaterinfiltratie en -onttrekking",
   "wko_gwo": "WKO grondwateronttrekking",
-  "rioolleidingen": "Rioolleidingen"
+  "wko_installaties": "WKO installaties",
+  "wko_natuur": "WKO restrictie: Natuur",
+  "wko_obes": "WKO open bodemenergiesystemen",
+  "wko_ordening": "WKO restrictie: Ordening",
+  "wko_specprovbeleid": "WKO restrictie: SpecProvBeleid",
+  "wko_verbod": "WKO restrictie: Verbod",
+  "ziekenhuizen_rk": "Ziekenhuizen: Routekaarten"
 }
