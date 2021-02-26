@@ -83,7 +83,7 @@ export interface IAppStateModel {
 }
 
 export interface IAppStateActions {
-  selectFeature: (f: Feature<Point | Polygon>, layerName?: string) => void;
+  selectFeature: (f: Feature<Point | Polygon>, layerName?: string, layer?: L.Layer) => void;
   selectHospital: (f: Feature<Point>) => Promise<void>;
   selectWaterFeature: (f: Feature) => void;
   toggleHospitalActivity: (id: number, layer?: L.GeoJSON) => void;
@@ -104,7 +104,7 @@ const createLeafletLayer = (name: string, legendPropName: string, initialData?: 
   return L.geoJSON(initialData, {
     onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
       layer.on('click', (e: LeafletEvent) => {
-        actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
+        actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);
       });
     },
     filter,
@@ -140,6 +140,17 @@ const pointToGreenCircleMarkerLayer = (_feature: Feature<Point, any>, latlng: L.
   });
 };
 
+let highlightedLayer: L.Path;
+let highlightedColor = '';
+
+interface IPathOptions extends L.PathOptions {
+  style?: () => {
+    color?: string;
+    fillColor?: string;
+    opactiy?: number;
+  };
+}
+
 export const appStateMgmt = {
   initial: {
     app: {
@@ -153,7 +164,7 @@ export const appStateMgmt = {
       rioolleidingenLayer: L.geoJSON(undefined, {
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', (e) => {
-            actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
+            actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);
           });
         },
         name: 'rioolleidingen',
@@ -165,7 +176,7 @@ export const appStateMgmt = {
         pointToLayer: pointToGreenCircleMarkerLayer,
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', (e) => {
-            actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
+            actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);
           });
         },
         name: 'wko_gwo',
@@ -176,7 +187,7 @@ export const appStateMgmt = {
         pointToLayer: pointToGrayCircleMarkerLayer,
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', (e) => {
-            actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
+            actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);
           });
         },
         name: 'wko_installaties',
@@ -185,7 +196,7 @@ export const appStateMgmt = {
       wko_natuurLayer: L.geoJSON(undefined, {
         onEachFeature: (feature: Feature<Polygon>, layer: L.Layer) => {
           layer.on('click', (e) => {
-            actions.selectFeature(feature as Feature<Polygon>, e.target?.options?.name);
+            actions.selectFeature(feature as Feature<Polygon>, e.target?.options?.name, layer);
           });
         },
         style: () => {
@@ -200,7 +211,7 @@ export const appStateMgmt = {
       wko_specprovbeleidLayer: L.geoJSON(undefined, {
         onEachFeature: (feature: Feature<Polygon>, layer: L.Layer) => {
           layer.on('click', (e) => {
-            actions.selectFeature(feature as Feature<Polygon>, e.target?.options?.name);
+            actions.selectFeature(feature as Feature<Polygon>, e.target?.options?.name, layer);
           });
         },
         style: () => {
@@ -229,7 +240,18 @@ export const appStateMgmt = {
         update({ app: { selectedWaterItem: f } });
         m.redraw();
       },
-      selectFeature: async (f, selectedLayer?: string) => {
+      selectFeature: async (f, selectedLayer?: string, layer?: L.Layer) => {
+        if (highlightedLayer) highlightedLayer.setStyle({ color: highlightedColor });
+        if (layer && (layer as L.Path).options) {
+          const path = layer as L.Path;
+          highlightedLayer = path;
+          const options = path.options as IPathOptions;
+          const style = options && options.style && options.style();
+          if (style && style.color) highlightedColor = style.color;
+          path.setStyle({
+            color: 'blue',
+          });
+        }
         update({ app: { selectedItem: () => f, selectedLayer } });
       },
       selectHospital: async (f) => {
