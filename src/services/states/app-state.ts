@@ -147,7 +147,7 @@ interface IPathOptions extends L.PathOptions {
   style?: () => {
     color?: string;
     fillColor?: string;
-    opactiy?: number;
+    opacity?: number;
   };
 }
 
