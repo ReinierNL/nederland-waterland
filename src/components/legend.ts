@@ -16,7 +16,7 @@ export const Legend: MeiosisComponent = () => {
       const legend = propertyStyle && propertyStyle.legend;
       const canUncheckItem = legend && legend.items.reduce((acc, cur) => (acc += cur[0] ? 1 : 0), 0) > 1;
       return (
-        legend &&
+        legend && legend.items && (legend.items.length > 0) &&
         m('.legend', [
           m('h5', { style: 'margin-bottom: 0;' }, `Legenda ${legend.title}`),
           legend.items.map((item) =>
