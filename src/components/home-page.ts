@@ -7,6 +7,7 @@ import 'leaflet/dist/leaflet.css';
 import { verzorgingstehuisIcon, sewageIcon, ziekenhuisIcon, ziekenhuisIconGreen, ziekenhuisIconOrange } from '../utils';
 import { MeiosisComponent } from '../services/meiosis';
 import { InfoPanel } from './info-panel';
+import { HospitalInfoPanel } from './hospital-info-panel';
 import { Feature, Point } from 'geojson';
 import { Legend } from './legend';
 import logoDeltares from '../assets/Deltares.png';
@@ -354,8 +355,18 @@ export const HomePage: MeiosisComponent = () => {
               selectedHospital && selectedHospital.properties && m('h4', selectedHospital.properties.Name),
               selectedHospital && m('p', 'Organisatie:'),
               selectedHospital && selectedHospital.properties && m('b', selectedHospital.properties.Organisatie),
-              m(InfoPanel, { state, actions }),
-              // m('ul', waterProps && Object.keys(waterProps).map((key) => m('li', `${key}: ${waterProps[key]}`))),
+              selectedHospital && m('table.hospital-feature-props', [
+                ...Object.keys(selectedHospital.properties)
+                  .filter((key) => !selectedHospital.properties || (selectedHospital.properties.hasOwnProperty(key)  && key != 'active')  )
+                  .map((key) =>
+                    m('tr', [
+                      m('td.bold.toright', key),
+                      m('td', !selectedHospital.properties ? "" : selectedHospital.properties[key]),
+                    ])
+                  ),
+              ]),
+              // m(HospitalInfoPanel, { state, actions }),    // funny: this leads to not clearing => duplication of the above parts
+              selectedItem && m(InfoPanel, { state, actions }),
             ]
           ),
           m(Legend, { state, actions }),

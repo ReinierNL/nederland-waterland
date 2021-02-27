@@ -198,6 +198,12 @@ table.feature-props {
   margin-left: -5px;
 }
 
+table.hospital-feature-props {
+  font-size: 0.83rem;
+  margin-left: -5px;
+  margin-top: 20px;
+}
+
 .info-panel {
   font-size: 0.83em;
   margin-top: 1rem;
@@ -205,6 +211,15 @@ table.feature-props {
   border-radius: 10px;
   padding: 5px;
 }
+
+.hospital-info-panel {
+  font-size: 0.83em;
+  margin-top: 1rem;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 5px;
+}
+
 .info-panel .title {
   border-bottom: 2px solid black;
 }
