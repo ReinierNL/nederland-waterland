@@ -7,7 +7,7 @@ import verzorgingstehuis from '../assets/verzorgingstehuis.png';
 import sewage from '../assets/sewage_v2a.png';
 import ziekenhuis from '../assets/ziekenhuis_32.png';
 import ziekenhuis_green from '../assets/ziekenhuis_32.green.png';
-import ziekenhuis_yellow from '../assets/ziekenhuis_32.yellow.png';
+import ziekenhuis_orange from '../assets/ziekenhuis_32.orange.png';
 
 export const formatNumber = (x: number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
@@ -131,9 +131,9 @@ export const ziekenhuisIconGreen = L.icon({
   popupAnchor: [0, -30],
 });
 
-export const ziekenhuisIconYellow = L.icon({
+export const ziekenhuisIconOrange = L.icon({
   className: 'leaflet-data-marker',
-  iconUrl: ziekenhuis_yellow,
+  iconUrl: ziekenhuis_orange,
   iconAnchor: [16, 16],
   iconSize: [32, 32],
   popupAnchor: [0, -30],

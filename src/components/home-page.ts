@@ -4,7 +4,7 @@ import 'leaflet.control.layers.tree/L.Control.Layers.Tree.css';
 import 'leaflet.control.layers.tree';
 import 'leaflet/dist/leaflet.css';
 // import 'leaflet-hash';
-import { verzorgingstehuisIcon, sewageIcon, ziekenhuisIcon, ziekenhuisIconGreen, ziekenhuisIconYellow } from '../utils';
+import { verzorgingstehuisIcon, sewageIcon, ziekenhuisIcon, ziekenhuisIconGreen, ziekenhuisIconOrange } from '../utils';
 import { MeiosisComponent } from '../services/meiosis';
 import { InfoPanel } from './info-panel';
 import { Feature, Point } from 'geojson';
@@ -148,10 +148,10 @@ export const HomePage: MeiosisComponent = () => {
                 };
 
                 const pointToZHrkLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  // for the ziekenhuizen_routekaarten layer: return green or yellow icon
+                  // for the ziekenhuizen_routekaarten layer: return green or orange icon
                   var rkIcon = ziekenhuisIconGreen;
                   if (feature.properties && feature.properties['Concept ingeleverd']) {
-                    rkIcon = ziekenhuisIconYellow;
+                    rkIcon = ziekenhuisIconOrange;
                   }
                   return new L.Marker(latlng, {
                     icon: rkIcon,
