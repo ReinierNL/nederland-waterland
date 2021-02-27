@@ -98,10 +98,24 @@ export interface IAppState {
 }
 const size = 5000;
 
+const pointToTitledLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+// intended purpose: let the feature have a title that is shown when mouse is hovered over the feature
+// but.. it doesn't seem to work
+// this works for the hospital layer and the rwzis, but not for the water potential layer
+// which is created by createLeafletLayer. perhaps because it is not a point layer
+  return new L.Marker(latlng, {
+    title: feature.properties.Name ? feature.properties.Name 
+         : feature.properties.Naam ? feature.properties.Naam 
+         : feature.properties.NAAM ? feature.properties.NAAM 
+         : ""
+  });
+};
+
 const createLeafletLayer = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
   const getColor = toColorFactory(name, legendPropName);
   const filter = toFilterFactory(name, legendPropName);
   return L.geoJSON(initialData, {
+    pointToLayer: pointToTitledLayer,
     onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
       layer.on('click', (e: LeafletEvent) => {
         actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);
