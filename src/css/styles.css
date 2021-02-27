@@ -240,6 +240,15 @@ table.hospital-feature-props {
   margin-right: 5px;
   vertical-align: middle;
 }
+.legend-circle {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-left: 3px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
 .legend-item {
   font-size: 0.83em;
 }

@@ -10,6 +10,7 @@ import { InfoPanel } from './info-panel';
 import { HospitalInfoPanel } from './hospital-info-panel';
 import { Feature, Point } from 'geojson';
 import { Legend } from './legend';
+import { Legend_rk } from './legend_rk';
 import logoDeltares from '../assets/Deltares.png';
 import logoSyntraal from '../assets/Syntraal.png';
 import logoTNO from '../assets/TNO.png';
@@ -50,7 +51,7 @@ export const HomePage: MeiosisComponent = () => {
       const {
         selectedItem,
         selectedHospital,
-        // selectedWaterItem,
+        selectedLayer,
         wateren_potentie_gt1haLayer,
         ziekenhuizen,
         verzorgingshuizen,
@@ -284,9 +285,14 @@ export const HomePage: MeiosisComponent = () => {
                   onEachFeature,
                   name: 'verzorgingshuizen',
                 } as NamedGeoJSONOptions);
+
                 ziekenhuizen_rkLayer = L.geoJSON(ziekenhuizen_rk, {
                   pointToLayer: pointToZHrkLayer,
-                  onEachFeature,
+                  onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
+                    layer.on('click', (e) => {
+                      actions.selectFeature(feature as Feature<Point>, 'ziekenhuizen_rk', layer);
+                    });
+                  },
                   name: 'ziekenhuizen_rk',
                 } as NamedGeoJSONOptions);
 
@@ -397,7 +403,8 @@ export const HomePage: MeiosisComponent = () => {
               selectedItem && m(InfoPanel, { state, actions }),
             ]
           ),
-          m(Legend, { state, actions }),
+          (!selectedLayer || selectedLayer != 'ziekenhuizen_rk') && m(Legend, { state, actions }),
+          (selectedLayer && selectedLayer == 'ziekenhuizen_rk') && m(Legend_rk, { state, actions }),
         ]),
         m(
           '.disclaimer',
