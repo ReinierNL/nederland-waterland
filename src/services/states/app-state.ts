@@ -190,18 +190,29 @@ export const appStateMgmt = {
         pointToLayer: pointToGreenCircleMarkerLayer,
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', (e) => {
-            actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);
+            // actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);
+            actions.selectFeature(feature as Feature<Point>, 'wko_gwo', layer);
           });
         },
         name: 'wko_gwo',
       } as NamedGeoJSONOptions),
-      wko_gbes,
+      wko_gbesLayer: L.geoJSON(undefined, {
+        pointToLayer: pointToGreenCircleMarkerLayer,
+        onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
+          layer.on('click', (e) => {
+            // actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);
+            actions.selectFeature(feature as Feature<Point>, 'wko_gbes', layer);
+          });
+        },
+        name: 'wko_gbes',
+      } as NamedGeoJSONOptions),
       wko_obes,
       wko_installatiesLayer: L.geoJSON(undefined, {
         pointToLayer: pointToGrayCircleMarkerLayer,
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', (e) => {
-            actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);
+            // actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);
+            actions.selectFeature(feature as Feature<Point>, 'wko_installaties', layer);
           });
         },
         name: 'wko_installaties',

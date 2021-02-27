@@ -34,7 +34,7 @@ export const HomePage: MeiosisComponent = () => {
   let wko_gwiLayer: L.GeoJSON;
   let wko_gwioLayer: L.GeoJSON;
   // let wko_gwoLayer: L.GeoJSON;  // dynamic
-  let wko_gbesLayer: L.GeoJSON;
+  // let wko_gbesLayer: L.GeoJSON; // dynamic
   let wko_obesLayer: L.GeoJSON;
   //let wko_installatiesLayer: L.GeoJSON; // dynamic
   let wko_diepteLayer: L.GeoJSON;
@@ -48,7 +48,7 @@ export const HomePage: MeiosisComponent = () => {
     view: ({ attrs: { state, actions } }) => {
       console.log(state);
       const {
-        // selectedItem,
+        selectedItem,
         selectedHospital,
         // selectedWaterItem,
         wateren_potentie_gt1haLayer,
@@ -65,7 +65,7 @@ export const HomePage: MeiosisComponent = () => {
         wko_gwi,
         wko_gwio,
         wko_gwoLayer,
-        wko_gbes,
+        wko_gbesLayer,
         wko_obes,
         wko_installatiesLayer,
         wko_diepte,
@@ -170,18 +170,13 @@ export const HomePage: MeiosisComponent = () => {
                 ghzLayer = L.geoJSON(ghz, { pointToLayer, onEachFeature, name: 'ghz' } as NamedGeoJSONOptions);
                 ggzLayer = L.geoJSON(ggz, { pointToLayer, onEachFeature, name: 'ggz' } as NamedGeoJSONOptions);
 
-                rwzisLayer = L.geoJSON(rwzis, {
-                  pointToLayer: pointToSewageLayer,
-                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', (e: LeafletEvent) => {
-                      actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
-                    });
-                  },
-                  name: 'rwzis',
-                } as NamedGeoJSONOptions);
                 effluentLayer = L.geoJSON(effluent, {
                   pointToLayer,
-                  onEachFeature,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', (e) => {
+                      actions.selectFeature(feature as Feature<Point>, 'effluent', layer);
+                    });
+                  },
                   style: () => {
                     return {
                       color: 'blue',
@@ -189,14 +184,51 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'effluent',
                 } as NamedGeoJSONOptions);
-                // rioolleidingenLayer : dyamic layer, declared in app-state (as part of state)
+
                 gl_wk_buLayer = L.geoJSON(gl_wk_bu, {
-                  onEachFeature,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', (e) => {
+                      actions.selectFeature(feature as Feature<Point>, 'gl_wk_bu', layer);
+                    });
+                  },
                   name: 'gl_wk_bu',
                 } as NamedGeoJSONOptions);
+
+                // rioolleidingenLayer : dyamic layer, declared in app-state (as part of state)
+
+                rwzisLayer = L.geoJSON(rwzis, {
+                  pointToLayer: pointToSewageLayer,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', (e: LeafletEvent) => {
+                      actions.selectFeature(feature as Feature<Point>, 'rwzis');
+                    });
+                  },
+                  name: 'rwzis',
+                } as NamedGeoJSONOptions);
+
+                wko_diepteLayer = L.geoJSON(wko_diepte, {
+                  pointToLayer,
+                  onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
+                    layer.on('click', (e: LeafletEvent) => {
+                      actions.selectFeature(feature as Feature<Point>, 'wko_diepte', layer);
+                    });
+                  },
+                  style: () => {
+                    return {
+                      color: 'cornflowerblue',
+                      fillColor: 'blue',
+                    };
+                  },
+                  name: 'wko_diepte',
+                } as NamedGeoJSONOptions);
+                
                 wko_gwiLayer = L.geoJSON(wko_gwi, {
                   pointToLayer: pointToCircleMarkerLayer,
-                  onEachFeature,
+                  onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
+                    layer.on('click', (e) => {
+                      actions.selectFeature(feature as Feature<Point>, 'wko_gwi', layer);
+                    });
+                  },
                   name: 'wko_gwi',
                 } as NamedGeoJSONOptions);
                 wko_gwioLayer = L.geoJSON(wko_gwio, {
@@ -205,32 +237,22 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'wko_gwio',
                 } as NamedGeoJSONOptions);
                 // wko_gwoLayer : dyamic layer, declared in app-state (as part of state)
-                wko_gbesLayer = L.geoJSON(wko_gbes, {
-                  pointToLayer: pointToCircleMarkerLayer,
-                  onEachFeature,
-                  name: 'wko_gbes',
-                } as NamedGeoJSONOptions);
+                // wko_gbesLayer : dyamic layer, declared in app-state (as part of state)
+                // wko_installatiesLayer : dyamic layer, declared in app-state (as part of state)
                 wko_obesLayer = L.geoJSON(wko_obes, {
                   pointToLayer: pointToCircleMarkerLayer,
                   onEachFeature,
                   name: 'wko_obes',
                 } as NamedGeoJSONOptions);
-                // wko_installatiesLayer : dyamic layer, declared in app-state (as part of state)
-                wko_diepteLayer = L.geoJSON(wko_diepte, {
-                  pointToLayer,
-                  onEachFeature,
-                  style: () => {
-                    return {
-                      color: 'blue',
-                      fillColor: 'blue',
-                    };
-                  },
-                  name: 'wko_diepte',
-                } as NamedGeoJSONOptions);
+
                 // wko_natuurLayer : dyamic layer, declared in app-state (as part of state)
                 wko_ordeningLayer = L.geoJSON(wko_ordening, {
                   pointToLayer,
-                  onEachFeature,
+                  onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
+                    layer.on('click', (e) => {
+                      actions.selectFeature(feature as Feature<Point>, 'wko_ordening', layer);
+                    });
+                  },
                   style: () => {
                     return {
                       color: 'purple',
@@ -239,10 +261,15 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'wko_ordening',
                 } as NamedGeoJSONOptions);
+
                 // wko_specprovbeleidLayer : dyamic layer, declared in app-state (as part of state)
                 wko_verbodLayer = L.geoJSON(wko_verbod, {
                   pointToLayer,
-                  onEachFeature,
+                  onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
+                    layer.on('click', (e) => {
+                      actions.selectFeature(feature as Feature<Point>, 'wko_verbod', layer);
+                    });
+                  },
                   style: () => {
                     return {
                       color: 'yellow',
@@ -251,6 +278,7 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'wko_verbod',
                 } as NamedGeoJSONOptions);
+
                 verzorgingshuizenLayer = L.geoJSON(verzorgingshuizen, {
                   pointToLayer,
                   onEachFeature,
@@ -286,10 +314,10 @@ export const HomePage: MeiosisComponent = () => {
                       label: 'Instellingen',
                       children: [
                         { label: 'Ziekenhuizen', layer: ziekenhuizenLayer },
-                        { label: 'vvt', layer: vvtLayer },
-                        { label: 'ggz', layer: ggzLayer },
-                        { label: 'ghz', layer: ghzLayer },
-                        { label: 'verzorgingshuizen', layer: verzorgingshuizenLayer },
+                        { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer },
+                        { label: 'Geesteljke gezondheidszorg', layer: ggzLayer },
+                        { label: 'Gehandicaptenzorg', layer: ghzLayer },
+                        { label: 'Verzorgingshuizen', layer: verzorgingshuizenLayer },
                         { label: 'Ziekenhuizen routekaarten', layer: ziekenhuizen_rkLayer },
                       ],
                     },
@@ -322,7 +350,7 @@ export const HomePage: MeiosisComponent = () => {
                         { label: 'WKO grondwaterinfiltratie', layer: wko_gwiLayer },
                         { label: 'WKO grondwaterinfiltratie en -onttrekking', layer: wko_gwioLayer },
                         { label: 'WKO grondwateronttrekking *', layer: wko_gwoLayer },
-                        { label: 'WKO gesloten bodemenergiesysteem', layer: wko_gbesLayer },
+                        { label: 'WKO gesloten bodemenergiesysteem *', layer: wko_gbesLayer },
                         { label: 'WKO open bodemenergiesystemen', layer: wko_obesLayer },
                         { label: 'WKO Installaties *', layer: wko_installatiesLayer },
                       ],
@@ -332,9 +360,9 @@ export const HomePage: MeiosisComponent = () => {
                       selectAllCheckbox: true,
                       children: [
                         { label: '&nbsp; &#x1F7E6; &nbsp;WKO Diepte', layer: wko_diepteLayer },
-                        { label: '&nbsp; &#x1F7E9; &nbsp;WKO Natuur', layer: wko_natuurLayer },
+                        { label: '&nbsp; &#x1F7E9; &nbsp;WKO Natuur *', layer: wko_natuurLayer },
                         { label: '&nbsp; &#x1F7EA; &nbsp;WKO Ordening', layer: wko_ordeningLayer },
-                        { label: '&nbsp; &#x1F7E7; &nbsp;WKO SpecProvBeleid', layer: wko_specprovbeleidLayer },
+                        { label: '&nbsp; &#x1F7E7; &nbsp;WKO SpecProvBeleid *', layer: wko_specprovbeleidLayer },
                         { label: '&nbsp; &#x1F7E8; &nbsp;WKO Verbodsgebieden', layer: wko_verbodLayer },
                       ],
                     },

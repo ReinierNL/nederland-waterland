@@ -34,6 +34,155 @@ export const toFilterFactory = (layerName: string, legendPropName: string): ((f?
 };
 
 export const propertyStyles = {
+  _template: {
+    legend: {
+      items: [],
+      title: 'value',
+    },
+    properties: {
+      "ID": {
+        title: () => 'Identifier',
+        value: (n: number) => `${n}`,
+      },
+    },
+  },
+
+  effluent: {
+    properties: {
+      FID_1: {
+        title: () => 'ID',
+        value: (s: string) => "     ",
+      },
+      ws: {
+        title: () => 'Waterschap',
+        value: (s: string) => capitalize(s),
+      },
+      LeidingTyp: {
+        title: () => 'Leiding type',
+        value: (s: string) => "",
+      },
+      Jaar: {
+        title: () => 'jaar',
+        value: (s: string) => "",
+      },
+      Diameter: {
+        title: () => 'diameter',
+        value: (s: string) => "",
+      },
+      Materiaal: {
+        title: () => 'materiaal',
+        value: (s: string) => "",
+      },
+      WP_GJ_z: {
+        title: () => 'warmtepotentieel zomer (GJ)',
+        value: (s: string) => "",
+      },
+      WP_GJ_w: {
+        title: () => 'warmtepotentieel winter (GJ)',
+        value: (s: string) => "",
+      },
+    },
+  },
+
+  gl_wk_bu: {
+    legend: {
+      items: [],
+      title: 'wko value',
+    },
+    properties: {
+      "WK_CODE": {
+        title: () => 'Wijkcode',
+        value: (s: string) => s,
+      },
+      "Wijk\/Buurtnaam -renamed": {
+        title: () => 'Wijk/buurtnaam',
+        value: (s: string) => s,
+      },
+      "GM_NAAM": {
+        title: () => 'Gemeentenaam',
+        value: (s: string) => s,
+      },
+      "Ronde subsidie": {
+        title: () => 'Ronde subsidie',
+        value: (s: string) => s,
+      },
+    },
+  },
+
+  rioolleidingen: {
+    properties: {
+      FID_1: {
+        title: () => 'ID',
+        value: (s: string) => "     ",
+      },
+      ws: {
+        title: () => 'Waterschap',
+        value: (s: string) => capitalize(s),
+      },
+      leidingtyp: {
+        title: () => 'Leiding type',
+        value: (s: string) => "",
+      },
+      jaar: {
+        title: () => 'jaar',
+        value: (s: string) => "",
+      },
+      diameter: {
+        title: () => 'diameter',
+        value: (s: string) => "",
+      },
+      materiaal: {
+        title: () => 'materiaal',
+        value: (s: string) => "",
+      },
+      wp_gj_z: {
+        title: () => 'warmtepotentieel zomer (GJ)',
+        value: (s: string) => "",
+      },
+      wp_gj_w: {
+        title: () => 'warmtepotentieel winter (GJ)',
+        value: (s: string) => "",
+      },
+    },
+  },
+
+  rwzis: {
+    legend: {
+      items: [],
+      title: 'rwzi value',
+    },
+    properties: {
+      Name: {
+        title: () => 'Naam',
+        value: (s: string) => capitalize(s),
+      },
+      ws: {
+        title: () => 'Waterschap',
+        value: (s: string) => capitalize(s),
+      },
+      gemeentena: {
+        title: () => 'Gemeente',
+        value: (s: string) => capitalize(s),
+      },
+      gj_exwko: {
+        title: () => 'Technische potentie directe levering (GJ/jaar)',
+        value: (s: string) => "",
+      },
+      gj_metwko: {
+        title: () => 'Technische potentie met WKO (GJ/jaar)',
+        value: (s: string) => "",
+      },
+      temp_z: {
+        value: (s: string) => "",
+        title: () => 'Temperatuur zomer (°C)',
+      },
+      temp_w: {
+        title: () => 'Temperatuur winter (°C)',
+        value: (s: string) => "",
+      },
+    },
+  },
+
   wateren_potentie_gt1ha: {
     legend: {
       items: [
@@ -42,7 +191,7 @@ export const propertyStyles = {
         [true, 200000, '#ff4040', 'Tussen 100.000 en 200.000 GJ (2.500 - 5.000 hh)'],
         [true, Number.MAX_VALUE, '#ff0000', 'Boven 200.000 GJ (> 5.000 hh)'],
       ],
-      title: 'Oppervlaktewater potentie (TEO)',
+      title: 'Aquathermie potentieel (TEO)',
     },
     properties: {
       FUNCTIE: {
@@ -63,39 +212,116 @@ export const propertyStyles = {
       },
       AVGwocGJ_1: {
         title: () => 'Potentie',
-        value: (n: number) => `${Math.round(n / 1000) * 1000} GJ`,
+        value: (n: number) => `${Math.round(n / 1000) * 1000} GJ per jaar`,
       },
     },
   },
 
-  rwzi: {
+  wko_template: {
     legend: {
       items: [],
-      title: 'rwzi value',
+      title: 'value',
     },
     properties: {
-      Name: {
-        title: () => 'naam',
-        value: (s: string) => capitalize(s),
+      "Bronhouder": {
+        title: () => 'Bronhouder',
+        value: (s: string) => s,
       },
-      ws: {
-        title: () => 'Waterschap',
-        value: (s: string) => capitalize(s),
-      },
-      gemeentena: {
-        title: () => 'Gemeente',
-        value: (s: string) => capitalize(s),
+      "Max_Diepte": {
+        title: () => 'Maximale diepte (m)',
+        value: (n: number) => `${n}`,
       },
     },
   },
 
-  rioolleidingen: {
+  wko_diepte: {
+    legend: {
+      items: [],
+      title: 'value',
+    },
     properties: {
-      ws: {
-        title: () => 'Waterschap',
-        value: (s: string) => capitalize(s),
+      "fid": {
+        title: () => 'ID',
+        value: (n: number) => `${n}`,
+      },
+      "Bronhouder": {
+        title: () => 'Bronhouder',
+        value: (s: string) => s,
+      },
+      "Max_Diepte": {
+        title: () => 'Maximale diepte (m)',
+        value: (n: number) => `${n}`,
       },
     },
+  },
+
+  wko_natuur: {
+    legend: {
+      items: [],
+      title: 'value',
+    },
+    properties: {
+      "id": {
+        title: () => 'ID',
+        value: (s: string) => s.split('.')[1],
+      },
+    },
+  },
+
+  wko_ordening: {
+    legend: {
+      items: [],
+      title: 'value',
+    },
+    properties: {
+      "Bronhouder": {
+        title: () => 'Bronhouder',
+        value: (s: string) => s,
+      },
+      "Max_Diepte": {
+        title: () => 'Maximale diepte (m)',
+        value: (n: number) => `${n}`,
+      },
+    },
+  },
+
+  wko_specprovbeleid: {
+    legend: {
+      items: [],
+      title: 'value',
+    },
+    properties: {
+      "Bronhouder": {
+        title: () => 'Bronhouder',
+        value: (s: string) => s,
+      },
+      "Max_Diepte": {
+        title: () => 'Maximale diepte (m)',
+        value: (n: number) => `${n}`,
+      },
+    },
+  },
+
+  wko_verbod: {
+    legend: {
+      items: [],
+      title: 'value',
+    },
+    properties: {
+      "Bronhouder": {
+        title: () => 'Bronhouder',
+        value: (s: string) => s,
+      },
+    },
+  },
+
+
+  wko_gbes: {
+    legend: {
+      items: [],
+      title: 'Bodemzijdig vermogen',
+    },
+    properties: {},
   },
 
   wko_gwi: {
@@ -104,12 +330,51 @@ export const propertyStyles = {
       title: 'wko value',
     },
     properties: {
-      s: {
-        title: () => 'status',
-        value: (s: string) => capitalize(s),
+      "Installatie ID": {
+        title: () => 'Installatie ID',
+        value: (n: number) => `${n}`,
+      },
+      "Status installatie": {
+        title: () => 'Status installatie',
+        value: (s: string) => s,
       },
     },
   },
+
+  wko_installaties: {
+    legend: {
+      items: [],
+      title: "WKO installatie",
+    },
+    properties: {
+      "Installatie ID": {
+        title: () => 'Installatie ID',
+        value: (n: number) => `${n}`,
+      },
+      energierendement: {
+         title: () => 'energierendement',
+         value: (n: number) => `${n}`,
+      },
+      warmtevraag: {
+        title: () => 'warmtevraag',
+        value: (n: number) => `${n}`,
+      },
+      koudevraag: {
+        title: () => 'koudevraag',
+        value: (n: number) => `${n}`,
+      },
+      pompcapaciteit: {
+        title: () => 'pompcapaciteit',
+        value: (n: number) => `${n}`,
+      },
+      maxhoeveelheidm3onttrekking: {
+        title: () => 'max hoeveelheid onttrekking (m3)',
+        value: (n: number) => `${n}`,
+      },
+    },
+  },
+
+
 } as Record<
   string,
   {
