@@ -15,7 +15,7 @@ import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
 import wko_gwi from '../../data/WKO_GWI.json';
 import wko_gwio from '../../data/WKO_GWIO.json';
 // import wko_gwo:  loaded dynamically. see wko_gwoLayer
-import wko_gbes from '../../data/WKO_GBES.json';
+// import wko_gbes:  loaded dynamically. see wko_gbesLayer
 import wko_obes from '../../data/WKO_OBES.json';
 // import wko_installaties:  loaded dynamically. see wko_installatiesLayer
 // // wko restriction layers
@@ -57,7 +57,7 @@ export interface IAppStateModel {
     wko_gwi: FeatureCollection;
     wko_gwio: FeatureCollection;
     wko_gwoLayer: L.GeoJSON;
-    wko_gbes: FeatureCollection<Point>;
+    wko_gbesLayer: L.GeoJSON;
     wko_obes: FeatureCollection;
     wko_installatiesLayer: L.GeoJSON;
     wko_diepte: FeatureCollection;
