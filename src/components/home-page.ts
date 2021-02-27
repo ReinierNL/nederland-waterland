@@ -116,6 +116,18 @@ export const HomePage: MeiosisComponent = () => {
                 // Hash in URL
                 // new (L as any).Hash(map);
 
+                const pointToPurpleCircleMarkerLayer = (
+                  _feature: Feature<Point, any>,
+                  latlng: L.LatLng
+                ): L.CircleMarker<any> => {
+                  return new L.CircleMarker(latlng, {
+                    radius: 5,
+                    stroke: false,
+                    fillColor: 'purple',
+                    fillOpacity: 0.8,
+                  });
+                };
+
                 const pointToCircleMarkerLayer = (
                   _feature: Feature<Point, any>,
                   latlng: L.LatLng
@@ -232,17 +244,27 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'wko_gwi',
                 } as NamedGeoJSONOptions);
+
                 wko_gwioLayer = L.geoJSON(wko_gwio, {
                   pointToLayer: pointToCircleMarkerLayer,
-                  onEachFeature,
+                  onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
+                    layer.on('click', (e) => {
+                      actions.selectFeature(feature as Feature<Point>, 'wko_gwio', layer);
+                    });
+                  },
                   name: 'wko_gwio',
                 } as NamedGeoJSONOptions);
                 // wko_gwoLayer : dyamic layer, declared in app-state (as part of state)
                 // wko_gbesLayer : dyamic layer, declared in app-state (as part of state)
                 // wko_installatiesLayer : dyamic layer, declared in app-state (as part of state)
+
                 wko_obesLayer = L.geoJSON(wko_obes, {
-                  pointToLayer: pointToCircleMarkerLayer,
-                  onEachFeature,
+                  pointToLayer: pointToPurpleCircleMarkerLayer,
+                  onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
+                    layer.on('click', (e) => {
+                      actions.selectFeature(feature as Feature<Point>, 'wko_obes', layer);
+                    });
+                  },
                   name: 'wko_obes',
                 } as NamedGeoJSONOptions);
 

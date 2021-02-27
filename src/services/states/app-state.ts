@@ -154,6 +154,16 @@ const pointToGreenCircleMarkerLayer = (_feature: Feature<Point, any>, latlng: L.
   });
 };
 
+const pointToYellowCircleMarkerLayer = (_feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
+  return new L.CircleMarker(latlng, {
+    radius: 5,
+    weight: 1,
+    color: 'orange',
+    fillColor: 'yellow',
+    fillOpacity: 0.8,
+  });
+};
+
 let highlightedLayer: L.Path;
 let highlightedColor = '';
 
@@ -197,7 +207,7 @@ export const appStateMgmt = {
         name: 'wko_gwo',
       } as NamedGeoJSONOptions),
       wko_gbesLayer: L.geoJSON(undefined, {
-        pointToLayer: pointToGreenCircleMarkerLayer,
+        pointToLayer: pointToYellowCircleMarkerLayer,
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', (e) => {
             // actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);

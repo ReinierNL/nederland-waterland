@@ -217,23 +217,6 @@ export const propertyStyles = {
     },
   },
 
-  wko_template: {
-    legend: {
-      items: [],
-      title: 'value',
-    },
-    properties: {
-      "Bronhouder": {
-        title: () => 'Bronhouder',
-        value: (s: string) => s,
-      },
-      "Max_Diepte": {
-        title: () => 'Maximale diepte (m)',
-        value: (n: number) => `${n}`,
-      },
-    },
-  },
-
   wko_diepte: {
     legend: {
       items: [],
@@ -274,6 +257,10 @@ export const propertyStyles = {
       title: 'value',
     },
     properties: {
+      "fid": {
+        title: () => 'ID',
+        value: (n: number) => `${n}`,
+      },
       "Bronhouder": {
         title: () => 'Bronhouder',
         value: (s: string) => s,
@@ -291,6 +278,10 @@ export const propertyStyles = {
       title: 'value',
     },
     properties: {
+      "fid": {
+        title: () => 'ID',
+        value: (n: number) => `${n}`,
+      },
       "Bronhouder": {
         title: () => 'Bronhouder',
         value: (s: string) => s,
@@ -308,6 +299,10 @@ export const propertyStyles = {
       title: 'value',
     },
     properties: {
+      "fid": {
+        title: () => 'ID',
+        value: (n: number) => `${n}`,
+      },
       "Bronhouder": {
         title: () => 'Bronhouder',
         value: (s: string) => s,
@@ -315,13 +310,37 @@ export const propertyStyles = {
     },
   },
 
-
   wko_gbes: {
     legend: {
       items: [],
       title: 'Bodemzijdig vermogen',
     },
-    properties: {},
+    properties: {
+      "Installatie ID": {
+        title: () => 'Installatie ID',
+        value: (n: number) => `${n}`,
+      },
+      "Bodemzijdig vermogen": {
+        title: () => 'Bodemzijdig vermogen',
+        value: (n: number) => `${n}`,
+      },
+      "Totale lengte": {
+        title: () => 'Totale lengte',
+        value: (n: number) => `${n}`,
+      },
+      warmtevraag: {
+        title: () => 'warmtevraag',
+        value: (n: number) => `${n}`,
+      },
+      koudevraag: {
+        title: () => 'koudevraag',
+        value: (n: number) => `${n}`,
+      },
+      energierendement: {
+        title: () => 'energierendement',
+        value: (n: number) => `${n}`,
+      },
+    },
   },
 
   wko_gwi: {
@@ -337,6 +356,64 @@ export const propertyStyles = {
       "Status installatie": {
         title: () => 'Status installatie',
         value: (s: string) => s,
+      },
+      pompcapaciteit: {
+        title: () => 'pompcapaciteit',
+        value: (n: number) => `${n}`,
+      },
+      maxhoeveelheidm3onttrekking: {
+        title: () => 'max hoeveelheid onttrekking (m3)',
+        value: (n: number) => `${n}`,
+      },
+    },
+  },
+
+  wko_gwio: {
+    legend: {
+      items: [],
+      title: 'wko value',
+    },
+    properties: {
+      "Installatie ID": {
+        title: () => 'Installatie ID',
+        value: (n: number) => `${n}`,
+      },
+      "Status installatie": {
+        title: () => 'Status installatie',
+        value: (s: string) => s,
+      },
+      pompcapaciteit: {
+        title: () => 'pompcapaciteit',
+        value: (n: number) => `${n}`,
+      },
+      maxhoeveelheidm3onttrekking: {
+        title: () => 'max hoeveelheid onttrekking (m3)',
+        value: (n: number) => `${n}`,
+      },
+    },
+  },
+
+  wko_gwo: {
+    legend: {
+      items: [],
+      title: 'wko value',
+    },
+    properties: {
+      "Installatie ID": {
+        title: () => 'Installatie ID',
+        value: (n: number) => `${n}`,
+      },
+      "Status installatie": {
+        title: () => 'Status installatie',
+        value: (s: string) => s,
+      },
+      pompcapaciteit: {
+        title: () => 'pompcapaciteit',
+        value: (n: number) => `${n}`,
+      },
+      maxhoeveelheidm3onttrekking: {
+        title: () => 'max hoeveelheid onttrekking (m3)',
+        value: (n: number) => `${n}`,
       },
     },
   },
@@ -370,6 +447,48 @@ export const propertyStyles = {
       maxhoeveelheidm3onttrekking: {
         title: () => 'max hoeveelheid onttrekking (m3)',
         value: (n: number) => `${n}`,
+      },
+    },
+  },
+
+  wko_obes: {
+    legend: {
+      items: [],
+      title: 'pompcapaciteit',
+    },
+    properties: {
+      "Status put": {
+        title: () => 'Status put',
+        value: (s: string) => s,
+      },
+      pompcapaciteit: {
+        title: () => 'pompcapaciteit',
+        value: (n: number) => `${n}`,
+      },
+      maxhoeveelheidm3onttrekking: {
+        title: () => 'max hoeveelheid onttrekking (m3)',
+        value: (n: number) => `${n}`,
+      },
+    },
+  },
+
+  ziekenhuizen_rk: {
+    legend: {
+      items: [
+        [true, 0, '#80ff80', 'Definitief ingeleverd'],
+        [true, 0, '#ffc080', 'Concept ingeleverd'],
+        [true, 0, 'red', 'Niet ingeleverd'],
+      ],
+      title: 'routekaart ingeleverd',
+    },
+    properties: {
+      "Name": {
+        title: () => 'Naam',
+        value: (s: string) => s,
+      },
+      "Naam instelling": {
+        title: () => 'Organisatie',
+        value: (s: string) => s,
       },
     },
   },
