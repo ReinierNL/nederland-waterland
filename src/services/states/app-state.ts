@@ -1,7 +1,6 @@
 import m from 'mithril';
 import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
-import verzorgingshuizen from '../../data/verzorgingshuizen.json';
 import ziekenhuizen_rk from '../../data/ziekenhuizen_routekaarten.json';
 import ziekenhuizen from '../../data/ziekenhuizen.json';
 import ggz from '../../data/ggz.json';
@@ -73,7 +72,6 @@ export interface IAppStateModel {
     selectedLayer: string;
     selectedHospital: Feature<Point>;
     selectedWaterItem: Feature;
-    verzorgingshuizen: FeatureCollection<Point>;
     ziekenhuizen_rk: FeatureCollection<Point>;
     ziekenhuizen: FeatureCollection<Point>;
     /** Layers that are loaded */
@@ -182,7 +180,6 @@ export const appStateMgmt = {
       vvt,
       ggz,
       ghz,
-      // wateren,
       rwzis,
       effluent,
       rioolleidingenLayer: L.geoJSON(undefined, {
@@ -200,7 +197,6 @@ export const appStateMgmt = {
         pointToLayer: pointToGreenCircleMarkerLayer,
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', (e) => {
-            // actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);
             actions.selectFeature(feature as Feature<Point>, 'wko_gwo', layer);
           });
         },
@@ -210,7 +206,6 @@ export const appStateMgmt = {
         pointToLayer: pointToYellowCircleMarkerLayer,
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', (e) => {
-            // actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);
             actions.selectFeature(feature as Feature<Point>, 'wko_gbes', layer);
           });
         },
@@ -221,7 +216,6 @@ export const appStateMgmt = {
         pointToLayer: pointToGrayCircleMarkerLayer,
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', (e) => {
-            // actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);
             actions.selectFeature(feature as Feature<Point>, 'wko_installaties', layer);
           });
         },
@@ -260,7 +254,6 @@ export const appStateMgmt = {
 
       wko_verbod,
       wateren_potentie_gt1haLayer: createLeafletLayer('wateren_potentie_gt1ha', 'AVGwocGJ_1'),
-      verzorgingshuizen,
       ziekenhuizen_rk,
       ziekenhuizen,
       isSearching: false,

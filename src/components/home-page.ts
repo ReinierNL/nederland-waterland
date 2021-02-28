@@ -23,7 +23,6 @@ export const HomePage: MeiosisComponent = () => {
   let map: L.Map;
   let ziekenhuizen_rkLayer: L.GeoJSON;
   let ziekenhuizenLayer: L.GeoJSON;
-  let verzorgingshuizenLayer: L.GeoJSON;
   let vvtLayer: L.GeoJSON;
   let ggzLayer: L.GeoJSON;
   let ghzLayer: L.GeoJSON;
@@ -302,11 +301,6 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'wko_verbod',
                 } as NamedGeoJSONOptions);
 
-                verzorgingshuizenLayer = L.geoJSON(verzorgingshuizen, {
-                  pointToLayer,
-                  onEachFeature,
-                  name: 'verzorgingshuizen',
-                } as NamedGeoJSONOptions);
 
                 ziekenhuizen_rkLayer = L.geoJSON(ziekenhuizen_rk, {
                   pointToLayer: pointToZHrkLayer,
@@ -345,7 +339,6 @@ export const HomePage: MeiosisComponent = () => {
                         { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer },
                         { label: 'Geesteljke gezondheidszorg', layer: ggzLayer },
                         { label: 'Gehandicaptenzorg', layer: ghzLayer },
-                        { label: 'Verzorgingshuizen', layer: verzorgingshuizenLayer },
                         { label: 'Ziekenhuizen routekaarten', layer: ziekenhuizen_rkLayer },
                       ],
                     },
