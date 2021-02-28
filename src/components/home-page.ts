@@ -178,9 +178,33 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
-                vvtLayer = L.geoJSON(vvt, { pointToLayer, onEachFeature, name: 'vvt' } as NamedGeoJSONOptions);
-                ghzLayer = L.geoJSON(ghz, { pointToLayer, onEachFeature, name: 'ghz' } as NamedGeoJSONOptions);
-                ggzLayer = L.geoJSON(ggz, { pointToLayer, onEachFeature, name: 'ggz' } as NamedGeoJSONOptions);
+                vvtLayer = L.geoJSON(vvt, { 
+                  pointToLayer, 
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', (e: LeafletEvent) => {
+                      actions.selectFeature(feature as Feature<Point>, 'vvt');
+                    });
+                  },
+                  name: 'vvt' 
+                } as NamedGeoJSONOptions);
+                ghzLayer = L.geoJSON(ghz, { 
+                  pointToLayer, 
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', (e: LeafletEvent) => {
+                      actions.selectFeature(feature as Feature<Point>, 'ghz');
+                    });
+                  },
+                  name: 'ghz' 
+                } as NamedGeoJSONOptions);
+                ggzLayer = L.geoJSON(ggz, { 
+                  pointToLayer, 
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', (e: LeafletEvent) => {
+                      actions.selectFeature(feature as Feature<Point>, 'ggz');
+                    });
+                  },
+                  name: 'ggz' 
+                } as NamedGeoJSONOptions);
 
                 effluentLayer = L.geoJSON(effluent, {
                   pointToLayer,
@@ -301,6 +325,15 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'wko_verbod',
                 } as NamedGeoJSONOptions);
 
+                ziekenhuizenLayer = L.geoJSON(ziekenhuizen, {
+                  pointToLayer: pointToZHv3Layer,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectHospital(feature as Feature<Point>);
+                    });
+                  },
+                  name: 'ziekenhuizen',
+                } as NamedGeoJSONOptions).addTo(map);
 
                 ziekenhuizen_rkLayer = L.geoJSON(ziekenhuizen_rk, {
                   pointToLayer: pointToZHrkLayer,
@@ -311,16 +344,6 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'ziekenhuizen_rk',
                 } as NamedGeoJSONOptions);
-
-                ziekenhuizenLayer = L.geoJSON(ziekenhuizen, {
-                  pointToLayer: pointToZHv3Layer,
-                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectHospital(feature as Feature<Point>);
-                    });
-                  },
-                  name: 'ziekenhuizen',
-                } as NamedGeoJSONOptions).addTo(map);
 
                 const baseTree = {
                   label: 'Achtergrondkaart',
@@ -416,10 +439,17 @@ export const HomePage: MeiosisComponent = () => {
               ]),
               // m(HospitalInfoPanel, { state, actions }),    // funny: this leads to not clearing => duplication of the above parts
               selectedItem && m(InfoPanel, { state, actions }),
+
+              selectedLayer && selectedLayer == 'ziekenhuizen_rk' && 
+              [
+                m('p', 'Routekaarten ingeleverd: 11 van 245 = 4.5 %'),
+                m('p', 'Totale CO₂-emissie (peiljaar 2016): 996,7 kt/jaar'),
+                m('p', 'Reductie CO₂-emissie (plannen jaar 2030): 3.63 %'),
+              ]
             ]
           ),
           (!selectedLayer || selectedLayer != 'ziekenhuizen_rk') && m(Legend, { state, actions }),
-          (selectedLayer && selectedLayer == 'ziekenhuizen_rk') && m(Legend_rk, { state, actions }),
+          selectedLayer && selectedLayer == 'ziekenhuizen_rk' && m(Legend_rk, { state, actions }),
         ]),
         m(
           '.disclaimer',

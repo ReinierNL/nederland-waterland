@@ -1,8 +1,11 @@
 {
   "effluent": "Effluentleidingen",
   "gl_wk_bu": "Aardgasvrije wijken en buurten",
+  "ggz": "Geestelijke gezondheidszorg",
+  "ghz": "Gehandicaptenzorg",
   "rioolleidingen": "Rioolleidingen",
   "rwzis": "Rioolwaterzuiveringen",
+  "vvt": "Verpleeghuizen, verzorging en thuiszorg",
   "wateren_potentie_gt1ha": "Oppervlaktewater potentie (TEO)",
   "wko_diepte": "WKO restrictie: Diepte",
   "wko_gbes": "WKO gesloten bodemenergiesystemen",

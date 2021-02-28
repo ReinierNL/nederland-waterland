@@ -84,6 +84,80 @@ export const propertyStyles = {
     },
   },
 
+  ggz: {
+    legend: {
+      items: [],
+      title: 'dummy',
+    },
+    properties: {
+      "Name": {
+        title: () => 'Naam',
+        value: (s: string) => s,
+      },
+      "Naam_van_het_concern_DigiMV_2012": {
+        title: () => 'Organisatie',
+        value: (s: string) => s,
+      },
+      "soort_zorgaanbieder": {
+        title: () => 'Soort zorg',
+        value: (s: string) => s,
+      },
+      "Adres": {
+        title: () => 'Straat',
+        value: (s: string) => s,
+      },
+      "Huisnummer": {
+        title: () => 'Huisnummer',
+        value: (s: string) => s,
+      },
+      "Postcode": {
+        title: () => 'Postcode',
+        value: (s: string) => s,
+      },
+      "plaats": {
+        title: () => 'Plaats',
+        value: (s: string) => s,
+      },
+    },
+  },
+
+  ghz: {
+    legend: {
+      items: [],
+      title: 'dummy',
+    },
+    properties: {
+      "Name": {
+        title: () => 'Naam',
+        value: (s: string) => s,
+      },
+      "Naam_van_het_concern_DigiMV_2012": {
+        title: () => 'Organisatie',
+        value: (s: string) => s,
+      },
+      "soort_zorgaanbieder": {
+        title: () => 'Soort zorg',
+        value: (s: string) => s,
+      },
+      "Adres": {
+        title: () => 'Straat',
+        value: (s: string) => s,
+      },
+      "Huisnummer": {
+        title: () => 'Huisnummer',
+        value: (s: string) => s,
+      },
+      "Postcode": {
+        title: () => 'Postcode',
+        value: (s: string) => s,
+      },
+      "plaats": {
+        title: () => 'Plaats',
+        value: (s: string) => s,
+      },
+    },
+  },
+
   gl_wk_bu: {
     legend: {
       items: [],
@@ -182,6 +256,45 @@ export const propertyStyles = {
       },
     },
   },
+
+
+  vvt: {
+    legend: {
+      items: [],
+      title: 'dummy',
+    },
+    properties: {
+      "Naam": {
+        title: () => 'Naam',
+        value: (s: string) => s,
+      },
+      "Organisatie": {
+        title: () => 'Organisatie',
+        value: (s: string) => s,
+      },
+      "Soort zorg": {
+        title: () => 'Soort zorg',
+        value: (s: string) => s,
+      },
+      "Straat": {
+        title: () => 'Straat',
+        value: (s: string) => s,
+      },
+      "Huisnummer": {
+        title: () => 'Huisnummer',
+        value: (s: string) => s,
+      },
+      "Postcode": {
+        title: () => 'Postcode',
+        value: (s: string) => s,
+      },
+      "Plaats": {
+        title: () => 'Plaats',
+        value: (s: string) => s,
+      },
+    },
+  },
+
 
   wateren_potentie_gt1ha: {
     legend: {
