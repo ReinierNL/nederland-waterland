@@ -442,10 +442,13 @@ export const HomePage: MeiosisComponent = () => {
 
               selectedLayer && selectedLayer == 'ziekenhuizen_rk' && 
               [
-                m('p', 'Routekaarten ingeleverd: 11 van 245 = 4.5 %'),
-                m('p', 'Totale CO₂-emissie (peiljaar 2016): 996,7 kt/jaar'),
-                m('p', 'Reductie CO₂-emissie (plannen jaar 2030): 3.63 %'),
-              ]
+                m('.header-routekaart', 'Portefeuilleroutekaart Ziekenhuizen'),
+                m('.text-routekaart', 'Routekaarten ingeleverd: 15.7 % op basis van aantal organisaties'),
+                m('.header-routekaart', 'Doelstelling klimaatakkoord'),
+                m('.text-routekaart', 'Totale CO₂-emissie (peiljaar 2016): 100 %'),
+                m('.text-routekaart', 'Gerealiseerde CO₂-besparing 2030 (gebaseerd op ingeleverde routekaarten): 3.6 %'),
+                m('.text-routekaart', 'Ambitie CO₂-besparing 2030 (gebaseerd op klimaatdoelstelling): 49 %'),
+              ],
             ]
           ),
           (!selectedLayer || selectedLayer != 'ziekenhuizen_rk') && m(Legend, { state, actions }),

@@ -287,3 +287,14 @@ table.hospital-feature-props {
   background-color: white;
   font-size: 0.65em
 }
+
+.header-routekaart {
+  margin-top: 10px;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.text-routekaart {
+  margin-left: 5px;
+  font-size: 14;
+}
