@@ -285,7 +285,7 @@ export const appStateMgmt = {
       selectHospital: async (f) => {
         const { app } = states();
         const { activeLayers, selectedHospital } = app;
-        if (selectedHospital && selectedHospital.properties?.Locnr === f.properties?.Locnr) return;
+        if (selectedHospital && selectedHospital.properties?.Locatienummer === f.properties?.Locatienummer) return;
         const updating = [] as Array<Promise<{ [key: string]: L.GeoJSON }>>;
         activeLayers?.forEach((layer) => {
           updating.push(loadGeoJSON(layer, f, app));
@@ -333,8 +333,8 @@ export const appStateMgmt = {
           activeLayers!.delete(selectedLayer);
         }
         console.log(activeLayers);
-        if (add && selectedHospital && selectedHospital.properties && selectedHospital.properties.Locnr) {
-          // if (!selectedHospital || (selectedHospital.properties && !selectedHospital.properties.Locnr)) {
+        if (add && selectedHospital && selectedHospital.properties && selectedHospital.properties.Locatienummer) {
+          // if (!selectedHospital || (selectedHospital.properties && !selectedHospital.properties.Locatienummer)) {
           //   // console.warn('No item active, so cannot load data. Please select a feature first.');
           // } else {
           const result = await loadGeoJSON(selectedLayer, selectedHospital, app);
@@ -357,7 +357,7 @@ export const appStateMgmt = {
 
 const loadGeoJSON = async (layer: string, selectedHospital: Feature, app: { [key: string]: L.GeoJSON }) => {
   const layerName = layer + 'Layer';
-  const id = (selectedHospital.properties as any).Locnr;
+  const id = (selectedHospital.properties as any).Locatienummer;
   const geojson = app[layerName] ? (app[layerName] as L.GeoJSON) : undefined;
   if (geojson) {
     const record = await m.request<{ id: number; data: FeatureCollection }>({
