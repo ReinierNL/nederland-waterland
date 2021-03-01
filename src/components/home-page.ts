@@ -367,7 +367,7 @@ export const HomePage: MeiosisComponent = () => {
                     },
                     {
                       label: 'Oppervlaktewater (TEO)',
-                      children: [{ label: 'Wateren potentie *', layer: wateren_potentie_gt1haLayer }],
+                      children: [{ label: 'TEO potentie *', layer: wateren_potentie_gt1haLayer }],
                     },
                     {
                       label: 'Afvalwater (TEA)',
