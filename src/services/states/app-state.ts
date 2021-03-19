@@ -41,10 +41,12 @@ ziekenhuizen.features = ziekenhuizen.features.map((z: any) => ({
 }));
 
 /** Application state */
-
 export interface IAppStateModel {
   app: Partial<{
+    zoom: -1;
     // water?: FeatureCollection;
+    /** Layer with selected markers */
+    selectedMarkersLayer: L.GeoJSON;
     vvt: FeatureCollection<Point>;
     ggz: FeatureCollection<Point>;
     ghz: FeatureCollection<Point>;
@@ -88,6 +90,7 @@ export interface IAppStateActions {
   setBoundingBoxSizeInMeter: (size: number) => void;
   updateActiveLayers: (layer: string, add: boolean) => Promise<void>;
   refreshLayer: (layer?: string) => Promise<void>;
+  setZoomLevel: (zoom: number) => void;
 }
 
 export interface IAppState {
@@ -96,16 +99,35 @@ export interface IAppState {
 }
 const size = 5000;
 
+const highlightMarker = (selectedMarkersLayer: L.GeoJSON, f: Feature, primarySelection = true) => {
+  if (f.geometry.type !== 'Point') return;
+  const lng = f.geometry.coordinates[0];
+  const lat = f.geometry.coordinates[1];
+  const color = primarySelection ? 'blue' : undefined;
+  selectedMarkersLayer.addLayer(
+    L.circleMarker([lat, lng], {
+      radius: 20,
+      color,
+      fillColor: 'blue',
+      fillOpacity: 0.3,
+      opacity: 1,
+    })
+  );
+};
+
 const pointToTitledLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-// intended purpose: let the feature have a title that is shown when mouse is hovered over the feature
-// but.. it doesn't seem to work
-// this works for the hospital layer and the rwzis, but not for the water potential layer
-// which is created by createLeafletLayer. perhaps because it is not a point layer
+  // intended purpose: let the feature have a title that is shown when mouse is hovered over the feature
+  // but.. it doesn't seem to work
+  // this works for the hospital layer and the rwzis, but not for the water potential layer
+  // which is created by createLeafletLayer. perhaps because it is not a point layer
   return new L.Marker(latlng, {
-    title: feature.properties.Name ? feature.properties.Name 
-         : feature.properties.Naam ? feature.properties.Naam 
-         : feature.properties.NAAM ? feature.properties.NAAM 
-         : ""
+    title: feature.properties.Name
+      ? feature.properties.Name
+      : feature.properties.Naam
+      ? feature.properties.Naam
+      : feature.properties.NAAM
+      ? feature.properties.NAAM
+      : '',
   });
 };
 
@@ -259,6 +281,7 @@ export const appStateMgmt = {
       isSearching: false,
       searchQuery: '',
       activeLayers: new Set(),
+      selectedMarkersLayer: L.geoJSON(undefined),
     },
   } as IAppStateModel,
   actions: (update, states): IAppStateActions => {
@@ -269,22 +292,45 @@ export const appStateMgmt = {
         m.redraw();
       },
       selectFeature: async (f, selectedLayer?: string, layer?: L.Layer) => {
-        if (highlightedLayer) highlightedLayer.setStyle({ color: highlightedColor });
-        if (layer && (layer as L.Path).options) {
-          const path = layer as L.Path;
-          highlightedLayer = path;
-          const options = path.options as IPathOptions;
-          const style = options && options.style && options.style();
-          if (style && style.color) highlightedColor = style.color;
-          path.setStyle({
-            color: 'blue',
-          });
+        console.log('Select feature');
+        if (highlightedLayer && highlightedLayer.setStyle) {
+          highlightedLayer.setStyle({ color: highlightedColor });
+          if (layer && (layer as L.Path).options) {
+            const path = layer as L.Path;
+            highlightedLayer = path;
+            const options = path.options as IPathOptions;
+            const style = options && options.style && options.style();
+            if (style && style.color) highlightedColor = style.color;
+            path.setStyle({
+              color: 'blue',
+            });
+          }
+          update({ app: { selectedItem: () => f, selectedLayer } });
+        } else {
+          const {
+            app: { selectedMarkersLayer, ggz, ghz, vvt },
+          } = states();
+          if (!selectedMarkersLayer) return;
+          selectedMarkersLayer.clearLayers();
+          selectedMarkersLayer.bringToBack();
+          const organisatie = f.properties?.['KvK-nummer_van_het_concern_DigiMV_2012'];
+          if (organisatie) {
+            const overlay =
+              selectedLayer === 'ggz' ? ggz : selectedLayer === 'ghz' ? ghz : selectedLayer === 'vvt' ? vvt : undefined;
+            const id = f.properties?.Id;
+            overlay &&
+              overlay.features
+                .filter((z) => z.properties?.['KvK-nummer_van_het_concern_DigiMV_2012'] === organisatie)
+                .forEach((z) => highlightMarker(selectedMarkersLayer, z, z.properties?.Id === id));
+          } else {
+            highlightMarker(selectedMarkersLayer, f);
+          }
+          update({ app: { selectedItem: () => f } });
         }
-        update({ app: { selectedItem: () => f, selectedLayer } });
       },
       selectHospital: async (f) => {
         const { app } = states();
-        const { activeLayers, selectedHospital } = app;
+        const { activeLayers, selectedHospital, selectedMarkersLayer, ziekenhuizen } = app;
         if (selectedHospital && selectedHospital.properties?.Locatienummer === f.properties?.Locatienummer) return;
         const updating = [] as Array<Promise<{ [key: string]: L.GeoJSON }>>;
         activeLayers?.forEach((layer) => {
@@ -296,6 +342,16 @@ export const appStateMgmt = {
             .forEach((key) => (acc[key] = cur[key]));
           return acc;
         }, {} as { [key: string]: L.GeoJSON });
+        if (selectedMarkersLayer && ziekenhuizen) {
+          selectedMarkersLayer.clearLayers();
+          selectedMarkersLayer.bringToBack();
+          const id = f.properties?.Locatienummer;
+          const organisatie = f.properties?.Organisatie;
+          organisatie &&
+            ziekenhuizen.features
+              .filter((z) => z.properties && z.properties.Organisatie === organisatie)
+              .forEach((z) => highlightMarker(selectedMarkersLayer, z, z.properties?.Locatienummer === id));
+        }
         update({ app: { selectedHospital: () => f, selectedItem: undefined, ...result } });
       },
       toggleHospitalActivity: (id: number, layer?: L.GeoJSON) => {
@@ -351,6 +407,7 @@ export const appStateMgmt = {
         const result = await loadGeoJSON(layer, selectedHospital, app);
         update({ app: { ...result } });
       },
+      setZoomLevel: (zoom: number) => update({ app: { zoom } }),
     } as IAppStateActions;
   },
 } as IAppState;
