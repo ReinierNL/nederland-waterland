@@ -1,13 +1,17 @@
 import m from 'mithril';
 import L, { GeoJSONOptions, ILayerTree, LeafletEvent } from 'leaflet';
+import 'leaflet.markercluster';
 import 'leaflet.control.layers.tree/L.Control.Layers.Tree.css';
 import 'leaflet.control.layers.tree';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import 'leaflet.markercluster/dist/leaflet.markercluster.js';
 // import 'leaflet-hash';
 import { verzorgingstehuisIcon, sewageIcon, ziekenhuisIcon, ziekenhuisIconGreen, ziekenhuisIconOrange } from '../utils';
 import { MeiosisComponent } from '../services/meiosis';
 import { InfoPanel } from './info-panel';
-import { HospitalInfoPanel } from './hospital-info-panel';
+// import { HospitalInfoPanel } from './hospital-info-panel';
 import { Feature, Point } from 'geojson';
 import { Legend } from './legend';
 import { Legend_rk } from './legend_rk';
@@ -180,38 +184,40 @@ export const HomePage: MeiosisComponent = () => {
                 //   });
                 // };
 
-                vvtLayer = L.geoJSON(vvt, {
+                vvtLayer = (L as any).markerClusterGroup();
+                L.geoJSON(vvt, {
                   pointToLayer,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', (e: LeafletEvent) => {
+                    layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'vvt');
                     });
                   },
                   name: 'vvt',
-                } as NamedGeoJSONOptions);
-                ghzLayer = L.geoJSON(ghz, {
+                } as NamedGeoJSONOptions).eachLayer((l) => vvtLayer.addLayer(l));
+                ghzLayer = (L as any).markerClusterGroup();
+                L.geoJSON(ghz, {
                   pointToLayer,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', (e: LeafletEvent) => {
+                    layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'ghz');
                     });
                   },
                   name: 'ghz',
-                } as NamedGeoJSONOptions);
-                ggzLayer = L.geoJSON(ggz, {
+                } as NamedGeoJSONOptions).eachLayer((l) => ghzLayer.addLayer(l));
+                ggzLayer = (L as any).markerClusterGroup();
+                L.geoJSON(ggz, {
                   pointToLayer,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', (e: LeafletEvent) => {
+                    layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'ggz');
                     });
                   },
                   name: 'ggz',
-                } as NamedGeoJSONOptions);
-
+                } as NamedGeoJSONOptions).eachLayer((l) => ggzLayer.addLayer(l));
                 effluentLayer = L.geoJSON(effluent, {
                   pointToLayer,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', (e) => {
+                    layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'effluent', layer);
                     });
                   },
@@ -225,7 +231,7 @@ export const HomePage: MeiosisComponent = () => {
 
                 gl_wk_buLayer = L.geoJSON(gl_wk_bu, {
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', (e) => {
+                    layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'gl_wk_bu', layer);
                     });
                   },
