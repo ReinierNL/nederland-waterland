@@ -53,7 +53,7 @@ export const HomePage: MeiosisComponent = () => {
         selectedLayer,
         wateren_potentie_gt1haLayer,
         ziekenhuizen,
-        verzorgingshuizen,
+        // verzorgingshuizen,
         ggz,
         ghz,
         vvt,
@@ -73,9 +73,10 @@ export const HomePage: MeiosisComponent = () => {
         wko_ordening,
         wko_specprovbeleidLayer,
         wko_verbod,
+        selectedMarkersLayer,
       } = state.app;
 
-      const { updateActiveLayers } = actions;
+      const { updateActiveLayers, setZoomLevel } = actions;
 
       // const waterProps = selectedWaterItem && selectedWaterItem.properties;
       // console.table(waterProps);
@@ -91,6 +92,7 @@ export const HomePage: MeiosisComponent = () => {
                 map = L.map('map', {}).setView([52.14, 5.109], 8);
                 map.on('overlayadd', (e: any) => updateActiveLayers(e.layer.options.name, true));
                 map.on('overlayremove', (e: any) => updateActiveLayers(e.layer.options.name, false));
+                map.on('zoomend', () => setZoomLevel(map.getZoom()));
                 L.control.scale({ imperial: false, metric: true }).addTo(map);
                 // Add the PDOK map
                 const pdokachtergrondkaartGrijs = new L.TileLayer(
@@ -172,38 +174,38 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
-                const onEachFeature = (feature: Feature<Point, any>, layer: L.Layer) => {
-                  layer.on('click', (e) => {
-                    actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
-                  });
-                };
+                // const onEachFeature = (feature: Feature<Point, any>, layer: L.Layer) => {
+                //   layer.on('click', (e) => {
+                //     actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
+                //   });
+                // };
 
-                vvtLayer = L.geoJSON(vvt, { 
-                  pointToLayer, 
+                vvtLayer = L.geoJSON(vvt, {
+                  pointToLayer,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', (e: LeafletEvent) => {
                       actions.selectFeature(feature as Feature<Point>, 'vvt');
                     });
                   },
-                  name: 'vvt' 
+                  name: 'vvt',
                 } as NamedGeoJSONOptions);
-                ghzLayer = L.geoJSON(ghz, { 
-                  pointToLayer, 
+                ghzLayer = L.geoJSON(ghz, {
+                  pointToLayer,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', (e: LeafletEvent) => {
                       actions.selectFeature(feature as Feature<Point>, 'ghz');
                     });
                   },
-                  name: 'ghz' 
+                  name: 'ghz',
                 } as NamedGeoJSONOptions);
-                ggzLayer = L.geoJSON(ggz, { 
-                  pointToLayer, 
+                ggzLayer = L.geoJSON(ggz, {
+                  pointToLayer,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', (e: LeafletEvent) => {
                       actions.selectFeature(feature as Feature<Point>, 'ggz');
                     });
                   },
-                  name: 'ggz' 
+                  name: 'ggz',
                 } as NamedGeoJSONOptions);
 
                 effluentLayer = L.geoJSON(effluent, {
@@ -257,7 +259,7 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'wko_diepte',
                 } as NamedGeoJSONOptions);
-                
+
                 wko_gwiLayer = L.geoJSON(wko_gwi, {
                   pointToLayer: pointToCircleMarkerLayer,
                   onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
@@ -345,6 +347,8 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'ziekenhuizen_rk',
                 } as NamedGeoJSONOptions);
 
+                selectedMarkersLayer?.addTo(map);
+
                 const baseTree = {
                   label: 'Achtergrondkaart',
                   children: [
@@ -422,33 +426,45 @@ export const HomePage: MeiosisComponent = () => {
               style: 'position: absolute; top: 0; left: 70vw; padding: 5px;',
             },
             [
-              m('h3', 'TNO – Aquathermie & Zorgvastgoed Dashboard'),
-              selectedHospital && m('p', 'Geselecteerd ziekenhuis:'),
-              selectedHospital && selectedHospital.properties && m('h4', selectedHospital.properties.Name),
-              selectedHospital && m('p', 'Organisatie:'),
-              selectedHospital && selectedHospital.properties && m('b', selectedHospital.properties.Organisatie),
-              selectedHospital && m('table.hospital-feature-props', [
-                ...Object.keys(selectedHospital.properties)
-                  .filter((key) => !selectedHospital.properties || (selectedHospital.properties.hasOwnProperty(key)  && key != 'active')  )
-                  .map((key) =>
-                    m('tr', [
-                      m('td.bold.toright', key),
-                      m('td', !selectedHospital.properties ? "" : selectedHospital.properties[key]),
-                    ])
-                  ),
-              ]),
+              m('h3', 'Aquathermie & Zorgvastgoed Dashboard'),
+              selectedHospital &&
+                selectedHospital.properties && [
+                  m('p', 'Geselecteerd ziekenhuis:'),
+                  m('h4', selectedHospital.properties.Name),
+                  [
+                    m('span', 'Organisatie: '),
+                    m('b', selectedHospital.properties.Organisatie),
+                    m('table.hospital-feature-props', [
+                      ...Object.keys(selectedHospital.properties)
+                        .filter(
+                          (key) =>
+                            !selectedHospital.properties ||
+                            (selectedHospital.properties.hasOwnProperty(key) && key != 'active')
+                        )
+                        .map((key) =>
+                          m('tr', [
+                            m('td.bold.toright', key),
+                            m('td', !selectedHospital.properties ? '' : selectedHospital.properties[key]),
+                          ])
+                        ),
+                    ]),
+                  ],
+                ],
               // m(HospitalInfoPanel, { state, actions }),    // funny: this leads to not clearing => duplication of the above parts
               selectedItem && m(InfoPanel, { state, actions }),
 
-              selectedLayer && selectedLayer == 'ziekenhuizen_rk' && 
-              [
-                m('.header-routekaart', 'Portefeuilleroutekaart Ziekenhuizen'),
-                m('.text-routekaart', 'Routekaarten ingeleverd: 15.7 % op basis van aantal organisaties'),
-                m('.header-routekaart', 'Doelstelling klimaatakkoord'),
-                m('.text-routekaart', 'Totale CO₂-emissie (peiljaar 2016): 100 %'),
-                m('.text-routekaart', 'Gerealiseerde CO₂-besparing 2030 (gebaseerd op ingeleverde routekaarten): 3.6 %'),
-                m('.text-routekaart', 'Ambitie CO₂-besparing 2030 (gebaseerd op klimaatdoelstelling): 49 %'),
-              ],
+              selectedLayer &&
+                selectedLayer == 'ziekenhuizen_rk' && [
+                  m('.header-routekaart', 'Portefeuilleroutekaart Ziekenhuizen'),
+                  m('.text-routekaart', 'Routekaarten ingeleverd: 15.7 % op basis van aantal organisaties'),
+                  m('.header-routekaart', 'Doelstelling klimaatakkoord'),
+                  m('.text-routekaart', 'Totale CO₂-emissie (peiljaar 2016): 100 %'),
+                  m(
+                    '.text-routekaart',
+                    'Gerealiseerde CO₂-besparing 2030 (gebaseerd op ingeleverde routekaarten): 3.6 %'
+                  ),
+                  m('.text-routekaart', 'Ambitie CO₂-besparing 2030 (gebaseerd op klimaatdoelstelling): 49 %'),
+                ],
             ]
           ),
           (!selectedLayer || selectedLayer != 'ziekenhuizen_rk') && m(Legend, { state, actions }),
