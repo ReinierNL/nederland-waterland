@@ -305,7 +305,6 @@ export const appStateMgmt = {
               color: 'blue',
             });
           }
-          update({ app: { selectedItem: () => f, selectedLayer } });
         } else {
           const {
             app: { selectedMarkersLayer, ggz, ghz, vvt },
@@ -313,20 +312,24 @@ export const appStateMgmt = {
           if (!selectedMarkersLayer) return;
           selectedMarkersLayer.clearLayers();
           selectedMarkersLayer.bringToBack();
-          const organisatie = f.properties?.['KvK-nummer_van_het_concern_DigiMV_2012'];
+          const organisatie = f.properties?.['KvK-nummer_van_het_concern_DigiMV_2012'] || f.properties?.Organisatie;
           if (organisatie) {
             const overlay =
               selectedLayer === 'ggz' ? ggz : selectedLayer === 'ghz' ? ghz : selectedLayer === 'vvt' ? vvt : undefined;
             const id = f.properties?.Id;
             overlay &&
               overlay.features
-                .filter((z) => z.properties?.['KvK-nummer_van_het_concern_DigiMV_2012'] === organisatie)
+                .filter(
+                  (z) =>
+                    z.properties?.['KvK-nummer_van_het_concern_DigiMV_2012'] === organisatie ||
+                    z.properties?.Organisatie === organisatie
+                )
                 .forEach((z) => highlightMarker(selectedMarkersLayer, z, z.properties?.Id === id));
           } else {
             highlightMarker(selectedMarkersLayer, f);
           }
-          update({ app: { selectedItem: () => f } });
         }
+        update({ app: { selectedItem: () => f, selectedLayer } });
       },
       selectHospital: async (f) => {
         const { app } = states();
@@ -352,7 +355,9 @@ export const appStateMgmt = {
               .filter((z) => z.properties && z.properties.Organisatie === organisatie)
               .forEach((z) => highlightMarker(selectedMarkersLayer, z, z.properties?.Locatienummer === id));
         }
-        update({ app: { selectedHospital: () => f, selectedItem: undefined, ...result } });
+        update({
+          app: { selectedHospital: () => f, selectedLayer: 'ziekenhuizen', selectedItem: undefined, ...result },
+        });
       },
       toggleHospitalActivity: (id: number, layer?: L.GeoJSON) => {
         const {
@@ -382,11 +387,12 @@ export const appStateMgmt = {
       },
       updateActiveLayers: async (selectedLayer: string, add: boolean) => {
         const { app } = states();
-        const { activeLayers, selectedHospital } = app;
+        const { activeLayers, selectedHospital, selectedLayer: sl, selectedMarkersLayer } = app;
         if (add) {
           activeLayers!.add(selectedLayer);
         } else {
           activeLayers!.delete(selectedLayer);
+          if (sl === selectedLayer) selectedMarkersLayer?.clearLayers();
         }
         console.log(activeLayers);
         if (add && selectedHospital && selectedHospital.properties && selectedHospital.properties.Locatienummer) {

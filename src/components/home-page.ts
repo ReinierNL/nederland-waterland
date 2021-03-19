@@ -184,7 +184,7 @@ export const HomePage: MeiosisComponent = () => {
                 //   });
                 // };
 
-                vvtLayer = (L as any).markerClusterGroup();
+                vvtLayer = (L as any).markerClusterGroup({ name: 'vvt' });
                 L.geoJSON(vvt, {
                   pointToLayer,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
@@ -194,7 +194,7 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'vvt',
                 } as NamedGeoJSONOptions).eachLayer((l) => vvtLayer.addLayer(l));
-                ghzLayer = (L as any).markerClusterGroup();
+                ghzLayer = (L as any).markerClusterGroup({ name: 'ghz' });
                 L.geoJSON(ghz, {
                   pointToLayer,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
@@ -204,7 +204,7 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'ghz',
                 } as NamedGeoJSONOptions).eachLayer((l) => ghzLayer.addLayer(l));
-                ggzLayer = (L as any).markerClusterGroup();
+                ggzLayer = (L as any).markerClusterGroup({ name: 'ggz' });
                 L.geoJSON(ggz, {
                   pointToLayer,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
