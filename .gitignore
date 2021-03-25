@@ -4,4 +4,5 @@ generated
 ~*
 dist
 .cache
+.parcel-cache
 docs_local

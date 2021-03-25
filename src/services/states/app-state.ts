@@ -313,7 +313,7 @@ export const appStateMgmt = {
           selectedMarkersLayer.clearLayers();
           selectedMarkersLayer.bringToBack();
           const organisatie = f.properties?.['KvK-nummer_van_het_concern_DigiMV_2012'] || f.properties?.Organisatie;
-          if (organisatie) {
+          if (organisatie && !/onbekend/i.test(organisatie)) {
             const overlay =
               selectedLayer === 'ggz' ? ggz : selectedLayer === 'ghz' ? ghz : selectedLayer === 'vvt' ? vvt : undefined;
             const id = f.properties?.Id;

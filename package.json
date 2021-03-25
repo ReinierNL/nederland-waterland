@@ -7,11 +7,11 @@
     "doc": "doc"
   },
   "scripts": {
-    "clean": "rimraf ./public ./.cache ./dist",
+    "clean": "rimraf ./public ./.cache ./.parcel-cache ./dist",
     "cleanup": "npm run clean",
     "start": "parcel index.html --port 1235",
-    "build:domain": "npm run clean && parcel build index.html --out-dir ./docs --public-url https://assistance.hex.tno.nl/aquathermie",
-    "build:local": "parcel build index.html --out-dir ./docs_local"
+    "build:domain": "npm run clean && parcel build index.html --dist-dir ./docs --public-url https://assistance.hex.tno.nl/aquathermie",
+    "build:local": "parcel build index.html --dist-dir ./docs_local"
   },
   "repository": {
     "type": "git",
@@ -43,12 +43,11 @@
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.7",
-    "@types/leaflet": "^1.5.23",
+    "@types/leaflet": "^1.7.0",
     "@types/leaflet.markercluster": "^1.4.4",
     "@types/mithril": "^2.0.6",
     "@types/osmtogeojson": "^2.2.29",
-    "cssnano": "^4.1.10",
-    "parcel": "^1.12.4",
+    "parcel": "^2.0.0-beta.2",
     "rimraf": "^3.0.2",
     "typescript": "^4.2.3"
   }

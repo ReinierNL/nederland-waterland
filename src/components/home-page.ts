@@ -1,5 +1,5 @@
 import m from 'mithril';
-import L, { GeoJSONOptions, ILayerTree, LeafletEvent } from 'leaflet';
+import L, { GeoJSONOptions, LeafletEvent } from 'leaflet';
 import 'leaflet.markercluster';
 import 'leaflet.control.layers.tree/L.Control.Layers.Tree.css';
 import 'leaflet.control.layers.tree';
@@ -15,9 +15,9 @@ import { InfoPanel } from './info-panel';
 import { Feature, Point } from 'geojson';
 import { Legend } from './legend';
 import { Legend_rk } from './legend_rk';
-import logoDeltares from '../assets/Deltares.png';
-import logoSyntraal from '../assets/Syntraal.png';
-import logoTNO from '../assets/TNO.png';
+import logoDeltares from 'url:../assets/Deltares.png';
+import logoSyntraal from 'url:../assets/Syntraal.png';
+import logoTNO from 'url:../assets/TNO.png';
 
 export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
   name: string;
@@ -361,7 +361,7 @@ export const HomePage: MeiosisComponent = () => {
                     { label: 'grijs', layer: pdokachtergrondkaartGrijs },
                     { label: 'normaal', layer: pdokachtergrondkaart },
                   ],
-                } as ILayerTree;
+                } as any; //Control.Layers.TreeObject;
                 const overlayTree = {
                   label: 'Overlay kaartlagen',
                   children: [
@@ -421,8 +421,8 @@ export const HomePage: MeiosisComponent = () => {
                       ],
                     },
                   ],
-                } as ILayerTree;
-                L.control.layers.tree(baseTree, overlayTree).addTo(map);
+                } as any; // Control.Layers.TreeObject;
+                (L.control.layers as any).tree(baseTree, overlayTree).addTo(map);
               },
             })
           ),
