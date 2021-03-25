@@ -423,11 +423,12 @@ const loadGeoJSON = async (layer: string, selectedHospital: Feature, app: { [key
   const id = (selectedHospital.properties as any).Locatienummer;
   const geojson = app[layerName] ? (app[layerName] as L.GeoJSON) : undefined;
   if (geojson) {
+    console.log(`process.env.GIS_SERVER: ${process.env.GIS_SERVER}`)
     const record = await m.request<{ id: number; data: FeatureCollection }>({
       method: 'GET',
-      //url: `${process.env.SERVER || 'http://localhost:3366/api/'}${layer}/id/${id}`,
-      url: `${process.env.GIS_SERVER || 'http://163.158.64.118:3366/api/'}${layer}/id/${id}`,
-      // url: `${process.env.SERVER || 'http://163.158.64.118:3366/api/'}${layer}/id/${id}`,
+      // url: `${process.env.SERVER || 'http://localhost:3366/api/'}${layer}/id/${id}`,
+      // url: `${process.env.GIS_SERVER || 'http://163.158.64.118:3366/api/'}${layer}/id/${id}`,
+      url: `${process.env.SERVER || 'https://assistance.hex.tno.nl/geojson-server/api/'}${layer}/id/${id}`,
     });
     if (record && record.data) {
       geojson.clearLayers();
