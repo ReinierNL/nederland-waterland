@@ -50,7 +50,7 @@ export const HomePage: MeiosisComponent = () => {
 
   return {
     view: ({ attrs: { state, actions } }) => {
-      console.log(state);
+      // console.log(state);
       const {
         selectedItem,
         selectedHospital,

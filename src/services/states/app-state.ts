@@ -292,7 +292,7 @@ export const appStateMgmt = {
         m.redraw();
       },
       selectFeature: async (f, selectedLayer?: string, layer?: L.Layer) => {
-        console.log('Select feature');
+        // console.log('Select feature');
         if (highlightedLayer && highlightedLayer.setStyle) {
           highlightedLayer.setStyle({ color: highlightedColor });
           if (layer && (layer as L.Path).options) {
@@ -394,7 +394,7 @@ export const appStateMgmt = {
           activeLayers!.delete(selectedLayer);
           if (sl === selectedLayer) selectedMarkersLayer?.clearLayers();
         }
-        console.log(activeLayers);
+        // console.log(activeLayers);
         if (add && selectedHospital && selectedHospital.properties && selectedHospital.properties.Locatienummer) {
           // if (!selectedHospital || (selectedHospital.properties && !selectedHospital.properties.Locatienummer)) {
           //   // console.warn('No item active, so cannot load data. Please select a feature first.');
