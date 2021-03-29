@@ -42,7 +42,6 @@
     "osmtogeojson": "^3.0.0-beta.4"
   },
   "devDependencies": {
-    "@parcel/transformer-image": "^2.0.0-beta.2",
     "@types/geojson": "^7946.0.7",
     "@types/leaflet": "^1.7.0",
     "@types/leaflet.markercluster": "^1.4.4",
