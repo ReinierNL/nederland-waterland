@@ -2,15 +2,14 @@
   "name": "nederland-waterland",
   "version": "0.1.0",
   "description": "Gegevens over Zorgsector en aquathermie",
-  "main": "index.js",
   "directories": {
     "doc": "doc"
   },
   "scripts": {
     "clean": "rimraf ./public ./.cache ./.parcel-cache ./dist",
     "cleanup": "npm run clean",
-    "start": "parcel index.html --port 1235",
-    "build:domain": "npm run clean && parcel build index.html --dist-dir ./docs --public-url https://assistance.hex.tno.nl/aquathermie",
+    "start": "parcel serve ./src/index.html --port 1235",
+    "build:domain": "npm run clean && parcel build ./src/index.html --dist-dir ./docs --public-url https://assistance.hex.tno.nl/aquathermie",
     "build:local": "parcel build index.html --dist-dir ./docs_local"
   },
   "repository": {
@@ -42,6 +41,7 @@
     "osmtogeojson": "^3.0.0-beta.4"
   },
   "devDependencies": {
+    "@parcel/transformer-image": "^2.0.0-beta.2",
     "@types/geojson": "^7946.0.7",
     "@types/leaflet": "^1.7.0",
     "@types/leaflet.markercluster": "^1.4.4",
@@ -52,3 +52,5 @@
     "typescript": "^4.2.3"
   }
 }
+
+
