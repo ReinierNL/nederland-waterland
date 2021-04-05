@@ -116,6 +116,22 @@ const highlightMarker = (selectedMarkersLayer: L.GeoJSON, f: Feature, primarySel
   );
 };
 
+const pointToLayerIconVZH = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+  // for the instellinge layers (eerst even alleen voor ggz)
+  var layerIcon = verzorgingshuisIcon;
+  if (rk_active) {
+  // if (true) {
+    layerIcon = verzorgingshuisIconPurple;
+    if (feature.properties && feature.properties['Concept ingeleverd']) {
+      layerIcon = verzorgingshuisIconGreen;
+    }
+  }
+  return new L.Marker(latlng, {
+    icon: layerIcon,
+    title: feature.properties.Name,
+  });
+};
+
 const pointToTitledLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
   // intended purpose: let the feature have a title that is shown when mouse is hovered over the feature
   // but.. it doesn't seem to work
