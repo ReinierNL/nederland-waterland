@@ -3,8 +3,10 @@ import m from 'mithril';
 import { FeatureCollection } from 'geojson';
 import area from '@turf/area';
 import centroid from '@turf/centroid';
-import verzorgingstehuis from 'url:../assets/verzorgingstehuis.png';
+import verzorgingshuis from 'url:../assets/verzorgingstehuis.png';
 import sewage from 'url:../assets/sewage_v2a.png';
+import verzorgingshuis_green from 'url:../assets/verzorgingstehuis_g.png';
+import verzorgingshuis_purple from 'url:../assets/verzorgingstehuis_p.png';
 import ziekenhuis from 'url:../assets/ziekenhuis_32.png';
 import ziekenhuis_green from 'url:../assets/ziekenhuis_32.green.png';
 import ziekenhuis_orange from 'url:../assets/ziekenhuis_32.orange.png';
@@ -107,11 +109,27 @@ export const sewageIcon = L.icon({
   popupAnchor: [0, -30],
 });
 
-export const verzorgingstehuisIcon = L.icon({
+export const verzorgingshuisIcon = L.icon({
   className: 'leaflet-data-marker',
-  iconUrl: verzorgingstehuis,
+  iconUrl: verzorgingshuis,
   iconAnchor: [12, 12],
   iconSize: [25, 25],
+  popupAnchor: [0, -30],
+});
+
+export const verzorgingshuisIconGreen = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: verzorgingshuis_green,
+  iconAnchor: [16, 16],
+  iconSize: [32, 32],
+  popupAnchor: [0, -30],
+});
+
+export const verzorgingshuisIconPurple = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: verzorgingshuis_purple,
+  iconAnchor: [16, 16],
+  iconSize: [32, 32],
   popupAnchor: [0, -30],
 });
 
