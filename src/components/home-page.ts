@@ -28,10 +28,13 @@ export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
 export const HomePage: MeiosisComponent = () => {
   let map: L.Map;
   let ziekenhuizenLayer: L.GeoJSON;
+  let ziekenhuizenLayer_rk: L.GeoJSON;
   let vvtLayer: L.GeoJSON;
+  let vvtLayer_rk: L.GeoJSON;
   let ggzLayer: L.GeoJSON;
   let ggzLayer_rk: L.GeoJSON;
   let ghzLayer: L.GeoJSON;
+  let ghzLayer_rk: L.GeoJSON;
   //let wateren_potentie_gt1haLayer: L.GeoJSON; // dynamic
   let rwzisLayer: L.GeoJSON;
   let effluentLayer: L.GeoJSON;
@@ -166,7 +169,22 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
-                const layerIconForFeature = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                const pointToZHrkLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                  // for the ziekenhuizen_routekaarten layer: return green, orange or red icon
+                  var rkIcon = ziekenhuisIcon;
+                  if (feature.properties && feature.properties['Concept']) {
+                    rkIcon = ziekenhuisIconOrange;
+                  };
+                  if (feature.properties && feature.properties['Definitief']) {
+                    rkIcon = ziekenhuisIconGreen;
+                  };
+                  return new L.Marker(latlng, {
+                    icon: rkIcon,
+                    title: feature.properties.Name,
+                  });
+                };
+
+                const layerIconForInstellingRK = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
                   // for the instellingen layers (eerst even alleen voor ggz)
                   var layerIcon = verzorgingshuisIcon;
                   // if (rk_active) {   // rk_active is not yet assigned when layer is created
@@ -200,6 +218,17 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'vvt',
                 } as NamedGeoJSONOptions).eachLayer((l) => vvtLayer.addLayer(l));
 
+                vvtLayer_rk = (L as any).markerClusterGroup({ name: 'vvt' });
+                L.geoJSON(vvt, {
+                  pointToLayer: layerIconForInstellingRK,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectFeature(feature as Feature<Point>, 'vvt');
+                    });
+                  },
+                  name: 'vvt',
+                } as NamedGeoJSONOptions).eachLayer((l) => vvtLayer_rk.addLayer(l));
+
                 ghzLayer = (L as any).markerClusterGroup({ name: 'ghz' });
                 L.geoJSON(ghz, {
                   pointToLayer,
@@ -210,6 +239,17 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'ghz',
                 } as NamedGeoJSONOptions).eachLayer((l) => ghzLayer.addLayer(l));
+
+                ghzLayer_rk = (L as any).markerClusterGroup({ name: 'ghz' });
+                L.geoJSON(ghz, {
+                  pointToLayer: layerIconForInstellingRK,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectFeature(feature as Feature<Point>, 'ghz');
+                    });
+                  },
+                  name: 'ghz',
+                } as NamedGeoJSONOptions).eachLayer((l) => ghzLayer_rk.addLayer(l));
 
                 ggzLayer = (L as any).markerClusterGroup({ name: 'ggz' });
                 L.geoJSON(ggz, {
@@ -225,7 +265,7 @@ export const HomePage: MeiosisComponent = () => {
 
                 ggzLayer_rk = (L as any).markerClusterGroup({ name: 'ggz' });
                 L.geoJSON(ggz, {
-                  pointToLayer: layerIconForFeature,
+                  pointToLayer: layerIconForInstellingRK,
                   // filter: filter_rk_active,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
@@ -366,6 +406,16 @@ export const HomePage: MeiosisComponent = () => {
                 // activeLayers?.add('ziekenhuizen');
                 updateActiveLayers('ziekenhuizen', true);   // cannot assign: it's a constant
 
+                ziekenhuizenLayer_rk = L.geoJSON(ziekenhuizen, {
+                  pointToLayer: pointToZHrkLayer,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectHospital(feature as Feature<Point>);
+                    });
+                  },
+                   name: 'ziekenhuizen',
+                } as NamedGeoJSONOptions);
+
                 selectedMarkersLayer?.addTo(map);
 
                 const baseTree = {
@@ -383,10 +433,13 @@ export const HomePage: MeiosisComponent = () => {
                       label: 'Instellingen',
                       children: [
                         { label: 'Ziekenhuizen', layer: ziekenhuizenLayer },
+                        { label: 'Ziekenhuizen RK', layer: ziekenhuizenLayer_rk },
                         { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer },
+                        { label: 'Verpleging, verzorging en thuiszorg RK', layer: vvtLayer_rk },
                         { label: 'Geesteljke gezondheidszorg', layer: ggzLayer },
                         { label: 'Geesteljke gezondheidszorg RK', layer: ggzLayer_rk },
                         { label: 'Gehandicaptenzorg', layer: ghzLayer },
+                        { label: 'Gehandicaptenzorg RK', layer: ghzLayer_rk },
                       ],
                     },
                     {
@@ -460,7 +513,7 @@ export const HomePage: MeiosisComponent = () => {
                           (key) =>
                             !selectedHospital.properties ||
                             (selectedHospital.properties.hasOwnProperty(key) && key != 'active' && 
-                             (key !='Definitief' || rk_active) )
+                             (key != 'Definitief' || rk_active) )
                         )
                         .map((key) =>
                           m('tr', [
@@ -471,16 +524,15 @@ export const HomePage: MeiosisComponent = () => {
                     ]),
                   ],
                 ],
-              // m(HospitalInfoPanel, { state, actions }),    // funny: this leads to not clearing => duplication of the above parts
-              activeLayers && m('p', 'Active layers:  ' + Array.from(activeLayers).join(', ') ),
-              selectedLayer && m('p', 'Selected layer:  ' + selectedLayer ),
+              // activeLayers && m('p', 'Active layers:  ' + Array.from(activeLayers).join(', ') ),
+              // selectedLayer && m('p', 'Selected layer:  ' + selectedLayer ),
 
               m('input[type=checkbox].legend-checkbox', {
                 disabled: !isInstellingLayer(selectedLayer!),
                 checked: rk_active,
                 onclick: () => {
                   toggleRoutekaartActivity();
-                  refreshLayer(selectedLayer);  // wellicht moeten hier alle layesrs van de instellingen ge-refreshd worden? maar misschien ook niet..
+                  refreshLayer(selectedLayer);  // Dit heeft niet het gewenste effect namelijk dat de iconen een andere kleur krijgen
                 },
               }),
               m('b', 'Toon routekaart informatie'),
