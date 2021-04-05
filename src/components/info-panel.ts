@@ -9,7 +9,7 @@ export const InfoPanel: MeiosisComponent = () => {
     view: ({
       attrs: {
         state: {
-          app: { selectedItem, selectedLayer },
+          app: { selectedItem, selectedLayer, rk_active },
         },
       },
     }) => {
@@ -26,6 +26,7 @@ export const InfoPanel: MeiosisComponent = () => {
               ...Object.keys(props)
                 .filter((key) => !properties || properties.hasOwnProperty(key))
                 .map((key) =>
+                  (key != 'Concept ingeleverd' || rk_active)  &&
                   m('tr', [
                     m('td.bold.toright', !properties ? key : properties[key].title(key)),
                     m('td', !properties ? props[key] : properties[key].value(props[key])),
