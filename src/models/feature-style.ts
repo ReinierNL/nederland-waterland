@@ -1,5 +1,6 @@
 import { Feature } from 'geojson';
 import { capitalize } from '../utils';
+import rk_legend from '../assets/rk_legend.json'
 
 export const toColorFactory = (layerName: string, legendPropName: string): ((f?: Feature) => string) => {
   const propertyStyle = propertyStyles[layerName];
@@ -85,24 +86,21 @@ export const propertyStyles = {
   },
 
   ggz: {
-    legend: {
-      items: [],
-      title: 'dummy',
-    },
+    legend: rk_legend,
     properties: {
-      "Name": {
+      "Naam": {
         title: () => 'Naam',
         value: (s: string) => s,
       },
-      "Naam_van_het_concern_DigiMV_2012": {
+      "Organisatie": {
         title: () => 'Organisatie',
         value: (s: string) => s,
       },
-      "soort_zorgaanbieder": {
+      "Soort zorg": {
         title: () => 'Soort zorg',
         value: (s: string) => s,
       },
-      "Adres": {
+      "Straat": {
         title: () => 'Straat',
         value: (s: string) => s,
       },
@@ -114,32 +112,33 @@ export const propertyStyles = {
         title: () => 'Postcode',
         value: (s: string) => s,
       },
-      "plaats": {
+      "Plaats": {
         title: () => 'Plaats',
+        value: (s: string) => s,
+      },
+      "Concept ingeleverd": {
+        title: () => 'Concept ingeleverd',
         value: (s: string) => s,
       },
     },
   },
 
   ghz: {
-    legend: {
-      items: [],
-      title: 'dummy',
-    },
+    legend: rk_legend,
     properties: {
-      "Name": {
+      "Naam": {
         title: () => 'Naam',
         value: (s: string) => s,
       },
-      "Naam_van_het_concern_DigiMV_2012": {
+      "Organisatie": {
         title: () => 'Organisatie',
         value: (s: string) => s,
       },
-      "soort_zorgaanbieder": {
+      "Soort zorg": {
         title: () => 'Soort zorg',
         value: (s: string) => s,
       },
-      "Adres": {
+      "Straat": {
         title: () => 'Straat',
         value: (s: string) => s,
       },
@@ -151,8 +150,12 @@ export const propertyStyles = {
         title: () => 'Postcode',
         value: (s: string) => s,
       },
-      "plaats": {
+      "Plaats": {
         title: () => 'Plaats',
+        value: (s: string) => s,
+      },
+      "Concept ingeleverd": {
+        title: () => 'Concept ingeleverd',
         value: (s: string) => s,
       },
     },
@@ -257,12 +260,8 @@ export const propertyStyles = {
     },
   },
 
-
   vvt: {
-    legend: {
-      items: [],
-      title: 'dummy',
-    },
+    legend: rk_legend,
     properties: {
       "Naam": {
         title: () => 'Naam',
@@ -292,9 +291,12 @@ export const propertyStyles = {
         title: () => 'Plaats',
         value: (s: string) => s,
       },
+      "Concept ingeleverd": {
+        title: () => 'Concept ingeleverd',
+        value: (s: string) => s,
+      },
     },
   },
-
 
   wateren_potentie_gt1ha: {
     legend: {
@@ -585,27 +587,15 @@ export const propertyStyles = {
     },
   },
 
-  ziekenhuizen_rk: {
-    legend: {
-      items: [
-        [true, 0, '#80ff80', 'Definitief ingeleverd'],
-        [true, 0, '#ffc080', 'Concept ingeleverd'],
-        [true, 0, 'red', 'Niet ingeleverd'],
-      ],
-      title: 'routekaart ingeleverd',
-    },
+  ziekenhuizen: {
+    legend: rk_legend,
     properties: {
-      "Name": {
-        title: () => 'Naam',
-        value: (s: string) => s,
-      },
-      "Naam instelling": {
-        title: () => 'Organisatie',
-        value: (s: string) => s,
+      "Locatienummer": {
+        title: () => 'Locatienummer',
+        value: (n: number) => `${n}`,
       },
     },
   },
-
 
 } as Record<
   string,
