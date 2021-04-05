@@ -385,7 +385,7 @@ export const HomePage: MeiosisComponent = () => {
                         { label: 'Ziekenhuizen', layer: ziekenhuizenLayer },
                         { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer },
                         { label: 'Geesteljke gezondheidszorg', layer: ggzLayer },
-                        { label: 'GGZ RK', layer: ggzLayer_rk },
+                        { label: 'Geesteljke gezondheidszorg RK', layer: ggzLayer_rk },
                         { label: 'Gehandicaptenzorg', layer: ghzLayer },
                       ],
                     },
