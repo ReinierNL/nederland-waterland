@@ -1,7 +1,6 @@
 import m from 'mithril';
 import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
-import ziekenhuizen_rk from '../../data/ziekenhuizen_routekaarten.json';
 import ziekenhuizen from '../../data/ziekenhuizen.json';
 import ggz from '../../data/ggz.json';
 import ghz from '../../data/ghz.json';
@@ -74,7 +73,6 @@ export interface IAppStateModel {
     selectedLayer: string;
     selectedHospital: Feature<Point>;
     selectedWaterItem: Feature;
-    ziekenhuizen_rk: FeatureCollection<Point>;
     ziekenhuizen: FeatureCollection<Point>;
     /** Layers that are loaded */
     activeLayers: Set<string>;
@@ -276,7 +274,6 @@ export const appStateMgmt = {
 
       wko_verbod,
       wateren_potentie_gt1haLayer: createLeafletLayer('wateren_potentie_gt1ha', 'AVGwocGJ_1'),
-      ziekenhuizen_rk,
       ziekenhuizen,
       isSearching: false,
       searchQuery: '',

@@ -25,7 +25,6 @@ export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
 
 export const HomePage: MeiosisComponent = () => {
   let map: L.Map;
-  let ziekenhuizen_rkLayer: L.GeoJSON;
   let ziekenhuizenLayer: L.GeoJSON;
   let vvtLayer: L.GeoJSON;
   let ggzLayer: L.GeoJSON;
@@ -61,7 +60,6 @@ export const HomePage: MeiosisComponent = () => {
         ggz,
         ghz,
         vvt,
-        ziekenhuizen_rk,
         rwzis,
         effluent,
         rioolleidingenLayer,
@@ -343,16 +341,6 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'ziekenhuizen',
                 } as NamedGeoJSONOptions).addTo(map);
 
-                ziekenhuizen_rkLayer = L.geoJSON(ziekenhuizen_rk, {
-                  pointToLayer: pointToZHrkLayer,
-                  onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-                    layer.on('click', (e) => {
-                      actions.selectFeature(feature as Feature<Point>, 'ziekenhuizen_rk', layer);
-                    });
-                  },
-                  name: 'ziekenhuizen_rk',
-                } as NamedGeoJSONOptions);
-
                 selectedMarkersLayer?.addTo(map);
 
                 const baseTree = {
@@ -372,7 +360,6 @@ export const HomePage: MeiosisComponent = () => {
                         { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer },
                         { label: 'Geesteljke gezondheidszorg', layer: ggzLayer },
                         { label: 'Gehandicaptenzorg', layer: ghzLayer },
-                        { label: 'Ziekenhuizen routekaarten', layer: ziekenhuizen_rkLayer },
                       ],
                     },
                     {
@@ -473,8 +460,6 @@ export const HomePage: MeiosisComponent = () => {
                 ],
             ]
           ),
-          (!selectedLayer || selectedLayer != 'ziekenhuizen_rk') && m(Legend, { state, actions }),
-          selectedLayer && selectedLayer == 'ziekenhuizen_rk' && m(Legend_rk, { state, actions }),
         ]),
         m(
           '.disclaimer',
