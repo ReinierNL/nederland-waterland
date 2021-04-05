@@ -445,6 +445,17 @@ export const HomePage: MeiosisComponent = () => {
                   ],
                 ],
               // m(HospitalInfoPanel, { state, actions }),    // funny: this leads to not clearing => duplication of the above parts
+
+              m('input[type=checkbox].legend-checkbox', {
+                disabled: !isInstellingLayer(selectedLayer!),
+                checked: rk_active,
+                onclick: () => {
+                  toggleRoutekaartActivity();
+                  refreshLayer(selectedLayer);  // wellicht moeten hier alle layesrs van de instellingen ge-refreshd worden? maar misschien ook niet..
+                },
+              }),
+              m('b', 'Toon routekaart informatie'),
+
               selectedItem && m(InfoPanel, { state, actions }),
 
               selectedLayer &&

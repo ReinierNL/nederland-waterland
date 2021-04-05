@@ -91,6 +91,7 @@ export interface IAppStateActions {
   updateActiveLayers: (layer: string, add: boolean) => Promise<void>;
   refreshLayer: (layer?: string) => Promise<void>;
   setZoomLevel: (zoom: number) => void;
+  toggleRoutekaartActivity: () => Promise<void>; 
 }
 
 export interface IAppState {
@@ -385,6 +386,7 @@ export const appStateMgmt = {
         return { app: { hospitals } };
       },
       updateActiveLayers: async (selectedLayer: string, add: boolean) => {
+        console.log('updateActiveLayers')
         const { app } = states();
         const { activeLayers, selectedHospital, selectedLayer: sl, selectedMarkersLayer } = app;
         if (add) {
@@ -406,6 +408,7 @@ export const appStateMgmt = {
         }
       },
       refreshLayer: async (layer?: string) => {
+        console.log('refreshLayer. layer: ' + layer)
         const { app } = states();
         const { selectedHospital } = app;
         if (!selectedHospital || !layer) return;
@@ -413,6 +416,13 @@ export const appStateMgmt = {
         update({ app: { ...result } });
       },
       setZoomLevel: (zoom: number) => update({ app: { zoom } }),
+      toggleRoutekaartActivity: async () => {
+        console.log('toggleRoutekaartActivity')
+        const { app } = states();
+        var { rk_active } = app;
+        rk_active = !rk_active;
+        update({ app: { rk_active } });
+      }
     } as IAppStateActions;
   },
 } as IAppState;
