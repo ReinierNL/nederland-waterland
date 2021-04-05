@@ -6,3 +6,4 @@ dist
 .cache
 .parcel-cache
 docs_local
+temp
