@@ -54,6 +54,7 @@ export const HomePage: MeiosisComponent = () => {
         selectedItem,
         selectedHospital,
         selectedLayer,
+        rk_active,
         wateren_potentie_gt1haLayer,
         ziekenhuizen,
         // verzorgingshuizen,

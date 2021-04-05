@@ -76,6 +76,8 @@ export interface IAppStateModel {
     ziekenhuizen: FeatureCollection<Point>;
     /** Layers that are loaded */
     activeLayers: Set<string>;
+    /** is the routekaarten info active */
+    rk_active: boolean;
     [key: string]: L.GeoJSON | any;
   }>;
 }
