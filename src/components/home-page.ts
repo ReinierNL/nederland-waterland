@@ -376,16 +376,6 @@ export const HomePage: MeiosisComponent = () => {
                   ],
                 } as any; //Control.Layers.TreeObject;
 
-                // // nee ook dit heeft geen zin. we zitten hier nog in de oncreate, dus ook maar eenmalig
-                // var a_ggzLayer = ggzLayer;
-                // if (rk_active) {
-                //   a_ggzLayer = ggzLayer_rk
-                // }
-                // var lbl_ggz = 'Geesteljke gezondheidszorg GGZ '
-                // if (rk_active) {
-                //   lbl_ggz = lbl_ggz + 'RK'
-                // }
-
                 const overlayTree = {
                   label: 'Overlay kaartlagen',
                   children: [
