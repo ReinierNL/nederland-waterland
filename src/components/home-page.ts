@@ -189,7 +189,6 @@ export const HomePage: MeiosisComponent = () => {
                   return !rk_active
                 }
 
-
                 vvtLayer = (L as any).markerClusterGroup({ name: 'vvt' });
                 L.geoJSON(vvt, {
                   pointToLayer,
@@ -215,7 +214,7 @@ export const HomePage: MeiosisComponent = () => {
                 ggzLayer = (L as any).markerClusterGroup({ name: 'ggz' });
                 L.geoJSON(ggz, {
                   pointToLayer,
-                  filter: filter_rk_not_active,
+                  // filter: filter_rk_not_active,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'ggz');
@@ -227,7 +226,7 @@ export const HomePage: MeiosisComponent = () => {
                 ggzLayer_rk = (L as any).markerClusterGroup({ name: 'ggz' });
                 L.geoJSON(ggz, {
                   pointToLayer: layerIconForFeature,
-                  filter: filter_rk_active,
+                  // filter: filter_rk_active,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'ggz');
