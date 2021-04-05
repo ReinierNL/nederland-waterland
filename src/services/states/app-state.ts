@@ -413,12 +413,8 @@ export const appStateMgmt = {
         }
         // console.log(activeLayers);
         if (add && selectedHospital && selectedHospital.properties && selectedHospital.properties.Locatienummer) {
-          // if (!selectedHospital || (selectedHospital.properties && !selectedHospital.properties.Locatienummer)) {
-          //   // console.warn('No item active, so cannot load data. Please select a feature first.');
-          // } else {
           const result = await loadGeoJSON(selectedLayer, selectedHospital, app);
           update({ app: { activeLayers, selectedLayer, ...result } });
-          // }
         } else {
           update({ app: { activeLayers, selectedLayer } });
         }

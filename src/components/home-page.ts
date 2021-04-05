@@ -57,7 +57,6 @@ export const HomePage: MeiosisComponent = () => {
         rk_active,
         wateren_potentie_gt1haLayer,
         ziekenhuizen,
-        // verzorgingshuizen,
         ggz,
         ghz,
         vvt,
@@ -81,8 +80,6 @@ export const HomePage: MeiosisComponent = () => {
 
       const { updateActiveLayers, setZoomLevel } = actions;
 
-      // const waterProps = selectedWaterItem && selectedWaterItem.properties;
-      // console.table(waterProps);
       return [
         m('.content', [
           m(
@@ -177,11 +174,6 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
-                // const onEachFeature = (feature: Feature<Point, any>, layer: L.Layer) => {
-                //   layer.on('click', (e) => {
-                //     actions.selectFeature(feature as Feature<Point>, e.target?.options?.name);
-                //   });
-                // };
 
                 vvtLayer = (L as any).markerClusterGroup({ name: 'vvt' });
                 L.geoJSON(vvt, {
