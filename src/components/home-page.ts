@@ -27,13 +27,9 @@ export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
 
 export const HomePage: MeiosisComponent = () => {
   let map: L.Map;
-  let ziekenhuizenLayer: L.GeoJSON;
   let ziekenhuizenLayer_rk: L.GeoJSON;
-  let vvtLayer: L.GeoJSON;
   let vvtLayer_rk: L.GeoJSON;
-  let ggzLayer: L.GeoJSON;
   let ggzLayer_rk: L.GeoJSON;
-  let ghzLayer: L.GeoJSON;
   let ghzLayer_rk: L.GeoJSON;
   //let wateren_potentie_gt1haLayer: L.GeoJSON; // dynamic
   let rwzisLayer: L.GeoJSON;
@@ -53,7 +49,6 @@ export const HomePage: MeiosisComponent = () => {
   let wko_ordeningLayer: L.GeoJSON;
   //let wko_specprovbeleidLayer: L.GeoJSON; // dynamic
   let wko_verbodLayer: L.GeoJSON;
-  // let selectedHospitalLayer: L.Marker;
 
   return {
     view: ({ attrs: { state, actions } }) => {
