@@ -40,6 +40,8 @@ export const HomePage: MeiosisComponent = () => {
   let effluentLayer: L.GeoJSON;
   //let rioolleidingenLayer: L.GeoJSON; // dynamic
   let gl_wk_buLayer: L.GeoJSON;
+  let warmtenetten_nbr_lokaalLayer: L.GeoJSON;
+  let warmtenetten_nbr_infraLayer: L.GeoJSON;
   let wko_gwiLayer: L.GeoJSON;
   let wko_gwioLayer: L.GeoJSON;
   // let wko_gwoLayer: L.GeoJSON;  // dynamic
@@ -71,6 +73,8 @@ export const HomePage: MeiosisComponent = () => {
         effluent,
         rioolleidingenLayer,
         gl_wk_bu,
+        warmtenetten_nbr_lokaal,
+        warmtenetten_nbr_infra,
         wko_gwi,
         wko_gwio,
         wko_gwoLayer,
@@ -299,6 +303,24 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'gl_wk_bu',
                 } as NamedGeoJSONOptions);
 
+                warmtenetten_nbr_lokaalLayer = L.geoJSON(warmtenetten_nbr_lokaal, {
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectFeature(feature as Feature<Point>, 'warmtenetten_nbr_lokaal', layer);
+                    });
+                  },
+                  name: 'warmtenetten_nbr_lokaal',
+                } as NamedGeoJSONOptions);
+
+                warmtenetten_nbr_infraLayer = L.geoJSON(warmtenetten_nbr_infra, {
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectFeature(feature as Feature<Point>, 'warmtenetten_nbr_infra', layer);
+                    });
+                  },
+                  name: 'warmtenetten_nbr_infra',
+                } as NamedGeoJSONOptions);
+
                 // rioolleidingenLayer : dyamic layer, declared in app-state (as part of state)
 
                 rwzisLayer = L.geoJSON(rwzis, {
@@ -462,7 +484,11 @@ export const HomePage: MeiosisComponent = () => {
                     },
                     {
                       label: 'Divers',
-                      children: [{ label: 'aardgasvrije wijken en buurten', layer: gl_wk_buLayer }],
+                      children: [
+                        { label: 'Aardgasvrije wijken en buurten', layer: gl_wk_buLayer },
+                        { label: 'Warmtenetten - N-Br - lokaal', layer: warmtenetten_nbr_lokaalLayer },
+                        { label: 'Warmtenetten - N-Br - infra', layer: warmtenetten_nbr_infraLayer },
+                      ],
                     },
                     {
                       label: 'WKO: installaties',
