@@ -16,6 +16,7 @@ import { InfoPanel } from './info-panel';
 import { Feature, Point } from 'geojson';
 import { Legend } from './legend';
 import { Legend_rk } from './legend_rk';
+import { Legend_zh } from './legend_zh';
 import logoDeltares from 'url:../assets/Deltares.png';
 import logoSyntraal from 'url:../assets/Syntraal.png';
 import logoTNO from 'url:../assets/TNO.png';
@@ -411,17 +412,17 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'wko_verbod',
                 } as NamedGeoJSONOptions);
 
-                ziekenhuizenLayer = L.geoJSON(ziekenhuizen, {
-                  pointToLayer: pointToZHv3Layer,
-                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectHospital(feature as Feature<Point>);
-                    });
-                  },
-                  name: 'ziekenhuizen',
-                } as NamedGeoJSONOptions).addTo(map);
-                // activeLayers?.add('ziekenhuizen');
-                updateActiveLayers('ziekenhuizen', true);   // cannot assign: it's a constant
+                // ziekenhuizenLayer = L.geoJSON(ziekenhuizen, {
+                //   pointToLayer: pointToZHv3Layer,
+                //   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                //     layer.on('click', () => {
+                //       actions.selectHospital(feature as Feature<Point>);
+                //     });
+                //   },
+                //   name: 'ziekenhuizen',
+                // } as NamedGeoJSONOptions).addTo(map);
+                // // activeLayers?.add('ziekenhuizen');
+                // updateActiveLayers('ziekenhuizen', true);   // cannot assign: it's a constant
 
                 ziekenhuizenLayer_rk = L.geoJSON(ziekenhuizen, {
                   pointToLayer: pointToZHrkLayer,
@@ -431,7 +432,8 @@ export const HomePage: MeiosisComponent = () => {
                     });
                   },
                    name: 'ziekenhuizen',
-                } as NamedGeoJSONOptions);
+                } as NamedGeoJSONOptions).addTo(map);;
+                updateActiveLayers('ziekenhuizen', true);   // cannot assign: it's a constant
 
                 selectedMarkersLayer?.addTo(map);
 
@@ -449,14 +451,10 @@ export const HomePage: MeiosisComponent = () => {
                     {
                       label: 'Instellingen',
                       children: [
-                        { label: 'Ziekenhuizen', layer: ziekenhuizenLayer },
-                        { label: 'Ziekenhuizen RK', layer: ziekenhuizenLayer_rk },
-                        { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer },
-                        { label: 'Verpleging, verzorging en thuiszorg RK', layer: vvtLayer_rk },
-                        { label: 'Geesteljke gezondheidszorg', layer: ggzLayer },
-                        { label: 'Geesteljke gezondheidszorg RK', layer: ggzLayer_rk },
-                        { label: 'Gehandicaptenzorg', layer: ghzLayer },
-                        { label: 'Gehandicaptenzorg RK', layer: ghzLayer_rk },
+                        { label: 'Ziekenhuizen', layer: ziekenhuizenLayer_rk },
+                        { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer_rk },
+                        { label: 'Geesteljke gezondheidszorg', layer: ggzLayer_rk },
+                        { label: 'Gehandicaptenzorg', layer: ghzLayer_rk },
                       ],
                     },
                     {
@@ -545,8 +543,8 @@ export const HomePage: MeiosisComponent = () => {
                     ]),
                   ],
                 ],
-              // activeLayers && m('p', 'Active layers:  ' + Array.from(activeLayers).join(', ') ),
-              // selectedLayer && m('p', 'Selected layer:  ' + selectedLayer ),
+              activeLayers && m('p', 'Active layers:  ' + Array.from(activeLayers).join(', ') ),
+              selectedLayer && m('p', 'Selected layer:  ' + selectedLayer ),
 
               m('input[type=checkbox].legend-checkbox', {
                 disabled: !isInstellingLayer(selectedLayer!),
@@ -558,11 +556,13 @@ export const HomePage: MeiosisComponent = () => {
               }),
               m('b', 'Toon routekaart informatie'),
 
-              selectedItem && m(InfoPanel, { state, actions }),
+              selectedItem && m(InfoPanel, { state, actions }),  // InfoPanel shows attributes of selected item
 
               rk_active && [
                   m('.header-routekaart', 'Portefeuilleroutekaart Ziekenhuizen'),
                   m('.text-routekaart', 'Routekaarten ingeleverd: 15.7 % op basis van aantal organisaties'),
+              ],
+              rk_active && selectedLayer == 'ziekenhuizen' && [
                   m('.header-routekaart', 'Doelstelling klimaatakkoord'),
                   m('.text-routekaart', 'Totale CO₂-emissie (peiljaar 2016): 100 %'),
                   m(
@@ -573,8 +573,10 @@ export const HomePage: MeiosisComponent = () => {
                 ],
             ]
           ),
-          !rk_active && m(Legend, { state, actions }),
-          rk_active && m(Legend_rk, { state, actions }),
+          // legend: three versions
+          !isInstellingLayer(selectedLayer!) && m(Legend, { state, actions }),
+          isInstellingLayer(selectedLayer!) && selectedLayer != 'ziekenhuizen' && m(Legend_rk, { state, actions }),
+          isInstellingLayer(selectedLayer!) && selectedLayer == 'ziekenhuizen' && m(Legend_zh, { state, actions }),
         ]),
         m(
           '.disclaimer',

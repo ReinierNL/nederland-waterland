@@ -1,7 +1,7 @@
 {
     "items": [
-        [true, 0, "#80ff80", "Definitief ingeleverd"],
-        [true, 0, "#ffc080", "Concept ingeleverd"],
+        [true, 0, "#40aa40", "Definitief ingeleverd"],
+        [true, 0, "purple", "Concept ingeleverd"],
         [true, 0, "red", "Niet ingeleverd"]
         ],
     "title": "routekaart ingeleverd"
