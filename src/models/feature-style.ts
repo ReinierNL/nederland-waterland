@@ -298,6 +298,52 @@ export const propertyStyles = {
     },
   },
 
+  warmtenetten_nbr_infra: {
+    legend: {
+      items: [],
+      title: 'value',
+    },
+    properties: {
+      "toelichtin": {
+        title: () => 'Type',
+        value: (s: string) => s,
+      },
+    },
+  },
+
+  warmtenetten_nbr_lokaal: {
+    legend: {
+      items: [],
+      title: 'value',
+    },
+    properties: {
+      "naam_warmt": {
+        title: () => 'Naam warmtenet',
+        value: (s: string) => s,
+      },
+      "type_leidi": {
+        title: () => 'Type leiding',
+        value: (s: string) => capitalize(s),
+      },
+      "MEDIUM": {
+        title: () => 'Medium',
+        value: (s: string) => capitalize(s),
+      },
+      "STATUS": {
+        title: () => 'Status',
+        value: (s: string) => capitalize(s),
+      },
+      "SOORT": {
+        title: () => 'Soort',
+        value: (s: string) => capitalize(s),
+      },
+      "FUNCTION": {
+        title: () => 'Functie',
+        value: (s: string) => capitalize(s),
+      },
+    },
+  },
+
   wateren_potentie_gt1ha: {
     legend: {
       items: [
