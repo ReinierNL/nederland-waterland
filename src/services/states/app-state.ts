@@ -314,7 +314,14 @@ export const appStateMgmt = {
         m.redraw();
       },
       selectFeature: async (f, selectedLayer?: string, layer?: L.Layer) => {
-        // console.log('Select feature');
+        console.log('Select feature');
+        console.log('Selected layer: ' + selectedLayer);
+        const {
+          app: { selectedMarkersLayer, ggz, ghz, vvt, selectedHospital: old_sh },
+        } = states();
+        var new_sh = old_sh;
+        if (selectedLayer != 'ziekenhuizen') new_sh = undefined;
+      // console.log('Highlighted layer: ' + highlightedLayer.name);
         if (highlightedLayer && highlightedLayer.setStyle) {
           highlightedLayer.setStyle({ color: highlightedColor });
           if (layer && (layer as L.Path).options) {
@@ -351,7 +358,7 @@ export const appStateMgmt = {
             highlightMarker(selectedMarkersLayer, f);
           }
         }
-        update({ app: { selectedItem: () => f, selectedLayer } });
+        update({ app: { selectedItem: () => f, selectedLayer, selectedHospital: new_sh } });
       },
       selectHospital: async (f) => {
         const { app } = states();
@@ -410,19 +417,22 @@ export const appStateMgmt = {
       updateActiveLayers: async (selectedLayer: string, add: boolean) => {
         console.log('updateActiveLayers')
         const { app } = states();
-        const { activeLayers, selectedHospital, selectedLayer: sl, selectedMarkersLayer } = app;
+        const { activeLayers, selectedHospital: old_sh, selectedLayer: old_sl, selectedMarkersLayer } = app;
+        var new_sh = old_sh;
         if (add) {
           activeLayers!.add(selectedLayer);
         } else {
           activeLayers!.delete(selectedLayer);
-          if (sl === selectedLayer) selectedMarkersLayer?.clearLayers();
+          if (old_sl === selectedLayer) selectedMarkersLayer?.clearLayers();
+          selectedLayer = ''
         }
+        if (selectedLayer != 'ziekenhuizen') new_sh = undefined;
         // console.log(activeLayers);
-        if (add && selectedHospital && selectedHospital.properties && selectedHospital.properties.Locatienummer) {
-          const result = await loadGeoJSON(selectedLayer, selectedHospital, app);
-          update({ app: { activeLayers, selectedLayer, ...result } });
+        if (add && new_sh && new_sh.properties && new_sh.properties.Locatienummer) {
+          const result = await loadGeoJSON(selectedLayer, new_sh, app);
+          update({ app: { activeLayers, selectedLayer, selectedHospital: new_sh, ...result } });
         } else {
-          update({ app: { activeLayers, selectedLayer } });
+          update({ app: { activeLayers, selectedLayer, selectedHospital: new_sh } });
         }
       },
       refreshLayer: async (layer?: string) => {
