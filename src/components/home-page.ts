@@ -502,17 +502,14 @@ export const HomePage: MeiosisComponent = () => {
               m('input[type=checkbox].legend-checkbox', {
                 disabled: !isInstellingLayer(selectedLayer!),
                 checked: rk_active,
-                onclick: () => {
-                  toggleRoutekaartActivity();
-                  // refreshLayer(selectedLayer);  // Dit heeft niet het gewenste effect namelijk dat de iconen een andere kleur krijgen
-                },
+                onclick: () => toggleRoutekaartActivity(),
               }),
               m('b', 'Toon routekaart informatie'),
 
-              rk_active && [
-                  m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer!] || selectedLayer}`),
-                  m('.text-routekaart', `Routekaarten concept ingeleverd: ${layerPercentages[selectedLayer!][0]} % op basis van aantal organisaties`),
-                  m('.text-routekaart', `Routekaarten definitief ingeleverd: ${layerPercentages[selectedLayer!][1]} % op basis van aantal organisaties`),
+              rk_active && selectedLayer && isInstellingLayer(selectedLayer) && [
+                  m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
+                  m('.text-routekaart', `Routekaarten concept ingeleverd: ${layerPercentages[selectedLayer][0]} % op basis van aantal organisaties`),
+                  m('.text-routekaart', `Routekaarten definitief ingeleverd: ${layerPercentages[selectedLayer][1]} % op basis van aantal organisaties`),
               ],
               rk_active && selectedLayer == 'ziekenhuizen' && [
                   m('.header-routekaart', 'Doelstelling klimaatakkoord'),
