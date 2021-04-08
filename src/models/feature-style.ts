@@ -116,9 +116,9 @@ export const propertyStyles = {
         title: () => 'Plaats',
         value: (s: string) => s,
       },
-      "Concept ingeleverd": {
-        title: () => 'Concept ingeleverd',
-        value: (s: string) => s,
+      "Routekaart": {
+        title: () => 'Routekaart',
+        value: (s: string) => s == undefined ? 'Niet ingeleverd' : s,
       },
     },
   },
@@ -154,9 +154,9 @@ export const propertyStyles = {
         title: () => 'Plaats',
         value: (s: string) => s,
       },
-      "Concept ingeleverd": {
-        title: () => 'Concept ingeleverd',
-        value: (s: string) => s,
+      "Routekaart": {
+        title: () => 'Routekaart',
+        value: (s: string) => s == undefined ? 'Niet ingeleverd' : s,
       },
     },
   },
@@ -291,9 +291,9 @@ export const propertyStyles = {
         title: () => 'Plaats',
         value: (s: string) => s,
       },
-      "Concept ingeleverd": {
-        title: () => 'Concept ingeleverd',
-        value: (s: string) => s,
+      "Routekaart": {
+        title: () => 'Routekaart',
+        value: (s: string) => s == undefined ? 'Niet ingeleverd' : s,
       },
     },
   },
@@ -304,7 +304,7 @@ export const propertyStyles = {
       title: 'value',
     },
     properties: {
-      "toelichtin": {
+      "t": {
         title: () => 'Type',
         value: (s: string) => s,
       },
