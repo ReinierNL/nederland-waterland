@@ -5,11 +5,14 @@ import area from '@turf/area';
 import centroid from '@turf/centroid';
 import verzorgingshuis from 'url:../assets/verzorgingstehuis.png';
 import sewage from 'url:../assets/sewage_v2a.png';
-import verzorgingshuis_green from 'url:../assets/verzorgingstehuis_g.png';
-import verzorgingshuis_purple from 'url:../assets/verzorgingstehuis_p.png';
+import verzorgingshuis_red from 'url:../assets/verzorgingstehuis.red.png';
+import verzorgingshuis_green from 'url:../assets/verzorgingstehuis.green.png';
+import verzorgingshuis_purple from 'url:../assets/verzorgingstehuis.purple.png';
 import ziekenhuis from 'url:../assets/ziekenhuis_32.png';
-import ziekenhuis_green from 'url:../assets/ziekenhuis_32.green.png';
+import ziekenhuis_green from 'url:../assets/ziekenhuis_32.grn2.png';
 import ziekenhuis_orange from 'url:../assets/ziekenhuis_32.orange.png';
+import ziekenhuis_purple from 'url:../assets/ziekenhuis_32.purple.png';
+import ziekenhuis_red from 'url:../assets/ziekenhuis_32.d_red.png';
 
 export const formatNumber = (x: number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
@@ -133,6 +136,14 @@ export const verzorgingshuisIconPurple = L.icon({
   popupAnchor: [0, -30],
 });
 
+export const verzorgingshuisIconRed = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: verzorgingshuis_red,
+  iconAnchor: [16, 16],
+  iconSize: [32, 32],
+  popupAnchor: [0, -30],
+});
+
 export const ziekenhuisIcon = L.icon({
   className: 'leaflet-data-marker',
   iconUrl: ziekenhuis,
@@ -152,6 +163,22 @@ export const ziekenhuisIconGreen = L.icon({
 export const ziekenhuisIconOrange = L.icon({
   className: 'leaflet-data-marker',
   iconUrl: ziekenhuis_orange,
+  iconAnchor: [16, 16],
+  iconSize: [32, 32],
+  popupAnchor: [0, -30],
+});
+
+export const ziekenhuisIconPurple = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: ziekenhuis_purple,
+  iconAnchor: [16, 16],
+  iconSize: [32, 32],
+  popupAnchor: [0, -30],
+});
+
+export const ziekenhuisIconRed = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: ziekenhuis_red,
   iconAnchor: [16, 16],
   iconSize: [32, 32],
   popupAnchor: [0, -30],
