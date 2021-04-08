@@ -200,24 +200,6 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
-                const filter_rk_active = (f?: Feature) => {
-                  return rk_active
-                }
-                const filter_rk_not_active = (f?: Feature) => {
-                  return !rk_active
-                }
-
-                vvtLayer = (L as any).markerClusterGroup({ name: 'vvt' });
-                L.geoJSON(vvt, {
-                  pointToLayer,
-                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectFeature(feature as Feature<Point>, 'vvt');
-                    });
-                  },
-                  name: 'vvt',
-                } as NamedGeoJSONOptions).eachLayer((l) => vvtLayer.addLayer(l));
-
                 vvtLayer_rk = (L as any).markerClusterGroup({ name: 'vvt' });
                 L.geoJSON(vvt, {
                   pointToLayer: layerIconForInstellingRK,
@@ -229,17 +211,6 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'vvt',
                 } as NamedGeoJSONOptions).eachLayer((l) => vvtLayer_rk.addLayer(l));
 
-                ghzLayer = (L as any).markerClusterGroup({ name: 'ghz' });
-                L.geoJSON(ghz, {
-                  pointToLayer,
-                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectFeature(feature as Feature<Point>, 'ghz');
-                    });
-                  },
-                  name: 'ghz',
-                } as NamedGeoJSONOptions).eachLayer((l) => ghzLayer.addLayer(l));
-
                 ghzLayer_rk = (L as any).markerClusterGroup({ name: 'ghz' });
                 L.geoJSON(ghz, {
                   pointToLayer: layerIconForInstellingRK,
@@ -250,18 +221,6 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'ghz',
                 } as NamedGeoJSONOptions).eachLayer((l) => ghzLayer_rk.addLayer(l));
-
-                ggzLayer = (L as any).markerClusterGroup({ name: 'ggz' });
-                L.geoJSON(ggz, {
-                  pointToLayer,
-                  // filter: filter_rk_not_active,
-                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectFeature(feature as Feature<Point>, 'ggz');
-                    });
-                  },
-                  name: 'ggz',
-                } as NamedGeoJSONOptions).eachLayer((l) => ggzLayer.addLayer(l));
 
                 ggzLayer_rk = (L as any).markerClusterGroup({ name: 'ggz' });
                 L.geoJSON(ggz, {
@@ -411,18 +370,6 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'wko_verbod',
                 } as NamedGeoJSONOptions);
-
-                // ziekenhuizenLayer = L.geoJSON(ziekenhuizen, {
-                //   pointToLayer: pointToZHv3Layer,
-                //   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                //     layer.on('click', () => {
-                //       actions.selectHospital(feature as Feature<Point>);
-                //     });
-                //   },
-                //   name: 'ziekenhuizen',
-                // } as NamedGeoJSONOptions).addTo(map);
-                // // activeLayers?.add('ziekenhuizen');
-                // updateActiveLayers('ziekenhuizen', true);   // cannot assign: it's a constant
 
                 ziekenhuizenLayer_rk = L.geoJSON(ziekenhuizen, {
                   pointToLayer: pointToZHrkLayer,
