@@ -8,9 +8,16 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster.js';
 // import 'leaflet-hash';
-import { sewageIcon, 
-  verzorgingshuisIconGreen, verzorgingshuisIconPurple, verzorgingshuisIconRed,
-  ziekenhuisIconGreen, ziekenhuisIconPurple, ziekenhuisIconRed } from '../utils';
+import {
+  sewageIcon,
+  verzorgingshuisIcon,
+  verzorgingshuisIconGreen,
+  verzorgingshuisIconPurple,
+  verzorgingshuisIconRed,
+  ziekenhuisIconGreen,
+  ziekenhuisIconPurple,
+  ziekenhuisIconRed,
+} from '../utils';
 import { MeiosisComponent } from '../services/meiosis';
 import { InfoPanel } from './info-panel';
 // import { HospitalInfoPanel } from './hospital-info-panel';
@@ -21,7 +28,8 @@ import { Legend_zh } from './legend_zh';
 import logoDeltares from 'url:../assets/Deltares.png';
 import logoSyntraal from 'url:../assets/Syntraal.png';
 import logoTNO from 'url:../assets/TNO.png';
-import { isInstellingLayer } from './utils_rs'
+import logoEVZ from 'url:../assets/evz.png';
+import { isInstellingLayer } from './utils_rs';
 import layerTitles from '../assets/layerTitles.json';
 import layerPercentages from '../assets/layer_percentages.json';
 
@@ -61,7 +69,6 @@ export const HomePage: MeiosisComponent = () => {
         selectedItem,
         selectedHospital,
         selectedLayer,
-        activeLayers,
         rk_active,
         wateren_potentie_gt1haLayer,
         ziekenhuizen,
@@ -88,9 +95,27 @@ export const HomePage: MeiosisComponent = () => {
         selectedMarkersLayer,
       } = state.app;
 
-      const { refreshLayer, setZoomLevel, toggleRoutekaartActivity, updateActiveLayers } = actions;
+      const { setZoomLevel, toggleRoutekaartActivity, updateActiveLayers } = actions;
 
       return [
+        m(
+          'nav',
+          { style: 'width:100%;height:130px;' },
+          m('ul.list-inline', [
+            m(
+              'li',
+              m('img', {
+                src: logoEVZ,
+                alt: 'logo EVZ',
+                width: '110px',
+                style: 'margin-left: 70.5px; margin-top: 10px',
+              })
+            ),
+            m('li.logo', m('img', { src: logoTNO, alt: 'logo TNO', width: '82px' })),
+            m('li.logo', m('img', { src: logoDeltares, alt: 'logo Deltares', width: '114px' })),
+            m('li.logo', m('img', { src: logoSyntraal, alt: 'logo Syntraal', width: '140px' })),
+          ])
+        ),
         m('.content', [
           m(
             '.container',
@@ -181,7 +206,7 @@ export const HomePage: MeiosisComponent = () => {
                     } else {
                       layerIcon = ziekenhuisIconGreen;
                     }
-                  };
+                  }
                   return new L.Marker(latlng, {
                     icon: layerIcon,
                     title: feature.properties.Name,
@@ -197,7 +222,7 @@ export const HomePage: MeiosisComponent = () => {
                     } else {
                       layerIcon = verzorgingshuisIconGreen;
                     }
-                  };
+                  }
                   return new L.Marker(latlng, {
                     icon: layerIcon,
                     title: feature.properties.Name,
@@ -382,9 +407,9 @@ export const HomePage: MeiosisComponent = () => {
                       actions.selectHospital(feature as Feature<Point>);
                     });
                   },
-                   name: 'ziekenhuizen',
-                } as NamedGeoJSONOptions).addTo(map);;
-                updateActiveLayers('ziekenhuizen', true);   // cannot assign: it's a constant
+                  name: 'ziekenhuizen',
+                } as NamedGeoJSONOptions).addTo(map);
+                updateActiveLayers('ziekenhuizen', true); // cannot assign: it's a constant
 
                 selectedMarkersLayer?.addTo(map);
 
@@ -466,7 +491,7 @@ export const HomePage: MeiosisComponent = () => {
           m(
             '.panel',
             {
-              style: 'position: absolute; top: 0; left: 70vw; padding: 5px;',
+              style: 'position: absolute; top: 130px; left: 70vw; padding: 5px;',
             },
             [
               m('h3', 'Aquathermie & Zorgvastgoed Dashboard'),
@@ -497,7 +522,7 @@ export const HomePage: MeiosisComponent = () => {
               // activeLayers && m('p', 'Active layers:  ' + Array.from(activeLayers).join(', ') ),
               // selectedLayer && m('p', 'Selected layer:  ' + selectedLayer ),
 
-              selectedItem && m(InfoPanel, { state, actions }),  // InfoPanel shows attributes of selected item
+              selectedItem && m(InfoPanel, { state, actions }), // InfoPanel shows attributes of selected item
 
               m('input[type=checkbox].legend-checkbox', {
                 disabled: !isInstellingLayer(selectedLayer!),
@@ -506,12 +531,21 @@ export const HomePage: MeiosisComponent = () => {
               }),
               m('b', 'Toon routekaart informatie'),
 
-              rk_active && selectedLayer && isInstellingLayer(selectedLayer) && [
+              rk_active &&
+                selectedLayer &&
+                isInstellingLayer(selectedLayer) && [
                   m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
-                  m('.text-routekaart', `Routekaarten concept ingeleverd: ${layerPercentages[selectedLayer][0]} % op basis van aantal organisaties`),
-                  m('.text-routekaart', `Routekaarten definitief ingeleverd: ${layerPercentages[selectedLayer][1]} % op basis van aantal organisaties`),
-              ],
-              rk_active && selectedLayer == 'ziekenhuizen' && [
+                  m(
+                    '.text-routekaart',
+                    `Routekaarten concept ingeleverd: ${layerPercentages[selectedLayer][0]} % op basis van aantal organisaties`
+                  ),
+                  m(
+                    '.text-routekaart',
+                    `Routekaarten definitief ingeleverd: ${layerPercentages[selectedLayer][1]} % op basis van aantal organisaties`
+                  ),
+                ],
+              rk_active &&
+                selectedLayer == 'ziekenhuizen' && [
                   m('.header-routekaart', 'Doelstelling klimaatakkoord'),
                   m('.text-routekaart', 'Totale CO₂-emissie (peiljaar 2016): 100 %'),
                   m(
@@ -532,11 +566,6 @@ export const HomePage: MeiosisComponent = () => {
           'Data over WKO bronnen is afkomstig van de WKO-bodemenergietool (wkotool.nl). ' +
             'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
         ),
-        m('.footer', [
-          m('.logo', m('img', { src: logoTNO, alt: 'logo TNO', width: '82px' })),
-          m('.logo', m('img', { src: logoDeltares, alt: 'logo Deltares', width: '114px' })),
-          m('.logo', m('img', { src: logoSyntraal, alt: 'logo Syntraal', width: '140px' })),
-        ]),
       ];
     },
   };
