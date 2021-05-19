@@ -124,23 +124,6 @@ const highlightMarker = (selectedMarkersLayer: L.GeoJSON, f: Feature, primarySel
   );
 };
 
-// const pointToLayerIconVZH = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-//   // for the instellinge layers 
-//   // tis doesn't work. k_active is not in scope here
-//   var layerIcon = verzorgingshuisIcon;
-//   if (rk_active) {
-//   // if (true) {
-//     layerIcon = verzorgingshuisIconPurple;
-//     if (feature.properties && feature.properties['Concept ingeleverd']) {
-//       layerIcon = verzorgingshuisIconGreen;
-//     }
-//   }
-//   return new L.Marker(latlng, {
-//     icon: layerIcon,
-//     title: feature.properties.Name,
-//   });
-// };
-
 const pointToTitledLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
   // intended purpose: let the feature have a title that is shown when mouse is hovered over the feature
   // but.. it doesn't seem to work
@@ -248,7 +231,7 @@ export const appStateMgmt = {
       wko_gwoLayer: L.geoJSON(undefined, {
         pointToLayer: pointToGreenCircleMarkerLayer,
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-          layer.on('click', (e) => {
+          layer.on('click', () => {
             actions.selectFeature(feature as Feature<Point>, 'wko_gwo', layer);
           });
         },
@@ -257,7 +240,7 @@ export const appStateMgmt = {
       wko_gbesLayer: L.geoJSON(undefined, {
         pointToLayer: pointToYellowCircleMarkerLayer,
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-          layer.on('click', (e) => {
+          layer.on('click', () => {
             actions.selectFeature(feature as Feature<Point>, 'wko_gbes', layer);
           });
         },
@@ -267,7 +250,7 @@ export const appStateMgmt = {
       wko_installatiesLayer: L.geoJSON(undefined, {
         pointToLayer: pointToGrayCircleMarkerLayer,
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-          layer.on('click', (e) => {
+          layer.on('click', () => {
             actions.selectFeature(feature as Feature<Point>, 'wko_installaties', layer);
           });
         },

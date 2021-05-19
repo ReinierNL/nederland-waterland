@@ -9,17 +9,12 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster.js';
 // import 'leaflet-hash';
 import {
-  careIconGGZ,
-  careIconGHZ,
+  careIconBlack,
+  careIconGreen,
   careIconPurple,
-  careIconVVT,
   sewageIcon,
   skatingIcon,
   swimmingIcon,
-  verzorgingshuisIcon,
-  // verzorgingshuisIconGreen,
-  // verzorgingshuisIconPurple,
-  // verzorgingshuisIconRed,
   ziekenhuisIconGreen,
   ziekenhuisIconPurple,
   ziekenhuisIconRed,
@@ -188,41 +183,6 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
-                const pointToLayerGGZ = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  return new L.Marker(latlng, {
-                    icon: careIconGGZ,
-                    title: feature.properties.Name,
-                  });
-                };
-
-                const pointToLayerGHZ = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  return new L.Marker(latlng, {
-                    icon: careIconGHZ,
-                    title: feature.properties.Name,
-                  });
-                };
-
-                const pointToLayerPurple = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  return new L.Marker(latlng, {
-                    icon: careIconPurple,
-                    title: feature.properties.Name,
-                  });
-                };
-
-                const pointToLayerVVT = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  return new L.Marker(latlng, {
-                    icon: careIconVVT,
-                    title: feature.properties.Name,
-                  });
-                };
-
-                const pointToLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  return new L.Marker(latlng, {
-                    icon: verzorgingshuisIcon,
-                    title: feature.properties.Name,
-                  });
-                };
-
                 const pointToSewageLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
                   return new L.Marker(latlng, {
                     icon: sewageIcon,
@@ -260,13 +220,13 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
-                const layerIconForInstellingGGZ_rk = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  var layerIcon = careIconGGZ;
+                const layerIconForCare = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                  var layerIcon = careIconBlack;
                   if (feature.properties && feature.properties['Routekaart']) {
                     if (feature.properties['Routekaart'] == 'Concept ingeleverd') {
                       layerIcon = careIconPurple;
                     } else {
-                      layerIcon = careIconGGZ;   // does not occur, but at least this one is green
+                      layerIcon = careIconGreen;   // does not occur yet
                     }
                   }
                   return new L.Marker(latlng, {
@@ -275,41 +235,11 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
-                const layerIconForInstellingGHZ_rk = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  var layerIcon = careIconGHZ;
-                  if (feature.properties && feature.properties['Routekaart']) {
-                    if (feature.properties['Routekaart'] == 'Concept ingeleverd') {
-                      layerIcon = careIconPurple;
-                    } else {
-                      layerIcon = careIconGGZ;   // does not occur, but at least this one is green
-                    }
-                  }
-                  return new L.Marker(latlng, {
-                    icon: layerIcon,
-                    title: feature.properties.Name,
-                  });
-                };
-
-                const layerIconForInstellingVVT_rk = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  var layerIcon = careIconVVT;
-                  if (feature.properties && feature.properties['Routekaart']) {
-                    if (feature.properties['Routekaart'] == 'Concept ingeleverd') {
-                      layerIcon = careIconPurple;
-                    } else {
-                      layerIcon = careIconGGZ;   // does not occur, but at least this one is green
-                    }
-                  }
-                  return new L.Marker(latlng, {
-                    icon: layerIcon,
-                    title: feature.properties.Name,
-                  });
-                };
-                
                 // layers:
 
                 vvtLayer_rk = (L as any).markerClusterGroup({ name: 'vvt' });
                 L.geoJSON(vvt, {
-                  pointToLayer: layerIconForInstellingVVT_rk,
+                  pointToLayer: layerIconForCare,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'vvt');
@@ -320,7 +250,7 @@ export const HomePage: MeiosisComponent = () => {
 
                 ghzLayer_rk = (L as any).markerClusterGroup({ name: 'ghz' });
                 L.geoJSON(ghz, {
-                  pointToLayer: layerIconForInstellingGHZ_rk,
+                  pointToLayer: layerIconForCare,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'ghz');
@@ -331,7 +261,7 @@ export const HomePage: MeiosisComponent = () => {
 
                 ggzLayer_rk = (L as any).markerClusterGroup({ name: 'ggz' });
                 L.geoJSON(ggz, {
-                  pointToLayer: layerIconForInstellingGGZ_rk,
+                  pointToLayer: layerIconForCare,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'ggz');
@@ -406,7 +336,7 @@ export const HomePage: MeiosisComponent = () => {
                 rwzisLayer = L.geoJSON(rwzis, {
                   pointToLayer: pointToSewageLayer,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', (e: LeafletEvent) => {
+                    layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'rwzis');
                     });
                   },
@@ -414,9 +344,8 @@ export const HomePage: MeiosisComponent = () => {
                 } as NamedGeoJSONOptions);
 
                 wko_diepteLayer = L.geoJSON(wko_diepte, {
-                  pointToLayer,
                   onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-                    layer.on('click', (e: LeafletEvent) => {
+                    layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'wko_diepte', layer);
                     });
                   },
@@ -432,9 +361,9 @@ export const HomePage: MeiosisComponent = () => {
                 wko_gwiLayer = L.geoJSON(wko_gwi, {
                   pointToLayer: pointToCircleMarkerLayer,
                   onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-                    layer.on('click', (e) => {
-                      actions.selectFeature(feature as Feature<Point>, 'wko_gwi', layer);
-                    });
+                    layer.on('click', () => {
+                        actions.selectFeature(feature as Feature<Point>, 'wko_gwi', layer);
+                      });
                   },
                   name: 'wko_gwi',
                 } as NamedGeoJSONOptions);
@@ -442,7 +371,7 @@ export const HomePage: MeiosisComponent = () => {
                 wko_gwioLayer = L.geoJSON(wko_gwio, {
                   pointToLayer: pointToCircleMarkerLayer,
                   onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-                    layer.on('click', (e) => {
+                    layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'wko_gwio', layer);
                     });
                   },
@@ -455,7 +384,7 @@ export const HomePage: MeiosisComponent = () => {
                 wko_obesLayer = L.geoJSON(wko_obes, {
                   pointToLayer: pointToPurpleCircleMarkerLayer,
                   onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-                    layer.on('click', (e) => {
+                    layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'wko_obes', layer);
                     });
                   },
@@ -464,9 +393,8 @@ export const HomePage: MeiosisComponent = () => {
 
                 // wko_natuurLayer : dyamic layer, declared in app-state (as part of state)
                 wko_ordeningLayer = L.geoJSON(wko_ordening, {
-                  pointToLayer,
                   onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-                    layer.on('click', (e) => {
+                    layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'wko_ordening', layer);
                     });
                   },
@@ -481,11 +409,10 @@ export const HomePage: MeiosisComponent = () => {
 
                 // wko_specprovbeleidLayer : dyamic layer, declared in app-state (as part of state)
                 wko_verbodLayer = L.geoJSON(wko_verbod, {
-                  pointToLayer,
                   onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-                    layer.on('click', (e) => {
-                      actions.selectFeature(feature as Feature<Point>, 'wko_verbod', layer);
-                    });
+                    layer.on('click', function () {
+                        actions.selectFeature(feature as Feature<Point>, 'wko_verbod', layer);
+                      });
                   },
                   style: () => {
                     return {
