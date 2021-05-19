@@ -17,10 +17,9 @@ export const InfoPanel: MeiosisComponent = () => {
       const propStyle = selectedLayer && propertyStyles[selectedLayer];
       const properties = propStyle && propStyle.properties;
       return ([
-        selectedLayer && m('h4.title', `Geselecteerd: ${layerTitles[selectedLayer] || selectedLayer}`),
+        selectedLayer && m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
         properties &&
         m('.info-panel', [
-          // selectedLayer && m('h4.title', `Geselecteerd: ${layerTitles[selectedLayer] || selectedLayer}`),
           props &&
             m('table.feature-props', [
               ...Object.keys(props)

@@ -9,11 +9,15 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster.js';
 // import 'leaflet-hash';
 import {
+  careIconGGZ,
+  careIconGHZ,
+  careIconPurple,
+  careIconVVT,
   sewageIcon,
   verzorgingshuisIcon,
-  verzorgingshuisIconGreen,
-  verzorgingshuisIconPurple,
-  verzorgingshuisIconRed,
+  // verzorgingshuisIconGreen,
+  // verzorgingshuisIconPurple,
+  // verzorgingshuisIconRed,
   ziekenhuisIconGreen,
   ziekenhuisIconPurple,
   ziekenhuisIconRed,
@@ -176,6 +180,34 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
+                const pointToLayerGGZ = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                  return new L.Marker(latlng, {
+                    icon: careIconGGZ,
+                    title: feature.properties.Name,
+                  });
+                };
+
+                const pointToLayerGHZ = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                  return new L.Marker(latlng, {
+                    icon: careIconGHZ,
+                    title: feature.properties.Name,
+                  });
+                };
+
+                const pointToLayerPurple = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                  return new L.Marker(latlng, {
+                    icon: careIconPurple,
+                    title: feature.properties.Name,
+                  });
+                };
+
+                const pointToLayerVVT = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                  return new L.Marker(latlng, {
+                    icon: careIconVVT,
+                    title: feature.properties.Name,
+                  });
+                };
+
                 const pointToLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
                   return new L.Marker(latlng, {
                     icon: verzorgingshuisIcon,
@@ -190,12 +222,6 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
-                // const pointToZHv3Layer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                //   return new L.Marker(latlng, {
-                //     icon: ziekenhuisIcon,
-                //     title: feature.properties.Name,
-                //   });
-                // };
 
                 const pointToZHrkLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
                   // for the ziekenhuizen_routekaarten layer: return green, orange or red icon
@@ -213,14 +239,43 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
-                const layerIconForInstellingRK = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  // for the instellingen layers (vvt, ggz, ghz)
-                  var layerIcon = verzorgingshuisIconRed;
+                const layerIconForInstellingGGZ_rk = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                  var layerIcon = careIconGGZ;
                   if (feature.properties && feature.properties['Routekaart']) {
                     if (feature.properties['Routekaart'] == 'Concept ingeleverd') {
-                      layerIcon = verzorgingshuisIconPurple;
+                      layerIcon = careIconPurple;
                     } else {
-                      layerIcon = verzorgingshuisIconGreen;
+                      layerIcon = careIconGGZ;   // does not occur, but at least this one is green
+                    }
+                  }
+                  return new L.Marker(latlng, {
+                    icon: layerIcon,
+                    title: feature.properties.Name,
+                  });
+                };
+
+                const layerIconForInstellingGHZ_rk = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                  var layerIcon = careIconGHZ;
+                  if (feature.properties && feature.properties['Routekaart']) {
+                    if (feature.properties['Routekaart'] == 'Concept ingeleverd') {
+                      layerIcon = careIconPurple;
+                    } else {
+                      layerIcon = careIconGGZ;   // does not occur, but at least this one is green
+                    }
+                  }
+                  return new L.Marker(latlng, {
+                    icon: layerIcon,
+                    title: feature.properties.Name,
+                  });
+                };
+
+                const layerIconForInstellingVVT_rk = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                  var layerIcon = careIconVVT;
+                  if (feature.properties && feature.properties['Routekaart']) {
+                    if (feature.properties['Routekaart'] == 'Concept ingeleverd') {
+                      layerIcon = careIconPurple;
+                    } else {
+                      layerIcon = careIconGGZ;   // does not occur, but at least this one is green
                     }
                   }
                   return new L.Marker(latlng, {
@@ -231,7 +286,7 @@ export const HomePage: MeiosisComponent = () => {
 
                 vvtLayer_rk = (L as any).markerClusterGroup({ name: 'vvt' });
                 L.geoJSON(vvt, {
-                  pointToLayer: layerIconForInstellingRK,
+                  pointToLayer: layerIconForInstellingVVT_rk,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'vvt');
@@ -242,7 +297,7 @@ export const HomePage: MeiosisComponent = () => {
 
                 ghzLayer_rk = (L as any).markerClusterGroup({ name: 'ghz' });
                 L.geoJSON(ghz, {
-                  pointToLayer: layerIconForInstellingRK,
+                  pointToLayer: layerIconForInstellingGHZ_rk,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'ghz');
@@ -253,8 +308,7 @@ export const HomePage: MeiosisComponent = () => {
 
                 ggzLayer_rk = (L as any).markerClusterGroup({ name: 'ggz' });
                 L.geoJSON(ggz, {
-                  pointToLayer: layerIconForInstellingRK,
-                  // filter: filter_rk_active,
+                  pointToLayer: layerIconForInstellingGGZ_rk,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'ggz');
@@ -264,7 +318,6 @@ export const HomePage: MeiosisComponent = () => {
                 } as NamedGeoJSONOptions).eachLayer((l) => ggzLayer_rk.addLayer(l));
 
                 effluentLayer = L.geoJSON(effluent, {
-                  pointToLayer,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'effluent', layer);
@@ -425,7 +478,7 @@ export const HomePage: MeiosisComponent = () => {
                   label: 'Overlay kaartlagen',
                   children: [
                     {
-                      label: 'Instellingen',
+                      label: 'Zorginstellingen',
                       children: [
                         { label: 'Ziekenhuizen', layer: ziekenhuizenLayer_rk },
                         { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer_rk },
@@ -494,7 +547,7 @@ export const HomePage: MeiosisComponent = () => {
               style: 'position: absolute; top: 130px; left: 70vw; padding: 5px;',
             },
             [
-              m('h3', 'Aquathermie & Zorgvastgoed Dashboard'),
+              m('h3', 'De zorgduurzaamkaart'),
               selectedHospital &&
                 selectedHospital.properties && [
                   // m('p', 'Geselecteerd ziekenhuis:'),
@@ -502,7 +555,7 @@ export const HomePage: MeiosisComponent = () => {
                   [
                     // m('span', 'Organisatie: '),
                     // m('b', selectedHospital.properties.Organisatie),
-                    selectedLayer && m('h4.title', `Geselecteerd: ${layerTitles[selectedLayer] || selectedLayer}`),
+                    selectedLayer && m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
                     m('table.hospital-feature-props', [
                       ...Object.keys(selectedHospital.properties)
                         .filter(
@@ -519,40 +572,42 @@ export const HomePage: MeiosisComponent = () => {
                     ]),
                   ],
                 ],
-              // activeLayers && m('p', 'Active layers:  ' + Array.from(activeLayers).join(', ') ),
-              // selectedLayer && m('p', 'Selected layer:  ' + selectedLayer ),
 
               selectedItem && m(InfoPanel, { state, actions }), // InfoPanel shows attributes of selected item
 
-              m('input[type=checkbox].legend-checkbox', {
-                disabled: !isInstellingLayer(selectedLayer!),
-                checked: rk_active,
-                onclick: () => toggleRoutekaartActivity(),
-              }),
-              m('b', 'Toon routekaart informatie'),
+              selectedLayer == 'gl_wk_bu' && [
+                m('h5', 'Info aardgasvrije wijken:'),
+                m("a#aardgasvrijewijken[href='https://www.aardgasvrijewijken.nl/']", 'Programma Aardgasvrije Wijken'),
+              ],
+
+              isInstellingLayer(selectedLayer!) && [
+                m('input[type=checkbox].legend-checkbox', {
+                  disabled: !isInstellingLayer(selectedLayer!),
+                  checked: rk_active,
+                  onclick: () => toggleRoutekaartActivity(),
+                }),
+                m('b', 'Toon routekaart informatie'),
+              ],
 
               rk_active &&
                 selectedLayer &&
                 isInstellingLayer(selectedLayer) && [
                   m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
-                  m(
-                    '.text-routekaart',
-                    `Routekaarten concept ingeleverd: ${layerPercentages[selectedLayer][0]} % op basis van aantal organisaties`
+                  m('.text-routekaart',
+                    `Routekaarten concept: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
                   ),
-                  m(
-                    '.text-routekaart',
-                    `Routekaarten definitief ingeleverd: ${layerPercentages[selectedLayer][1]} % op basis van aantal organisaties`
+                  m('.text-routekaart',
+                    `Routekaarten definitief: ${layerPercentages[selectedLayer][1]} % van alle organisaties`
                   ),
                 ],
               rk_active &&
                 selectedLayer == 'ziekenhuizen' && [
                   m('.header-routekaart', 'Doelstelling klimaatakkoord'),
                   m('.text-routekaart', 'Totale CO₂-emissie (peiljaar 2016): 100 %'),
-                  m(
-                    '.text-routekaart',
-                    'Gerealiseerde CO₂-besparing 2030 (gebaseerd op ingeleverde routekaarten): 3.6 %'
+                  m('.text-routekaart',
+                    'Voorspelde CO₂-besparing 2030 (gebaseerd op ingeleverde routekaarten): 3.6 %'
                   ),
-                  m('.text-routekaart', 'Ambitie CO₂-besparing 2030 (gebaseerd op klimaatdoelstelling): 49 %'),
+                  m('.text-routekaart', 'Ambitie CO₂-besparing 2030 portfolio routekaart: 49 %'),
                 ],
             ]
           ),

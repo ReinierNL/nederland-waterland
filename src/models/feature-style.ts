@@ -179,10 +179,6 @@ export const propertyStyles = {
         title: () => 'Gemeentenaam',
         value: (s: string) => s,
       },
-      "Ronde subsidie": {
-        title: () => 'Ronde subsidie',
-        value: (s: string) => s,
-      },
     },
   },
 

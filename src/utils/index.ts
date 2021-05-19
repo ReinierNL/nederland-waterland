@@ -109,10 +109,38 @@ export const sewageIcon = L.icon({
   iconUrl: sewage,
   iconAnchor: [17, 10],
   iconSize: [35, 20],
-  // iconAnchor: [23, 13],
-  // iconSize: [46, 26],
-  // iconAnchor: [12, 7],
-  // iconSize: [23, 13],
+  popupAnchor: [0, -30],
+});
+
+export const careIconGGZ = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: care_ggz,
+  iconAnchor: [16, 16],
+  iconSize: [33, 33],
+  popupAnchor: [0, -30],
+});
+
+export const careIconGHZ = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: care_ghz,
+  iconAnchor: [16, 16],
+  iconSize: [33, 33],
+  popupAnchor: [0, -30],
+});
+
+export const careIconPurple = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: care_purple,
+  iconAnchor: [16, 16],
+  iconSize: [33, 33],
+  popupAnchor: [0, -30],
+});
+
+export const careIconVVT = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: care_vvt,
+  iconAnchor: [16, 16],
+  iconSize: [33, 33],
   popupAnchor: [0, -30],
 });
 
@@ -124,7 +152,7 @@ export const verzorgingshuisIcon = L.icon({
   popupAnchor: [0, -30],
 });
 
-export const verzorgingshuisIconGreen = L.icon({
+export const vverzorgingshuisIconGreen = L.icon({
   className: 'leaflet-data-marker',
   iconUrl: verzorgingshuis_green,
   iconAnchor: [16, 16],
@@ -132,7 +160,7 @@ export const verzorgingshuisIconGreen = L.icon({
   popupAnchor: [0, -30],
 });
 
-export const verzorgingshuisIconPurple = L.icon({
+export const vverzorgingshuisIconPurple = L.icon({
   className: 'leaflet-data-marker',
   iconUrl: verzorgingshuis_purple,
   iconAnchor: [16, 16],
@@ -140,7 +168,7 @@ export const verzorgingshuisIconPurple = L.icon({
   popupAnchor: [0, -30],
 });
 
-export const verzorgingshuisIconRed = L.icon({
+export const vverzorgingshuisIconRed = L.icon({
   className: 'leaflet-data-marker',
   iconUrl: verzorgingshuis_red,
   iconAnchor: [16, 16],
