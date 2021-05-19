@@ -14,6 +14,8 @@ import {
   careIconPurple,
   careIconVVT,
   sewageIcon,
+  skatingIcon,
+  swimmingIcon,
   verzorgingshuisIcon,
   // verzorgingshuisIconGreen,
   // verzorgingshuisIconPurple,
@@ -52,6 +54,8 @@ export const HomePage: MeiosisComponent = () => {
   let effluentLayer: L.GeoJSON;
   //let rioolleidingenLayer: L.GeoJSON; // dynamic
   let gl_wk_buLayer: L.GeoJSON;
+  let skatingsLayer: L.GeoJSON;
+  let swimmingsLayer: L.GeoJSON;
   let warmtenetten_nbr_lokaalLayer: L.GeoJSON;
   let warmtenetten_nbr_infraLayer: L.GeoJSON;
   let wko_gwiLayer: L.GeoJSON;
@@ -83,6 +87,8 @@ export const HomePage: MeiosisComponent = () => {
         effluent,
         rioolleidingenLayer,
         gl_wk_bu,
+        skatings,
+        swimmings,
         warmtenetten_nbr_lokaal,
         warmtenetten_nbr_infra,
         wko_gwi,
@@ -156,6 +162,8 @@ export const HomePage: MeiosisComponent = () => {
                 // Hash in URL
                 // new (L as any).Hash(map);
 
+                // pointToLayer implementations:
+
                 const pointToPurpleCircleMarkerLayer = (
                   _feature: Feature<Point, any>,
                   latlng: L.LatLng
@@ -222,6 +230,19 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
+                const pointToLayerSkating = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                  return new L.Marker(latlng, {
+                    icon: skatingIcon,
+                    title: feature.properties.Name,
+                  });
+                };
+
+                const pointToLayerSwimming = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                  return new L.Marker(latlng, {
+                    icon: swimmingIcon,
+                    title: feature.properties.Name,
+                  });
+                };
 
                 const pointToZHrkLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
                   // for the ziekenhuizen_routekaarten layer: return green, orange or red icon
@@ -283,6 +304,8 @@ export const HomePage: MeiosisComponent = () => {
                     title: feature.properties.Name,
                   });
                 };
+                
+                // layers:
 
                 vvtLayer_rk = (L as any).markerClusterGroup({ name: 'vvt' });
                 L.geoJSON(vvt, {
@@ -338,6 +361,26 @@ export const HomePage: MeiosisComponent = () => {
                     });
                   },
                   name: 'gl_wk_bu',
+                } as NamedGeoJSONOptions);
+
+                skatingsLayer = L.geoJSON(skatings, {
+                  pointToLayer: pointToLayerSkating,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectFeature(feature as Feature<Point>, 'skating');
+                    });
+                  },
+                  name: 'skating',
+                } as NamedGeoJSONOptions);
+
+                swimmingsLayer = L.geoJSON(swimmings, {
+                  pointToLayer: pointToLayerSwimming,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectFeature(feature as Feature<Point>, 'swimming');
+                    });
+                  },
+                  name: 'swimming',
                 } as NamedGeoJSONOptions);
 
                 warmtenetten_nbr_lokaalLayer = L.geoJSON(warmtenetten_nbr_lokaal, {
@@ -484,6 +527,13 @@ export const HomePage: MeiosisComponent = () => {
                         { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer_rk },
                         { label: 'Geesteljke gezondheidszorg', layer: ggzLayer_rk },
                         { label: 'Gehandicaptenzorg', layer: ghzLayer_rk },
+                      ],
+                    },
+                    {
+                      label: 'Maatschappelijk - Sportfaciliteiten',
+                      children: [
+                        { label: 'IJsbanan', layer: skatingsLayer },
+                        { label: 'Zwembaden', layer: swimmingsLayer },
                       ],
                     },
                     {

@@ -9,6 +9,8 @@ import rwzis from '../../data/Syntraal_rwzis.json';
 import effluent from '../../data/Syntraal_effluent.json';
 // import rioolleidingen:  loaded dynamically. see rioolleidingenLayer
 import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
+import skatings from '../../data/ijsbanen.json';
+import swimmings from '../../data/zwembaden.json';
 import warmtenetten_nbr_lokaal from '../../data/lokale_warmtenetten_20200519.json';
 import warmtenetten_nbr_infra from '../../data/infrastructuur_warmte.json';
 // // wko point layers
@@ -56,6 +58,8 @@ export interface IAppStateModel {
     effluent: FeatureCollection;
     rioolleidingenLayer: L.GeoJSON;
     gl_wk_bu: FeatureCollection;
+    skatings: FeatureCollection;
+    swimmings: FeatureCollection;
     warmtenetten_nbr_lokaal: FeatureCollection;
     warmtenetten_nbr_infra: FeatureCollection;
     wko_gwi: FeatureCollection;
@@ -235,6 +239,8 @@ export const appStateMgmt = {
         name: 'rioolleidingen',
       } as NamedGeoJSONOptions),
       gl_wk_bu,
+      skatings,
+      swimmings,
       warmtenetten_nbr_lokaal,
       warmtenetten_nbr_infra,
       wko_gwi,

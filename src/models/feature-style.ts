@@ -256,6 +256,56 @@ export const propertyStyles = {
     },
   },
 
+  skating: {
+    legend: {
+      items: [],
+      title: 'value',
+    },
+    properties: {
+      "Naam": {
+        title: () => 'Naam',
+        value: (s: string) => capitalize(s),
+      },
+      "Adres": {
+        title: () => 'Adres',
+        value: (s: string) => s,
+      },
+      "Postcode": {
+        title: () => 'Postcode',
+        value: (s: string) => s,
+      },
+      "Plaats": {
+        title: () => 'Plaats',
+        value: (s: string) => s,
+      },
+    },
+  },
+
+  swimming: {
+    legend: {
+      items: [],
+      title: 'value',
+    },
+    properties: {
+      "naam": {
+        title: () => 'Naam',
+        value: (s: string) => capitalize(s),
+      },
+      "adres": {
+        title: () => 'Adres',
+        value: (s: string) => s,
+      },
+      "postcode": {
+        title: () => 'Postcode',
+        value: (s: string) => s,
+      },
+      "plaats": {
+        title: () => 'Plaats',
+        value: (s: string) => s,
+      },
+    },
+  },
+
   vvt: {
     legend: rk_legend,
     properties: {

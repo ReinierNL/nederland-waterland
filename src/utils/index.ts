@@ -7,6 +7,8 @@ import care_ggz from 'url:../assets/Care_icon_GGZ_34_t.png'
 import care_ghz from 'url:../assets/Care_icon_GHZ_34_t.png'
 import care_purple from 'url:../assets/Care_icon_purple_34_t.png'
 import care_vvt from 'url:../assets/Care_icon_VVT_34_t.png'
+import skating_png from 'url:../assets/skating.png'
+import swimming_png from 'url:../assets/swimming.png'
 import verzorgingshuis from 'url:../assets/verzorgingstehuis.png';
 import sewage from 'url:../assets/sewage_v2a.png';
 import verzorgingshuis_red from 'url:../assets/verzorgingstehuis.red.png';
@@ -109,6 +111,22 @@ export const sewageIcon = L.icon({
   iconUrl: sewage,
   iconAnchor: [17, 10],
   iconSize: [35, 20],
+  popupAnchor: [0, -30],
+});
+
+export const skatingIcon = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: skating_png,
+  iconAnchor: [16, 16],
+  iconSize: [32, 32],
+  popupAnchor: [0, -30],
+});
+
+export const swimmingIcon = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: swimming_png,
+  iconAnchor: [16, 16],
+  iconSize: [32, 32],
   popupAnchor: [0, -30],
 });
 
