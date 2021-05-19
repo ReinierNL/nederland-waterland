@@ -3,6 +3,10 @@ import m from 'mithril';
 import { FeatureCollection } from 'geojson';
 import area from '@turf/area';
 import centroid from '@turf/centroid';
+import care_ggz from 'url:../assets/Care_icon_GGZ_34_t.png'
+import care_ghz from 'url:../assets/Care_icon_GHZ_34_t.png'
+import care_purple from 'url:../assets/Care_icon_purple_34_t.png'
+import care_vvt from 'url:../assets/Care_icon_VVT_34_t.png'
 import verzorgingshuis from 'url:../assets/verzorgingstehuis.png';
 import sewage from 'url:../assets/sewage_v2a.png';
 import verzorgingshuis_red from 'url:../assets/verzorgingstehuis.red.png';
