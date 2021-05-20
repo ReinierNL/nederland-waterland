@@ -3,22 +3,14 @@ import m from 'mithril';
 import { FeatureCollection } from 'geojson';
 import area from '@turf/area';
 import centroid from '@turf/centroid';
-// import care_ggz from 'url:../assets/Care_icon_GGZ_34_t.png'
-// import care_ghz from 'url:../assets/Care_icon_GHZ_34_t.png'
-import care_black from 'url:../assets/Care_icon_34_t.png'
-import care_green from 'url:../assets/Care_icon_green_34_t.png'
-import care_purple from 'url:../assets/Care_icon_purple_34_t.png'
-// import care_vvt from 'url:../assets/Care_icon_VVT_34_t.png'
+import care_green_png from 'url:../assets/Care_icon_green_34_t.png'
+import care_purple_png from 'url:../assets/Care_icon_purple_34_t.png'
+import care_red_png from 'url:../assets/Care_icon_red_34_t.png'
 import skating_png from 'url:../assets/skating.png'
 import swimming_png from 'url:../assets/swimming.png'
-//import verzorgingshuis from 'url:../assets/verzorgingstehuis.png';
 import sewage from 'url:../assets/sewage_v2a.png';
-// import verzorgingshuis_red from 'url:../assets/verzorgingstehuis.red.png';
-// import verzorgingshuis_green from 'url:../assets/verzorgingstehuis.green.png';
-// import verzorgingshuis_purple from 'url:../assets/verzorgingstehuis.purple.png';
 import ziekenhuis from 'url:../assets/ziekenhuis_32.png';
 import ziekenhuis_green from 'url:../assets/ziekenhuis_32.grn2.png';
-// import ziekenhuis_orange from 'url:../assets/ziekenhuis_32.orange.png';
 import ziekenhuis_purple from 'url:../assets/ziekenhuis_32.purple.png';
 import ziekenhuis_red from 'url:../assets/ziekenhuis_32.d_red.png';
 
@@ -69,17 +61,6 @@ export const getColor = (d: number) =>
     ? '#ffffd4'
     : '#fff';
 
-// const LeafletIcon = L.Icon.extend({
-//   options: {
-//     // shadowUrl: 'leaf-shadow.png',
-//     // shadowSize:   [50, 64],
-//     // shadowAnchor: [4, 62],
-//     iconSize: [25, 25],
-//     iconAnchor: [12, 12],
-//     popupAnchor: [-3, -30],
-//   },
-// });
-
 const ziekenhuisSvg =
   '<svg xmlns="http://www.w3.org/2000/svg" stroke="black" stroke-width="4" fill="{mapIconColor}" viewBox="0 0 36 44" width="20" height="20"><path d="M18.664.253a1 1 0 0 0-1.328 0L.328 15.702a1 1 0 0 0-.328.74V44h36V16.443a1 1 0 0 0-.328-.74zM25 29h-4v4a3 3 0 0 1-6 0v-4h-4a3 3 0 0 1 0-6h4v-4a3 3 0 0 1 6 0v4h4a3 3 0 0 1 0 6z"/></svg>';
 
@@ -92,33 +73,9 @@ export const createIcon = (mapIconColor: string) =>
     popupAnchor: [0, -30],
   });
 
-  // export const careIconGGZ = L.icon({
-  //   className: 'leaflet-data-marker',
-  //   iconUrl: care_ggz,
-  //   iconAnchor: [16, 16],
-  //   iconSize: [33, 33],
-  //   popupAnchor: [0, -30],
-  // });
-  
-  // export const careIconGHZ = L.icon({
-  //   className: 'leaflet-data-marker',
-  //   iconUrl: care_ghz,
-  //   iconAnchor: [16, 16],
-  //   iconSize: [33, 33],
-  //   popupAnchor: [0, -30],
-  // });
-  
-  export const careIconBlack = L.icon({
-    className: 'leaflet-data-marker',
-    iconUrl: care_black,
-    iconAnchor: [16, 16],
-    iconSize: [33, 33],
-    popupAnchor: [0, -30],
-  });
-  
   export const careIconGreen = L.icon({
     className: 'leaflet-data-marker',
-    iconUrl: care_green,
+    iconUrl: care_green_png,
     iconAnchor: [16, 16],
     iconSize: [33, 33],
     popupAnchor: [0, -30],
@@ -126,19 +83,19 @@ export const createIcon = (mapIconColor: string) =>
   
   export const careIconPurple = L.icon({
     className: 'leaflet-data-marker',
-    iconUrl: care_purple,
+    iconUrl: care_purple_png,
     iconAnchor: [16, 16],
     iconSize: [33, 33],
     popupAnchor: [0, -30],
   });
   
-  // export const careIconVVT = L.icon({
-  //   className: 'leaflet-data-marker',
-  //   iconUrl: care_vvt,
-  //   iconAnchor: [16, 16],
-  //   iconSize: [33, 33],
-  //   popupAnchor: [0, -30],
-  // });
+  export const careIconRed = L.icon({
+    className: 'leaflet-data-marker',
+    iconUrl: care_red_png,
+    iconAnchor: [16, 16],
+    iconSize: [33, 33],
+    popupAnchor: [0, -30],
+  });
   
   export const sewageIcon = L.icon({
   className: 'leaflet-data-marker',
@@ -164,38 +121,6 @@ export const swimmingIcon = L.icon({
   popupAnchor: [0, -30],
 });
 
-// export const verzorgingshuisIcon = L.icon({
-//   className: 'leaflet-data-marker',
-//   iconUrl: verzorgingshuis,
-//   iconAnchor: [12, 12],
-//   iconSize: [25, 25],
-//   popupAnchor: [0, -30],
-// });
-
-// export const vverzorgingshuisIconGreen = L.icon({
-//   className: 'leaflet-data-marker',
-//   iconUrl: verzorgingshuis_green,
-//   iconAnchor: [16, 16],
-//   iconSize: [32, 32],
-//   popupAnchor: [0, -30],
-// });
-
-// export const vverzorgingshuisIconPurple = L.icon({
-//   className: 'leaflet-data-marker',
-//   iconUrl: verzorgingshuis_purple,
-//   iconAnchor: [16, 16],
-//   iconSize: [32, 32],
-//   popupAnchor: [0, -30],
-// });
-
-// export const vverzorgingshuisIconRed = L.icon({
-//   className: 'leaflet-data-marker',
-//   iconUrl: verzorgingshuis_red,
-//   iconAnchor: [16, 16],
-//   iconSize: [32, 32],
-//   popupAnchor: [0, -30],
-// });
-
 export const ziekenhuisIcon = L.icon({
   className: 'leaflet-data-marker',
   iconUrl: ziekenhuis,
@@ -212,14 +137,6 @@ export const ziekenhuisIconGreen = L.icon({
   popupAnchor: [0, -30],
 });
 
-// export const ziekenhuisIconOrange = L.icon({
-//   className: 'leaflet-data-marker',
-//   iconUrl: ziekenhuis_orange,
-//   iconAnchor: [16, 16],
-//   iconSize: [32, 32],
-//   popupAnchor: [0, -30],
-// });
-
 export const ziekenhuisIconPurple = L.icon({
   className: 'leaflet-data-marker',
   iconUrl: ziekenhuis_purple,
@@ -235,35 +152,6 @@ export const ziekenhuisIconRed = L.icon({
   iconSize: [32, 32],
   popupAnchor: [0, -30],
 });
-
-// export const ziekenhuisIconV = L.divIcon({
-//   className: 'leaflet-data-marker',
-//   html: L.Util.template(ziekenhuisSvg, { mapIconColor: '#fff' }),
-//   iconAnchor: [12, 12],
-//   iconSize: [25, 25],
-//   popupAnchor: [0, -30],
-// });
-
-// export const ziekenhuisIconX = L.divIcon({
-//   className: 'leaflet-data-marker',
-//   html: L.Util.template(ziekenhuisSvg, { mapIconColor: '#ff0000' }),
-//   iconAnchor: [12, 12],
-//   iconSize: [25, 25],
-//   popupAnchor: [0, -30],
-// });
-
-// export const ziekenhuisIcon = new (LeafletIcon as any)({
-//   iconUrl: ziekenhuisImg,
-// });
-// export const ziekenhuisIconV = new (LeafletIcon as any)({
-//   iconUrl: ziekenhuisSvgV,
-// });
-// export const ziekenhuisIconI = new (LeafletIcon as any)({
-//   iconUrl: ziekenhuisSvgI,
-// });
-// export const ziekenhuisIconX = new (LeafletIcon as any)({
-//   iconUrl: ziekenhuisSvgX,
-// });
 
 const deg2rad = Math.PI / 180;
 const deg2rad2 = Math.PI / 360;

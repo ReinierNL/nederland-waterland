@@ -9,9 +9,9 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster.js';
 // import 'leaflet-hash';
 import {
-  careIconBlack,
   careIconGreen,
   careIconPurple,
+  careIconRed,
   sewageIcon,
   skatingIcon,
   swimmingIcon,
@@ -159,19 +159,22 @@ export const HomePage: MeiosisComponent = () => {
 
                 // pointToLayer implementations:
 
-                const pointToPurpleCircleMarkerLayer = (
-                  _feature: Feature<Point, any>,
-                  latlng: L.LatLng
-                ): L.CircleMarker<any> => {
-                  return new L.CircleMarker(latlng, {
-                    radius: 5,
-                    stroke: false,
-                    fillColor: 'purple',
-                    fillOpacity: 0.8,
+                const pointToLayerCare = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                  var layerIcon = careIconRed;
+                  if (feature.properties && feature.properties['Routekaart']) {
+                    if (feature.properties['Routekaart'] == 'Concept ingeleverd') {
+                      layerIcon = careIconPurple;
+                    } else {
+                      layerIcon = careIconGreen;   // does not occur yet
+                    }
+                  }
+                  return new L.Marker(latlng, {
+                    icon: layerIcon,
+                    title: feature.properties.Name,
                   });
                 };
 
-                const pointToCircleMarkerLayer = (
+                const pointToLayerGreenCircleMarker = (
                   _feature: Feature<Point, any>,
                   latlng: L.LatLng
                 ): L.CircleMarker<any> => {
@@ -183,7 +186,19 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
-                const pointToSewageLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                const pointToLayerPurpleCircleMarker = (
+                  _feature: Feature<Point, any>,
+                  latlng: L.LatLng
+                ): L.CircleMarker<any> => {
+                  return new L.CircleMarker(latlng, {
+                    radius: 5,
+                    stroke: false,
+                    fillColor: 'purple',
+                    fillOpacity: 0.8,
+                  });
+                };
+
+                const pointToLayerSewage = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
                   return new L.Marker(latlng, {
                     icon: sewageIcon,
                     title: feature.properties.Name,
@@ -204,7 +219,7 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
-                const pointToZHrkLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+                const pointToLayerZHrk = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
                   // for the ziekenhuizen_routekaarten layer: return green, orange or red icon
                   var layerIcon = ziekenhuisIconRed;
                   if (feature.properties && feature.properties['Routekaart']) {
@@ -220,26 +235,11 @@ export const HomePage: MeiosisComponent = () => {
                   });
                 };
 
-                const layerIconForCare = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  var layerIcon = careIconBlack;
-                  if (feature.properties && feature.properties['Routekaart']) {
-                    if (feature.properties['Routekaart'] == 'Concept ingeleverd') {
-                      layerIcon = careIconPurple;
-                    } else {
-                      layerIcon = careIconGreen;   // does not occur yet
-                    }
-                  }
-                  return new L.Marker(latlng, {
-                    icon: layerIcon,
-                    title: feature.properties.Name,
-                  });
-                };
-
                 // layers:
 
                 vvtLayer_rk = (L as any).markerClusterGroup({ name: 'vvt' });
                 L.geoJSON(vvt, {
-                  pointToLayer: layerIconForCare,
+                  pointToLayer: pointToLayerCare,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'vvt');
@@ -250,7 +250,7 @@ export const HomePage: MeiosisComponent = () => {
 
                 ghzLayer_rk = (L as any).markerClusterGroup({ name: 'ghz' });
                 L.geoJSON(ghz, {
-                  pointToLayer: layerIconForCare,
+                  pointToLayer: pointToLayerCare,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'ghz');
@@ -261,7 +261,7 @@ export const HomePage: MeiosisComponent = () => {
 
                 ggzLayer_rk = (L as any).markerClusterGroup({ name: 'ggz' });
                 L.geoJSON(ggz, {
-                  pointToLayer: layerIconForCare,
+                  pointToLayer: pointToLayerCare,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'ggz');
@@ -334,7 +334,7 @@ export const HomePage: MeiosisComponent = () => {
                 // rioolleidingenLayer : dyamic layer, declared in app-state (as part of state)
 
                 rwzisLayer = L.geoJSON(rwzis, {
-                  pointToLayer: pointToSewageLayer,
+                  pointToLayer: pointToLayerSewage,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'rwzis');
@@ -359,7 +359,7 @@ export const HomePage: MeiosisComponent = () => {
                 } as NamedGeoJSONOptions);
 
                 wko_gwiLayer = L.geoJSON(wko_gwi, {
-                  pointToLayer: pointToCircleMarkerLayer,
+                  pointToLayer: pointToLayerGreenCircleMarker,
                   onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
                     layer.on('click', () => {
                         actions.selectFeature(feature as Feature<Point>, 'wko_gwi', layer);
@@ -369,7 +369,7 @@ export const HomePage: MeiosisComponent = () => {
                 } as NamedGeoJSONOptions);
 
                 wko_gwioLayer = L.geoJSON(wko_gwio, {
-                  pointToLayer: pointToCircleMarkerLayer,
+                  pointToLayer: pointToLayerGreenCircleMarker,
                   onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'wko_gwio', layer);
@@ -382,7 +382,7 @@ export const HomePage: MeiosisComponent = () => {
                 // wko_installatiesLayer : dyamic layer, declared in app-state (as part of state)
 
                 wko_obesLayer = L.geoJSON(wko_obes, {
-                  pointToLayer: pointToPurpleCircleMarkerLayer,
+                  pointToLayer: pointToLayerPurpleCircleMarker,
                   onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'wko_obes', layer);
@@ -424,7 +424,7 @@ export const HomePage: MeiosisComponent = () => {
                 } as NamedGeoJSONOptions);
 
                 ziekenhuizenLayer_rk = L.geoJSON(ziekenhuizen, {
-                  pointToLayer: pointToZHrkLayer,
+                  pointToLayer: pointToLayerZHrk,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectHospital(feature as Feature<Point>);
@@ -584,7 +584,7 @@ export const HomePage: MeiosisComponent = () => {
                   m('.text-routekaart',
                     'Voorspelde CO₂-besparing 2030 (gebaseerd op ingeleverde routekaarten): 3.6 %'
                   ),
-                  m('.text-routekaart', 'Ambitie CO₂-besparing 2030 portfolio routekaart: 49 %'),
+                  m('.text-routekaart', 'Ambitie CO₂-besparing 2030 portefeuilleroutekaart: 49 %'),
                 ],
             ]
           ),
