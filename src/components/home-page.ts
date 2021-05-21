@@ -1,5 +1,5 @@
 import m from 'mithril';
-import L, { GeoJSONOptions, LeafletEvent } from 'leaflet';
+import L, { GeoJSONOptions } from 'leaflet';
 import 'leaflet.markercluster';
 import 'leaflet.control.layers.tree/L.Control.Layers.Tree.css';
 import 'leaflet.control.layers.tree';
@@ -24,13 +24,12 @@ import { InfoPanel } from './info-panel';
 // import { HospitalInfoPanel } from './hospital-info-panel';
 import { Feature, Point } from 'geojson';
 import { Legend } from './legend';
-import { Legend_rk } from './legend_rk';
 import { Legend_zh } from './legend_zh';
 import logoDeltares from 'url:../assets/Deltares.png';
 import logoSyntraal from 'url:../assets/Syntraal.png';
 import logoTNO from 'url:../assets/TNO.png';
 import logoEVZ from 'url:../assets/evz.png';
-import { isInstellingLayer } from './utils_rs';
+import { isCureLayer, isCareOrCureLayer } from './utils_rs';
 import layerTitles from '../assets/layerTitles.json';
 import layerPercentages from '../assets/layer_percentages.json';
 
@@ -570,9 +569,9 @@ export const HomePage: MeiosisComponent = () => {
                 m("a#aardgasvrijewijken[href='https://www.aardgasvrijewijken.nl/']", 'Programma Aardgasvrije Wijken'),
               ],
 
-              isInstellingLayer(selectedLayer!) && [
+              isCareOrCureLayer(selectedLayer!) && [
                 m('input[type=checkbox].legend-checkbox', {
-                  disabled: !isInstellingLayer(selectedLayer!),
+                  disabled: !isCareOrCureLayer(selectedLayer!),
                   checked: rk_active,
                   onclick: () => toggleRoutekaartActivity(),
                 }),
