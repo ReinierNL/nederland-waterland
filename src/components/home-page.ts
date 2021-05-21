@@ -455,77 +455,90 @@ export const HomePage: MeiosisComponent = () => {
                   ],
                 } as any; //Control.Layers.TreeObject;
 
-                const overlayTree = {
-                  label: 'Overlay kaartlagen',
+                const overlayTree = [{
+                  label: 'Maatschappelijk vastgoed',
                   children: [
-                    {
-                      label: 'Zorginstellingen',
+                    { 
+                      label: 'Zorggebouwen',
                       children: [
                         { label: 'Ziekenhuizen', layer: ziekenhuizenLayer_rk },
                         { label: 'Buitenpoliklinieken', layer: polikliniekenLayer_rk },
                         { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer_rk },
                         { label: 'Geesteljke gezondheidszorg', layer: ggzLayer_rk },
                         { label: 'Gehandicaptenzorg', layer: ghzLayer_rk },
-                      ],
+                      ]
                     },
-                    {
-                      label: 'Maatschappelijk - Sportfaciliteiten',
+                    { 
+                      label: 'Sport',
                       children: [
                         { label: 'IJsbanan', layer: skatingsLayer },
                         { label: 'Zwembaden', layer: swimmingsLayer },
-                      ],
+                      ]
                     },
+                  ],
+                },
+                {
+                  label: 'Energie-potentie',
+                  children: [
                     {
-                      label: 'Oppervlaktewater (TEO)',
+                      label: 'Oppervlaktewater - TEO',
                       children: [{ label: 'TEO potentie *', layer: wateren_potentie_gt1haLayer }],
                     },
                     {
-                      label: 'Afvalwater (TEA)',
+                      label: 'Afvalwater - TEA',
                       children: [
                         { label: 'rioolwaterzuiveringen', layer: rwzisLayer },
-                        {
-                          label: '<span style="color:blue"><b>&nbsp;&#x23AF;&nbsp;</b>effluentleidingen</span>',
-                          layer: effluentLayer,
-                        },
                         {
                           label: '<span style="color:#8080FF"><b>&nbsp;&#x23AF;&nbsp;</b>rioolleidingen</span> *',
                           layer: rioolleidingenLayer,
                         },
+                        {
+                          label: '<span style="color:blue"><b>&nbsp;&#x23AF;&nbsp;</b>effluentleidingen</span>',
+                          layer: effluentLayer,
+                        },
                       ],
                     },
                     {
-                      label: 'Divers',
+                      label: 'Aardgasvrije wijken en warmtenetten',
                       children: [
                         { label: 'Aardgasvrije wijken en buurten', layer: gl_wk_buLayer },
-                        { label: 'Warmtenetten - N-Br - lokaal', layer: warmtenetten_nbr_lokaalLayer },
-                        { label: 'Warmtenetten - N-Br - infra', layer: warmtenetten_nbr_infraLayer },
+                        { label: 'Noord-Brabant - lokaal', layer: warmtenetten_nbr_lokaalLayer },
+                        { label: 'Noord-Brabant - infra', layer: warmtenetten_nbr_infraLayer },
                       ],
                     },
                     {
-                      label: 'WKO: installaties',
-                      selectAllCheckbox: true,
+                      label: 'WKO',
+                      selectAllCheckbox: false,
                       children: [
-                        { label: 'WKO grondwaterinfiltratie', layer: wko_gwiLayer },
-                        { label: 'WKO grondwaterinfiltratie en -onttrekking', layer: wko_gwioLayer },
-                        { label: 'WKO grondwateronttrekking *', layer: wko_gwoLayer },
-                        { label: 'WKO gesloten bodemenergiesysteem *', layer: wko_gbesLayer },
-                        { label: 'WKO open bodemenergiesystemen', layer: wko_obesLayer },
-                        { label: 'WKO Installaties *', layer: wko_installatiesLayer },
+                        {
+                          label: 'Installaties',
+                          selectAllCheckbox: false,
+                          collapsed: true,
+                          children: [
+                            { label: 'WKO grondwaterinfiltratie', layer: wko_gwiLayer },
+                            { label: 'WKO grondwaterinfiltratie en -onttrekking', layer: wko_gwioLayer },
+                            { label: 'WKO grondwateronttrekking *', layer: wko_gwoLayer },
+                            { label: 'WKO gesloten bodemenergiesysteem *', layer: wko_gbesLayer },
+                            { label: 'WKO open bodemenergiesystemen', layer: wko_obesLayer },
+                            { label: 'WKO Installaties *', layer: wko_installatiesLayer },
+                          ],
+                        },
+                        {
+                          label: 'Restricties',
+                          selectAllCheckbox: false,
+                          collapsed: true,
+                          children: [
+                            { label: '&nbsp; &#x1F7E6; &nbsp;WKO Diepte', layer: wko_diepteLayer },
+                            { label: '&nbsp; &#x1F7E9; &nbsp;WKO Natuur *', layer: wko_natuurLayer },
+                            { label: '&nbsp; &#x1F7EA; &nbsp;WKO Ordening', layer: wko_ordeningLayer },
+                            { label: '&nbsp; &#x1F7E7; &nbsp;WKO SpecProvBeleid *', layer: wko_specprovbeleidLayer },
+                            { label: '&nbsp; &#x1F7E8; &nbsp;WKO Verbodsgebieden', layer: wko_verbodLayer },
+                          ],
+                        },
                       ],
                     },
-                    {
-                      label: 'WKO: restricties',
-                      selectAllCheckbox: true,
-                      children: [
-                        { label: '&nbsp; &#x1F7E6; &nbsp;WKO Diepte', layer: wko_diepteLayer },
-                        { label: '&nbsp; &#x1F7E9; &nbsp;WKO Natuur *', layer: wko_natuurLayer },
-                        { label: '&nbsp; &#x1F7EA; &nbsp;WKO Ordening', layer: wko_ordeningLayer },
-                        { label: '&nbsp; &#x1F7E7; &nbsp;WKO SpecProvBeleid *', layer: wko_specprovbeleidLayer },
-                        { label: '&nbsp; &#x1F7E8; &nbsp;WKO Verbodsgebieden', layer: wko_verbodLayer },
-                      ],
-                    },
-                  ],
-                } as any; // Control.Layers.TreeObject;
+                  ]
+                }] as any; // Control.Layers.TreeObject;
                 (L.control.layers as any).tree(baseTree, overlayTree).addTo(map);
               },
             })
@@ -539,11 +552,7 @@ export const HomePage: MeiosisComponent = () => {
               m('h3', 'De zorgduurzaamkaart'),
               selectedHospital &&
                 selectedHospital.properties && [
-                  // m('p', 'Geselecteerd ziekenhuis:'),
-                  // m('h4', selectedHospital.properties.Name),
                   [
-                    // m('span', 'Organisatie: '),
-                    // m('b', selectedHospital.properties.Organisatie),
                     selectedLayer && m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
                     m('table.hospital-feature-props', [
                       ...Object.keys(selectedHospital.properties)
@@ -578,7 +587,7 @@ export const HomePage: MeiosisComponent = () => {
                 m('b', 'Toon routekaart informatie'),
               ],
 
-            ]
+            ],
           ),
 
           m('.bottom15', [
