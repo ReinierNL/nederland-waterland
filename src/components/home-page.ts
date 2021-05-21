@@ -581,10 +581,6 @@ export const HomePage: MeiosisComponent = () => {
 
             ]
           ),
-          // legend: three versions
-          !isInstellingLayer(selectedLayer!) && m(Legend, { state, actions }),
-          isInstellingLayer(selectedLayer!) && selectedLayer != 'ziekenhuizen' && m(Legend_rk, { state, actions }),
-          isInstellingLayer(selectedLayer!) && selectedLayer == 'ziekenhuizen' && m(Legend_zh, { state, actions }),
 
           m('.bottom15', [
             rk_active && selectedLayer && isCareOrCureLayer(selectedLayer) && [
@@ -605,6 +601,10 @@ export const HomePage: MeiosisComponent = () => {
               m('.text-routekaart', 'Ambitie CO₂-besparing 2030 portefeuilleroutekaart: 49 %'),
             ],
           ]),
+
+          // legend: two versions
+          !isCareOrCureLayer(selectedLayer!) && m(Legend, { state, actions }),
+          isCareOrCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
         ]),
         m(
           '.disclaimer',
