@@ -231,7 +231,8 @@ table.hospital-feature-props {
 }
 
 .info-panel,
-.legend {
+.legend,
+.bottom15 {
   left: 70vw;
   margin-left: 5px;
 }
@@ -268,6 +269,11 @@ table.hospital-feature-props {
 .legend-checkbox {
   vertical-align: middle;
 }
+.bottom15 {
+  position: absolute;
+  bottom: 15vh;
+}
+
 .bold {
   font-weight: bold;
 }
