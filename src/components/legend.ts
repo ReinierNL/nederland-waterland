@@ -1,7 +1,7 @@
 import m from 'mithril';
 import { propertyStyles } from '../models/feature-style';
 import { MeiosisComponent } from '../services/meiosis';
-import { isInstellingLayer } from './utils_rs'
+import { isCareOrCureLayer } from './utils_rs'
 
 export const Legend: MeiosisComponent = () => {
   return {
@@ -17,7 +17,7 @@ export const Legend: MeiosisComponent = () => {
       const legend = propertyStyle && propertyStyle.legend;
       const canUncheckItem = legend && legend.items.reduce((acc, cur) => (acc += cur[0] ? 1 : 0), 0) > 1;
       return (
-        !isInstellingLayer(selectedLayer!) &&
+        !isCareOrCureLayer(selectedLayer!) &&
         legend && legend.items && (legend.items.length > 0) &&
         m('.legend', [
           m('h5', { style: 'margin-bottom: 0;' }, `Legenda ${legend.title}`),
