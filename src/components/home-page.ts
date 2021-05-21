@@ -40,6 +40,7 @@ export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
 
 export const HomePage: MeiosisComponent = () => {
   let map: L.Map;
+  let polikliniekenLayer_rk: L.GeoJSON;
   let ziekenhuizenLayer_rk: L.GeoJSON;
   let vvtLayer_rk: L.GeoJSON;
   let ggzLayer_rk: L.GeoJSON;
@@ -74,6 +75,7 @@ export const HomePage: MeiosisComponent = () => {
         selectedLayer,
         rk_active,
         wateren_potentie_gt1haLayer,
+        poliklinieken,
         ziekenhuizen,
         ggz,
         ghz,
@@ -423,6 +425,16 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'wko_verbod',
                 } as NamedGeoJSONOptions);
 
+                polikliniekenLayer_rk = L.geoJSON(poliklinieken, {
+                  pointToLayer: pointToLayerZHrk,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectHospital(feature as Feature<Point>);
+                    });
+                  },
+                  name: 'poliklinieken',
+                } as NamedGeoJSONOptions);
+
                 ziekenhuizenLayer_rk = L.geoJSON(ziekenhuizen, {
                   pointToLayer: pointToLayerZHrk,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
@@ -451,6 +463,7 @@ export const HomePage: MeiosisComponent = () => {
                       label: 'Zorginstellingen',
                       children: [
                         { label: 'Ziekenhuizen', layer: ziekenhuizenLayer_rk },
+                        { label: 'Buitenpoliklinieken', layer: polikliniekenLayer_rk },
                         { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer_rk },
                         { label: 'Geesteljke gezondheidszorg', layer: ggzLayer_rk },
                         { label: 'Gehandicaptenzorg', layer: ghzLayer_rk },

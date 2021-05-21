@@ -9,6 +9,7 @@ import rwzis from '../../data/Syntraal_rwzis.json';
 import effluent from '../../data/Syntraal_effluent.json';
 // import rioolleidingen:  loaded dynamically. see rioolleidingenLayer
 import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
+import poliklinieken from '../../data/poliklinieken.json';
 import skatings from '../../data/ijsbanen.json';
 import swimmings from '../../data/zwembaden.json';
 import warmtenetten_nbr_lokaal from '../../data/lokale_warmtenetten_20200519.json';
@@ -58,6 +59,7 @@ export interface IAppStateModel {
     effluent: FeatureCollection;
     rioolleidingenLayer: L.GeoJSON;
     gl_wk_bu: FeatureCollection;
+    poliklinieken: FeatureCollection<Point>;
     skatings: FeatureCollection;
     swimmings: FeatureCollection;
     warmtenetten_nbr_lokaal: FeatureCollection;
@@ -289,6 +291,7 @@ export const appStateMgmt = {
 
       wko_verbod,
       wateren_potentie_gt1haLayer: createLeafletLayer('wateren_potentie_gt1ha', 'AVGwocGJ_1'),
+      poliklinieken,
       ziekenhuizen,
       isSearching: false,
       searchQuery: '',
