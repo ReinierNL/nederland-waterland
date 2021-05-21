@@ -51,19 +51,19 @@ export interface IAppStateModel {
     // water?: FeatureCollection;
     /** Layer with selected markers */
     selectedMarkersLayer: L.GeoJSON;
-    vvt: FeatureCollection<Point>;
+    effluent: FeatureCollection;
     ggz: FeatureCollection<Point>;
     ghz: FeatureCollection<Point>;
-    wateren_potentie_gt1haLayer: L.GeoJSON;
-    rwzis: FeatureCollection<Point>;
-    effluent: FeatureCollection;
-    rioolleidingenLayer: L.GeoJSON;
     gl_wk_bu: FeatureCollection;
     poliklinieken: FeatureCollection<Point>;
+    rioolleidingenLayer: L.GeoJSON;
+    rwzis: FeatureCollection<Point>;
     skatings: FeatureCollection;
     swimmings: FeatureCollection;
-    warmtenetten_nbr_lokaal: FeatureCollection;
+    vvt: FeatureCollection<Point>;
     warmtenetten_nbr_infra: FeatureCollection;
+    warmtenetten_nbr_lokaal: FeatureCollection;
+    wateren_potentie_gt1haLayer: L.GeoJSON;
     wko_gwi: FeatureCollection;
     wko_gwio: FeatureCollection;
     wko_gwoLayer: L.GeoJSON;
@@ -75,6 +75,7 @@ export interface IAppStateModel {
     wko_ordening: FeatureCollection;
     wko_specprovbeleidLayer: L.GeoJSON;
     wko_verbod: FeatureCollection;
+    ziekenhuizen: FeatureCollection<Point>;
     /** Bounding box size */
     size: number;
     /** Last item that was clicked */
@@ -83,7 +84,6 @@ export interface IAppStateModel {
     selectedLayer: string;
     selectedHospital: Feature<Point>;
     selectedWaterItem: Feature;
-    ziekenhuizen: FeatureCollection<Point>;
     /** Layers that are loaded */
     activeLayers: Set<string>;
     /** is the routekaarten info active */
