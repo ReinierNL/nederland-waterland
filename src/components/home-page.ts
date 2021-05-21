@@ -579,32 +579,32 @@ export const HomePage: MeiosisComponent = () => {
                 m('b', 'Toon routekaart informatie'),
               ],
 
-              rk_active &&
-                selectedLayer &&
-                isInstellingLayer(selectedLayer) && [
-                  m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
-                  m('.text-routekaart',
-                    `Routekaarten concept: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
-                  ),
-                  m('.text-routekaart',
-                    `Routekaarten definitief: ${layerPercentages[selectedLayer][1]} % van alle organisaties`
-                  ),
-                ],
-              rk_active &&
-                selectedLayer == 'ziekenhuizen' && [
-                  m('.header-routekaart', 'Doelstelling klimaatakkoord'),
-                  m('.text-routekaart', 'Totale CO₂-emissie (peiljaar 2016): 100 %'),
-                  m('.text-routekaart',
-                    'Voorspelde CO₂-besparing 2030 (gebaseerd op ingeleverde routekaarten): 3.6 %'
-                  ),
-                  m('.text-routekaart', 'Ambitie CO₂-besparing 2030 portefeuilleroutekaart: 49 %'),
-                ],
             ]
           ),
           // legend: three versions
           !isInstellingLayer(selectedLayer!) && m(Legend, { state, actions }),
           isInstellingLayer(selectedLayer!) && selectedLayer != 'ziekenhuizen' && m(Legend_rk, { state, actions }),
           isInstellingLayer(selectedLayer!) && selectedLayer == 'ziekenhuizen' && m(Legend_zh, { state, actions }),
+
+          m('.bottom15', [
+            rk_active && selectedLayer && isCareOrCureLayer(selectedLayer) && [
+              m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
+              m('.text-routekaart',
+                `Routekaarten concept: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
+              ),
+              m('.text-routekaart',
+                `Routekaarten definitief: ${layerPercentages[selectedLayer][1]} % van alle organisaties`
+              ),
+            ],
+            rk_active && isCureLayer(selectedLayer!) && [
+              m('.header-routekaart', 'Doelstelling klimaatakkoord'),
+              m('.text-routekaart', 'Totale CO₂-emissie (peiljaar 2016): 100 %'),
+              m('.text-routekaart',
+                'Voorspelde CO₂-besparing 2030 (o.b.v. definitief ingeleverde routekaarten): 3.6 %'
+              ),
+              m('.text-routekaart', 'Ambitie CO₂-besparing 2030 portefeuilleroutekaart: 49 %'),
+            ],
+          ]),
         ]),
         m(
           '.disclaimer',
