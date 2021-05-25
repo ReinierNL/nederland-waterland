@@ -3,6 +3,7 @@ import { propertyStyles } from '../models';
 import { MeiosisComponent } from '../services/meiosis';
 
 import layerTitles from '../assets/layerTitles.json';
+import { isSportLayer } from './utils_rs';
 
 export const InfoPanel: MeiosisComponent = () => {
   return {
@@ -17,7 +18,8 @@ export const InfoPanel: MeiosisComponent = () => {
       const propStyle = selectedLayer && propertyStyles[selectedLayer];
       const properties = propStyle && propStyle.properties;
       return ([
-        selectedLayer && m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
+        selectedLayer && !isSportLayer(selectedLayer) && m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
+        selectedLayer && isSportLayer(selectedLayer) && m('h4.title', `Selectie sportsector: ${layerTitles[selectedLayer] || selectedLayer}`),
         properties &&
         m('.info-panel', [
           props &&

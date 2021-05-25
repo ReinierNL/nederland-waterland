@@ -130,7 +130,7 @@ export const HomePage: MeiosisComponent = () => {
               style:
                 'height: 95vh; width: 70vw; margin: 0; padding: 0; overflow: hidden; box-shadow: (0px 0px 20px rgba(0,0,0,.3))',
               oncreate: () => {
-                map = L.map('map', {}).setView([52.14, 5.109], 8);
+                map = L.map('map', {}).setView([52.0, 5.2], 8);
                 map.on('overlayadd', (e: any) => updateActiveLayers(e.layer.options.name, true));
                 map.on('overlayremove', (e: any) => updateActiveLayers(e.layer.options.name, false));
                 map.on('zoomend', () => setZoomLevel(map.getZoom()));

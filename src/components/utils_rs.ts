@@ -11,3 +11,8 @@ export const isCureLayer = (layername: string): boolean => {
 export const isCareOrCureLayer = (layername: string): boolean => {
   return isCareLayer(layername) || isCureLayer(layername)
 }
+
+export const isSportLayer = (layername: string): boolean => {
+  return layername == 'skating' || layername == 'swimming'
+}
+
