@@ -33,6 +33,7 @@ import { actions } from '..';
 import L, { LeafletEvent } from 'leaflet';
 import { NamedGeoJSONOptions } from '../../components';
 import { toColorFactory, toFilterFactory } from '../../models';
+import { isCareOrCureLayer, isSportLayer } from '../../components/utils_rs';
 
 // Add curline        // (RS): What is curline??
 // is this to add a property 'active' so we can use it elsewhere?
@@ -93,6 +94,7 @@ export interface IAppStateModel {
 }
 
 export interface IAppStateActions {
+  mapClick: () => void;
   selectFeature: (f: Feature<Point | Polygon>, layerName?: string, layer?: L.Layer) => void;
   selectHospital: (f: Feature<Point>) => Promise<void>;
   selectWaterFeature: (f: Feature) => void;
@@ -299,12 +301,26 @@ export const appStateMgmt = {
       selectedMarkersLayer: L.geoJSON(undefined),
     },
   } as IAppStateModel,
+
   actions: (update, states): IAppStateActions => {
     return {
       setBoundingBoxSizeInMeter: (size) => update({ app: { size } }),
       selectWaterFeature: (f) => {
         update({ app: { selectedWaterItem: f } });
         m.redraw();
+      mapClick: () => {
+        console.log('mapclick action');
+        const {
+          app: { selectedMarkersLayer, selectedLayer },
+        } = states();
+        selectedMarkersLayer!.clearLayers();
+        var new_sl = selectedLayer;
+        if (isCareOrCureLayer(new_sl!) || isSportLayer(new_sl!)) {
+          new_sl = undefined
+          console.log('mapclick calling update()');
+          update({ app: { selectedItem: undefined, selectedLayer: new_sl, selectedHospital: undefined } });
+        };
+        console.log('mapclick action finished');
       },
       selectFeature: async (f, selectedLayer?: string, layer?: L.Layer) => {
         console.log('Select feature');
@@ -351,6 +367,7 @@ export const appStateMgmt = {
         update({ app: { selectedItem: () => f, selectedLayer, selectedHospital: new_sh } });
       },
       selectHospital: async (f) => {
+        console.log('Select hospital');
         const { app } = states();
         const { activeLayers, selectedHospital, selectedMarkersLayer, ziekenhuizen } = app;
         if (selectedHospital && selectedHospital.properties?.Locatienummer === f.properties?.Locatienummer) return;

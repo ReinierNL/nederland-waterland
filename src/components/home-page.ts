@@ -101,7 +101,7 @@ export const HomePage: MeiosisComponent = () => {
         selectedMarkersLayer,
       } = state.app;
 
-      const { setZoomLevel, toggleRoutekaartActivity, updateActiveLayers } = actions;
+      const { mapClick, setZoomLevel, toggleRoutekaartActivity, updateActiveLayers } = actions;
 
       return [
         m(
@@ -134,6 +134,7 @@ export const HomePage: MeiosisComponent = () => {
                 map.on('overlayadd', (e: any) => updateActiveLayers(e.layer.options.name, true));
                 map.on('overlayremove', (e: any) => updateActiveLayers(e.layer.options.name, false));
                 map.on('zoomend', () => setZoomLevel(map.getZoom()));
+                map.on('click', () => mapClick())
                 L.control.scale({ imperial: false, metric: true }).addTo(map);
                 // Add the PDOK map
                 const pdokachtergrondkaartGrijs = new L.TileLayer(
