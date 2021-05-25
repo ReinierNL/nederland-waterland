@@ -84,7 +84,6 @@ export interface IAppStateModel {
     /** Last item's layer name */
     selectedLayer: string;
     selectedHospital: Feature<Point>;
-    selectedWaterItem: Feature;
     /** Layers that are loaded */
     activeLayers: Set<string>;
     /** is the routekaarten info active */
@@ -97,9 +96,7 @@ export interface IAppStateActions {
   mapClick: () => void;
   selectFeature: (f: Feature<Point | Polygon>, layerName?: string, layer?: L.Layer) => void;
   selectHospital: (f: Feature<Point>) => Promise<void>;
-  selectWaterFeature: (f: Feature) => void;
   toggleHospitalActivity: (id: number, layer?: L.GeoJSON) => void;
-  setBoundingBoxSizeInMeter: (size: number) => void;
   updateActiveLayers: (layer: string, add: boolean) => Promise<void>;
   refreshLayer: (layer?: string) => Promise<void>;
   setZoomLevel: (zoom: number) => void;
@@ -304,10 +301,6 @@ export const appStateMgmt = {
 
   actions: (update, states): IAppStateActions => {
     return {
-      setBoundingBoxSizeInMeter: (size) => update({ app: { size } }),
-      selectWaterFeature: (f) => {
-        update({ app: { selectedWaterItem: f } });
-        m.redraw();
       mapClick: () => {
         console.log('mapclick action');
         const {
