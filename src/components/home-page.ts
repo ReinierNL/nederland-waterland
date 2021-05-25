@@ -171,7 +171,7 @@ export const HomePage: MeiosisComponent = () => {
                   }
                   return new L.Marker(latlng, {
                     icon: layerIcon,
-                    title: feature.properties.Name,
+                    title: feature.properties.Naam,
                   });
                 };
 
@@ -209,14 +209,14 @@ export const HomePage: MeiosisComponent = () => {
                 const pointToLayerSkating = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
                   return new L.Marker(latlng, {
                     icon: skatingIcon,
-                    title: feature.properties.Name,
+                    title: feature.properties.Naam,
                   });
                 };
 
                 const pointToLayerSwimming = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
                   return new L.Marker(latlng, {
                     icon: swimmingIcon,
-                    title: feature.properties.Name,
+                    title: feature.properties.naam,
                   });
                 };
 
@@ -232,7 +232,7 @@ export const HomePage: MeiosisComponent = () => {
                   }
                   return new L.Marker(latlng, {
                     icon: layerIcon,
-                    title: feature.properties.Name,
+                    title: feature.properties.Naam,
                   });
                 };
 
