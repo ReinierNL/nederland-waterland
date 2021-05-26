@@ -472,7 +472,7 @@ export const HomePage: MeiosisComponent = () => {
                     { 
                       label: 'Sport',
                       children: [
-                        { label: 'IJsbanan', layer: skatingsLayer },
+                        { label: 'IJsbanen', layer: skatingsLayer },
                         { label: 'Zwembaden', layer: swimmingsLayer },
                       ]
                     },
