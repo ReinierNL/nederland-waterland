@@ -8,17 +8,6 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster.js';
 // import 'leaflet-hash';
-import {
-  careIconGreen,
-  careIconPurple,
-  careIconRed,
-  sewageIcon,
-  skatingIcon,
-  swimmingIcon,
-  ziekenhuisIconGreen,
-  ziekenhuisIconPurple,
-  ziekenhuisIconRed,
-} from '../utils';
 import { MeiosisComponent } from '../services/meiosis';
 import { InfoPanel } from './info-panel';
 // import { HospitalInfoPanel } from './hospital-info-panel';
@@ -32,6 +21,8 @@ import logoEVZ from 'url:../assets/evz.png';
 import { isCureLayer, isCareOrCureLayer } from './utils_rs';
 import layerTitles from '../assets/layerTitles.json';
 import layerPercentages from '../assets/layer_percentages.json';
+import { pointToLayerCare, pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
+  pointToLayerSewage, pointToLayerSkating, pointToLayerSwimming, pointToLayerZHrk } from './markers'
 
 export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
   name: string;
@@ -159,83 +150,6 @@ export const HomePage: MeiosisComponent = () => {
                 // Hash in URL
                 // new (L as any).Hash(map);
 
-                // pointToLayer implementations:
-
-                const pointToLayerCare = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  var layerIcon = careIconRed;
-                  if (feature.properties && feature.properties['Routekaart']) {
-                    if (feature.properties['Routekaart'] == 'Concept ingeleverd') {
-                      layerIcon = careIconPurple;
-                    } else {
-                      layerIcon = careIconGreen;   // does not occur yet
-                    }
-                  }
-                  return new L.Marker(latlng, {
-                    icon: layerIcon,
-                    title: feature.properties.Naam,
-                  });
-                };
-
-                const pointToLayerGreenCircleMarker = (
-                  _feature: Feature<Point, any>,
-                  latlng: L.LatLng
-                ): L.CircleMarker<any> => {
-                  return new L.CircleMarker(latlng, {
-                    radius: 5,
-                    stroke: false,
-                    fillColor: 'green',
-                    fillOpacity: 0.8,
-                  });
-                };
-
-                const pointToLayerPurpleCircleMarker = (
-                  _feature: Feature<Point, any>,
-                  latlng: L.LatLng
-                ): L.CircleMarker<any> => {
-                  return new L.CircleMarker(latlng, {
-                    radius: 5,
-                    stroke: false,
-                    fillColor: 'purple',
-                    fillOpacity: 0.8,
-                  });
-                };
-
-                const pointToLayerSewage = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  return new L.Marker(latlng, {
-                    icon: sewageIcon,
-                    title: feature.properties.Name,
-                  });
-                };
-
-                const pointToLayerSkating = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  return new L.Marker(latlng, {
-                    icon: skatingIcon,
-                    title: feature.properties.Naam,
-                  });
-                };
-
-                const pointToLayerSwimming = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  return new L.Marker(latlng, {
-                    icon: swimmingIcon,
-                    title: feature.properties.naam,
-                  });
-                };
-
-                const pointToLayerZHrk = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-                  // for the ziekenhuizen_routekaarten layer: return green, orange or red icon
-                  var layerIcon = ziekenhuisIconRed;
-                  if (feature.properties && feature.properties['Routekaart']) {
-                    if (feature.properties['Routekaart'] == 'Concept ingeleverd') {
-                      layerIcon = ziekenhuisIconPurple;
-                    } else {
-                      layerIcon = ziekenhuisIconGreen;
-                    }
-                  }
-                  return new L.Marker(latlng, {
-                    icon: layerIcon,
-                    title: feature.properties.Naam,
-                  });
-                };
 
                 // layers:
 
