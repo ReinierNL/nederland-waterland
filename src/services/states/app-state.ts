@@ -110,7 +110,8 @@ export interface IAppState {
 }
 const size = 5000;
 
-const highlightMarker = (selectedMarkersLayer: L.GeoJSON, f: Feature, primarySelection = true) => {
+
+const highlightMarker = (selectedMarkersLayer: L.GeoJSON, f: Feature, layerName: string = '', primarySelection = true) => {
   if (f.geometry.type !== 'Point') return;
   const lng = f.geometry.coordinates[0];
   const lat = f.geometry.coordinates[1];
@@ -124,6 +125,11 @@ const highlightMarker = (selectedMarkersLayer: L.GeoJSON, f: Feature, primarySel
       opacity: 1,
     })
   );
+  if (isCareLayer(layerName)) {
+    selectedMarkersLayer.addLayer(
+      pointToLayerCare(f as any, new L.LatLng(lat, lng))
+    );
+  };
 };
 
 const createLeafletLayer = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
@@ -335,9 +341,9 @@ export const appStateMgmt = {
                     z.properties?.['KvK-nummer_van_het_concern_DigiMV_2012'] === organisatie ||
                     z.properties?.Organisatie === organisatie
                 )
-                .forEach((z) => highlightMarker(selectedMarkersLayer, z, z.properties?.Id === id));
+                .forEach((z) => highlightMarker(selectedMarkersLayer, z, selectedLayer, z.properties?.Id === id));
           } else {
-            highlightMarker(selectedMarkersLayer, f);
+            highlightMarker(selectedMarkersLayer, f, selectedLayer!);
           }
         }
         update({ app: { selectedItem: () => f, selectedLayer, selectedHospital: new_sh } });
@@ -345,7 +351,7 @@ export const appStateMgmt = {
       selectHospital: async (f) => {
         console.log('Select hospital');
         const { app } = states();
-        const { activeLayers, selectedHospital, selectedMarkersLayer, ziekenhuizen } = app;
+        const { activeLayers, selectedHospital, selectedLayer, selectedMarkersLayer, ziekenhuizen } = app;
         if (selectedHospital && selectedHospital.properties?.Locatienummer === f.properties?.Locatienummer) return;
         const updating = [] as Array<Promise<{ [key: string]: L.GeoJSON }>>;
         activeLayers?.forEach((layer) => {
@@ -365,7 +371,7 @@ export const appStateMgmt = {
           organisatie &&
             ziekenhuizen.features
               .filter((z) => z.properties && z.properties.Organisatie === organisatie)
-              .forEach((z) => highlightMarker(selectedMarkersLayer, z, z.properties?.Locatienummer === id));
+              .forEach((z) => highlightMarker(selectedMarkersLayer, z, selectedLayer, z.properties?.Locatienummer === id));
         }
         update({
           app: { selectedHospital: () => f, selectedLayer: 'ziekenhuizen', selectedItem: undefined, ...result },
