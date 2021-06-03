@@ -1,7 +1,15 @@
 import m from 'mithril';
 import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
-import ziekenhuizen from '../../data/ziekenhuizen.json';
+import { FeatureCollection, Feature, Point, GeoJsonObject, Polygon } from 'geojson';
+import { actions } from '..';
+import L, { LeafletEvent } from 'leaflet';
+import { NamedGeoJSONOptions } from '../../components';
+import { toColorFactory, toFilterFactory } from '../../models';
+import { isCareLayer, isCareOrCureLayer, isSportLayer } from '../../components/utils_rs';
+import { pointToLayerCare, pointToTitledLayer } from '../../components/markers'
+
+// layer data:
 import ggz from '../../data/ggz.json';
 import ghz from '../../data/ghz.json';
 import vvt from '../../data/vvt.json';
@@ -27,13 +35,7 @@ import wko_diepte from '../../data/WKO Restrictie Diepte.json';
 import wko_ordening from '../../data/WKO Restrictie Ordening.json';
 // import wko_specprovbeleid: loaded dynamcally. see wko_spec_prov_beleidLayer
 import wko_verbod from '../../data/WKO Verbodsgebieden.json';
-import { createIcon, ziekenhuisIcon } from '../../utils';
-import { FeatureCollection, Feature, Point, GeoJsonObject, Polygon } from 'geojson';
-import { actions } from '..';
-import L, { LeafletEvent } from 'leaflet';
-import { NamedGeoJSONOptions } from '../../components';
-import { toColorFactory, toFilterFactory } from '../../models';
-import { isCareOrCureLayer, isSportLayer } from '../../components/utils_rs';
+import ziekenhuizen from '../../data/ziekenhuizen.json';
 
 // Add curline        // (RS): What is curline??
 // is this to add a property 'active' so we can use it elsewhere?
