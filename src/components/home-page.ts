@@ -61,7 +61,9 @@ export const HomePage: MeiosisComponent = () => {
         selectedItem,
         selectedHospital,
         selectedLayer,
+        selectedMarkersLayer,
         rk_active,
+        // layers and layer data objects (json):
         wateren_potentie_gt1haLayer,
         poliklinieken,
         ziekenhuizen,
@@ -87,7 +89,6 @@ export const HomePage: MeiosisComponent = () => {
         wko_ordening,
         wko_specprovbeleidLayer,
         wko_verbod,
-        selectedMarkersLayer,
       } = state.app;
 
       const { mapClick, setZoomLevel, toggleRoutekaartActivity, updateActiveLayers } = actions;
