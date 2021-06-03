@@ -152,39 +152,6 @@ export const HomePage: MeiosisComponent = () => {
 
                 // layers:
 
-                vvtLayer_rk = (L as any).markerClusterGroup({ name: 'vvt' });
-                L.geoJSON(vvt, {
-                  pointToLayer: pointToLayerCare,
-                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectFeature(feature as Feature<Point>, 'vvt');
-                    });
-                  },
-                  name: 'vvt',
-                } as NamedGeoJSONOptions).eachLayer((l) => vvtLayer_rk.addLayer(l));
-
-                ghzLayer_rk = (L as any).markerClusterGroup({ name: 'ghz' });
-                L.geoJSON(ghz, {
-                  pointToLayer: pointToLayerCare,
-                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectFeature(feature as Feature<Point>, 'ghz');
-                    });
-                  },
-                  name: 'ghz',
-                } as NamedGeoJSONOptions).eachLayer((l) => ghzLayer_rk.addLayer(l));
-
-                ggzLayer_rk = (L as any).markerClusterGroup({ name: 'ggz' });
-                L.geoJSON(ggz, {
-                  pointToLayer: pointToLayerCare,
-                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectFeature(feature as Feature<Point>, 'ggz');
-                    });
-                  },
-                  name: 'ggz',
-                } as NamedGeoJSONOptions).eachLayer((l) => ggzLayer_rk.addLayer(l));
-
                 effluentLayer = L.geoJSON(effluent, {
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
@@ -199,6 +166,28 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'effluent',
                 } as NamedGeoJSONOptions);
 
+                ggzLayer_rk = (L as any).markerClusterGroup({ name: 'ggz' });
+                L.geoJSON(ggz, {
+                  pointToLayer: pointToLayerCare,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectFeature(feature as Feature<Point>, 'ggz');
+                    });
+                  },
+                  name: 'ggz',
+                } as NamedGeoJSONOptions).eachLayer((l) => ggzLayer_rk.addLayer(l));
+
+                ghzLayer_rk = (L as any).markerClusterGroup({ name: 'ghz' });
+                L.geoJSON(ghz, {
+                  pointToLayer: pointToLayerCare,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectFeature(feature as Feature<Point>, 'ghz');
+                    });
+                  },
+                  name: 'ghz',
+                } as NamedGeoJSONOptions).eachLayer((l) => ghzLayer_rk.addLayer(l));
+
                 gl_wk_buLayer = L.geoJSON(gl_wk_bu, {
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
@@ -206,6 +195,28 @@ export const HomePage: MeiosisComponent = () => {
                     });
                   },
                   name: 'gl_wk_bu',
+                } as NamedGeoJSONOptions);
+
+                polikliniekenLayer_rk = L.geoJSON(poliklinieken, {
+                  pointToLayer: pointToLayerZHrk,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectHospital(feature as Feature<Point>);
+                    });
+                  },
+                  name: 'poliklinieken',
+                } as NamedGeoJSONOptions);
+
+                // rioolleidingenLayer : dyamic layer, declared in app-state (as part of state)
+
+                rwzisLayer = L.geoJSON(rwzis, {
+                  pointToLayer: pointToLayerSewage,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectFeature(feature as Feature<Point>, 'rwzis');
+                    });
+                  },
+                  name: 'rwzis',
                 } as NamedGeoJSONOptions);
 
                 skatingsLayer = L.geoJSON(skatings, {
@@ -228,6 +239,45 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'swimming',
                 } as NamedGeoJSONOptions);
 
+                const filter_for_vvt = (f?: Feature): boolean => {
+                  // this one is only executed once.
+                  // console.log('filter_for_vvt called');
+                  // can we determine selected item from app state?
+                  // const { selectedItem } = state.app;
+                  // console.log('filter_for_vvt: selected item: ' + selectedItem);
+                  // const value = f && f.properties ? f.properties['IsMainBranch'] : undefined;
+                  // return value == true
+                  return true
+                };
+                
+                vvtLayer_rk = (L as any).markerClusterGroup({ name: 'vvt' });
+                L.geoJSON(vvt, {
+                  filter: filter_for_vvt,
+                  pointToLayer: pointToLayerCare,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectFeature(feature as Feature<Point>, 'vvt');
+                      // actions.refreshLayer('vvt');
+                    });
+                  },
+                  name: 'vvt',
+                } as NamedGeoJSONOptions).eachLayer((l) => vvtLayer_rk.addLayer(l));
+
+                wko_diepteLayer = L.geoJSON(wko_diepte, {
+                  onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectFeature(feature as Feature<Point>, 'wko_diepte', layer);
+                    });
+                  },
+                  style: () => {
+                    return {
+                      color: 'cornflowerblue',
+                      fillColor: 'blue',
+                    };
+                  },
+                  name: 'wko_diepte',
+                } as NamedGeoJSONOptions);
+
                 warmtenetten_nbr_lokaalLayer = L.geoJSON(warmtenetten_nbr_lokaal, {
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
@@ -244,33 +294,6 @@ export const HomePage: MeiosisComponent = () => {
                     });
                   },
                   name: 'warmtenetten_nbr_infra',
-                } as NamedGeoJSONOptions);
-
-                // rioolleidingenLayer : dyamic layer, declared in app-state (as part of state)
-
-                rwzisLayer = L.geoJSON(rwzis, {
-                  pointToLayer: pointToLayerSewage,
-                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectFeature(feature as Feature<Point>, 'rwzis');
-                    });
-                  },
-                  name: 'rwzis',
-                } as NamedGeoJSONOptions);
-
-                wko_diepteLayer = L.geoJSON(wko_diepte, {
-                  onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectFeature(feature as Feature<Point>, 'wko_diepte', layer);
-                    });
-                  },
-                  style: () => {
-                    return {
-                      color: 'cornflowerblue',
-                      fillColor: 'blue',
-                    };
-                  },
-                  name: 'wko_diepte',
                 } as NamedGeoJSONOptions);
 
                 wko_gwiLayer = L.geoJSON(wko_gwi, {
@@ -292,6 +315,7 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'wko_gwio',
                 } as NamedGeoJSONOptions);
+
                 // wko_gwoLayer : dyamic layer, declared in app-state (as part of state)
                 // wko_gbesLayer : dyamic layer, declared in app-state (as part of state)
                 // wko_installatiesLayer : dyamic layer, declared in app-state (as part of state)
@@ -307,6 +331,7 @@ export const HomePage: MeiosisComponent = () => {
                 } as NamedGeoJSONOptions);
 
                 // wko_natuurLayer : dyamic layer, declared in app-state (as part of state)
+
                 wko_ordeningLayer = L.geoJSON(wko_ordening, {
                   onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
                     layer.on('click', () => {
@@ -323,6 +348,7 @@ export const HomePage: MeiosisComponent = () => {
                 } as NamedGeoJSONOptions);
 
                 // wko_specprovbeleidLayer : dyamic layer, declared in app-state (as part of state)
+
                 wko_verbodLayer = L.geoJSON(wko_verbod, {
                   onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
                     layer.on('click', function () {
@@ -336,16 +362,6 @@ export const HomePage: MeiosisComponent = () => {
                     };
                   },
                   name: 'wko_verbod',
-                } as NamedGeoJSONOptions);
-
-                polikliniekenLayer_rk = L.geoJSON(poliklinieken, {
-                  pointToLayer: pointToLayerZHrk,
-                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectHospital(feature as Feature<Point>);
-                    });
-                  },
-                  name: 'poliklinieken',
                 } as NamedGeoJSONOptions);
 
                 ziekenhuizenLayer_rk = L.geoJSON(ziekenhuizen, {
