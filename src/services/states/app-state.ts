@@ -329,7 +329,7 @@ export const appStateMgmt = {
           if (!selectedMarkersLayer) return;
           selectedMarkersLayer.clearLayers();
           selectedMarkersLayer.bringToBack();
-          const organisatie = f.properties?.['KvK-nummer_van_het_concern_DigiMV_2012'] || f.properties?.Organisatie;
+          const organisatie = f.properties?.Organisatie;
           if (organisatie && !/onbekend/i.test(organisatie)) {
             const overlay =
               selectedLayer === 'ggz' ? ggz : selectedLayer === 'ghz' ? ghz : selectedLayer === 'vvt' ? vvt : undefined;
@@ -337,9 +337,7 @@ export const appStateMgmt = {
             overlay &&
               overlay.features
                 .filter(
-                  (z) =>
-                    z.properties?.['KvK-nummer_van_het_concern_DigiMV_2012'] === organisatie ||
-                    z.properties?.Organisatie === organisatie
+                  (z) => z.properties?.Organisatie === organisatie
                 )
                 .forEach((z) => highlightMarker(selectedMarkersLayer, z, selectedLayer, z.properties?.Id === id));
           } else {
