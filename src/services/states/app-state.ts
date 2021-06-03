@@ -96,13 +96,12 @@ export interface IAppStateModel {
 
 export interface IAppStateActions {
   mapClick: () => void;
+  refreshLayer: (layer?: string) => Promise<void>;
   selectFeature: (f: Feature<Point | Polygon>, layerName?: string, layer?: L.Layer) => void;
   selectHospital: (f: Feature<Point>) => Promise<void>;
-  toggleHospitalActivity: (id: number, layer?: L.GeoJSON) => void;
-  updateActiveLayers: (layer: string, add: boolean) => Promise<void>;
-  refreshLayer: (layer?: string) => Promise<void>;
   setZoomLevel: (zoom: number) => void;
   toggleRoutekaartActivity: () => Promise<void>; 
+  updateActiveLayers: (layer: string, add: boolean) => Promise<void>;
 }
 
 export interface IAppState {
@@ -390,31 +389,21 @@ export const appStateMgmt = {
           app: { selectedHospital: () => f, selectedLayer: 'ziekenhuizen', selectedItem: undefined, ...result },
         });
       },
-      toggleHospitalActivity: (id: number, layer?: L.GeoJSON) => {
-        const {
-          app: { hospitals },
-        } = states();
-        if (!hospitals) return;
-        hospitals.features.some((h: Feature<Point, { id: number; active: boolean }>) => {
-          if (h.properties.id === id) {
-            h.properties.active = !h.properties.active;
-            return true;
-          }
-          return false;
-        });
-        if (layer) {
-          let i = 0;
-          layer.eachLayer((l) => {
-            const curHospital = hospitals.features[i].properties;
-            if (curHospital.active) {
-              (l as L.Marker).setIcon(createIcon('black')).setOpacity(1);
-            } else {
-              (l as L.Marker).setIcon(ziekenhuisIcon).setOpacity(0.3);
-            }
-            i++;
-          });
-        }
-        return { app: { hospitals } };
+      refreshLayer: async (layer?: string) => {
+        console.log('refreshLayer. layer: ' + layer)
+        const { app } = states();
+        const { selectedHospital } = app;
+        if (!selectedHospital || !layer) return;
+        const result = await loadGeoJSON(layer, selectedHospital, app);
+        update({ app: { ...result } });
+      },
+      setZoomLevel: (zoom: number) => update({ app: { zoom } }),
+      toggleRoutekaartActivity: async () => {
+        console.log('toggleRoutekaartActivity')
+        const { app } = states();
+        var { rk_active } = app;
+        rk_active = !rk_active;
+        update({ app: { rk_active } });
       },
       updateActiveLayers: async (selectedLayer: string, add: boolean) => {
         console.log('updateActiveLayers')
@@ -437,22 +426,6 @@ export const appStateMgmt = {
           update({ app: { activeLayers, selectedLayer, selectedHospital: new_sh } });
         }
       },
-      refreshLayer: async (layer?: string) => {
-        console.log('refreshLayer. layer: ' + layer)
-        const { app } = states();
-        const { selectedHospital } = app;
-        if (!selectedHospital || !layer) return;
-        const result = await loadGeoJSON(layer, selectedHospital, app);
-        update({ app: { ...result } });
-      },
-      setZoomLevel: (zoom: number) => update({ app: { zoom } }),
-      toggleRoutekaartActivity: async () => {
-        console.log('toggleRoutekaartActivity')
-        const { app } = states();
-        var { rk_active } = app;
-        rk_active = !rk_active;
-        update({ app: { rk_active } });
-      }
     } as IAppStateActions;
   },
 } as IAppState;
