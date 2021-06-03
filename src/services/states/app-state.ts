@@ -277,8 +277,6 @@ export const appStateMgmt = {
       wateren_potentie_gt1haLayer: createLeafletLayer('wateren_potentie_gt1ha', 'AVGwocGJ_1'),
       poliklinieken,
       ziekenhuizen,
-      isSearching: false,
-      searchQuery: '',
       activeLayers: new Set(),
       selectedMarkersLayer: L.geoJSON(undefined),
     },
