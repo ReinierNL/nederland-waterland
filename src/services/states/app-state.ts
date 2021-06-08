@@ -126,6 +126,9 @@ const highlightMarker = (selectedMarkersLayer: L.GeoJSON, f: Feature, layerName:
   if (isCareLayer(layerName)) {
     selectedMarkersLayer.addLayer(
       pointToLayerCare(f as any, new L.LatLng(lat, lng))
+        .on('click', () => {
+          actions.selectFeature(f as Feature<Point>, layerName);
+        })
     );
   };
 };
