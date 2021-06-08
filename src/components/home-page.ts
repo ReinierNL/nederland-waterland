@@ -150,6 +150,16 @@ export const HomePage: MeiosisComponent = () => {
                 // new (L as any).Hash(map);
 
 
+                const filter_main_branch = (f?: Feature): boolean => {
+                  // can we determine selected item from app state?
+                  // (no: this function one is only executed once)
+                  // console.log('filter_main_branch called');
+                  // const { selectedItem } = state.app;
+                  // console.log('filter_main_branch: selected item: ' + selectedItem);
+                  const value = f && f.properties ? f.properties['IsMainBranch'] : undefined;
+                  return value == true
+                };
+                
                 // layers:
 
                 effluentLayer = L.geoJSON(effluent, {
@@ -168,6 +178,7 @@ export const HomePage: MeiosisComponent = () => {
 
                 ggzLayer_rk = (L as any).markerClusterGroup({ name: 'ggz' });
                 L.geoJSON(ggz, {
+                  filter: filter_main_branch,
                   pointToLayer: pointToLayerCare,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
@@ -179,6 +190,7 @@ export const HomePage: MeiosisComponent = () => {
 
                 ghzLayer_rk = (L as any).markerClusterGroup({ name: 'ghz' });
                 L.geoJSON(ghz, {
+                  filter: filter_main_branch,
                   pointToLayer: pointToLayerCare,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
@@ -239,25 +251,13 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'swimming',
                 } as NamedGeoJSONOptions);
 
-                const filter_for_vvt = (f?: Feature): boolean => {
-                  // this one is only executed once.
-                  // console.log('filter_for_vvt called');
-                  // can we determine selected item from app state?
-                  // const { selectedItem } = state.app;
-                  // console.log('filter_for_vvt: selected item: ' + selectedItem);
-                  // const value = f && f.properties ? f.properties['IsMainBranch'] : undefined;
-                  // return value == true
-                  return true
-                };
-                
                 vvtLayer_rk = (L as any).markerClusterGroup({ name: 'vvt' });
                 L.geoJSON(vvt, {
-                  filter: filter_for_vvt,
+                  filter: filter_main_branch,
                   pointToLayer: pointToLayerCare,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
                       actions.selectFeature(feature as Feature<Point>, 'vvt');
-                      // actions.refreshLayer('vvt');
                     });
                   },
                   name: 'vvt',
