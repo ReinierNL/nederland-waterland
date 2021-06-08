@@ -108,8 +108,6 @@ export interface IAppState {
   initial: IAppStateModel;
   actions: (us: UpdateStream, states: Stream<IAppModel>) => IAppStateActions;
 }
-const size = 5000;
-
 
 const highlightMarker = (selectedMarkersLayer: L.GeoJSON, f: Feature, layerName: string = '', primarySelection = true) => {
   if (f.geometry.type !== 'Point') return;
@@ -199,7 +197,6 @@ interface IPathOptions extends L.PathOptions {
 export const appStateMgmt = {
   initial: {
     app: {
-      size,
       vvt,
       ggz,
       ghz,
