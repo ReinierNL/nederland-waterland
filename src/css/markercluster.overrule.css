@@ -1,0 +1,23 @@
+/* overruling the standard colors of MarkerCluster.Default.css */
+
+.marker-cluster-small {
+	background-color: rgba(160, 160, 160, 0.5);
+	}
+.marker-cluster-small div {
+	background-color: rgba(160, 160, 160, 0.5);
+	}
+
+.marker-cluster-medium {
+	background-color: rgba(160, 160, 160, 0.5);
+	}
+.marker-cluster-medium div {
+	background-color: rgba(160, 160, 160, 0.5);
+	}
+
+.marker-cluster-large {
+	background-color: rgba(160, 160, 160, 0.5);
+	}
+.marker-cluster-large div {
+	background-color: rgba(160, 160, 160, 0.5);
+	}
+
