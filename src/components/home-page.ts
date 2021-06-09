@@ -214,7 +214,7 @@ export const HomePage: MeiosisComponent = () => {
                   pointToLayer: pointToLayerZHrk,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
-                      actions.selectHospital(feature as Feature<Point>);
+                      actions.selectHospital(feature as Feature<Point>, 'poliklinieken');
                     });
                   },
                   name: 'poliklinieken',
@@ -369,7 +369,7 @@ export const HomePage: MeiosisComponent = () => {
                   pointToLayer: pointToLayerZHrk,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
-                      actions.selectHospital(feature as Feature<Point>);
+                      actions.selectHospital(feature as Feature<Point>, 'ziekenhuizen');
                     });
                   },
                   name: 'ziekenhuizen',

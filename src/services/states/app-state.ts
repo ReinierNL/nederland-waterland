@@ -98,7 +98,7 @@ export interface IAppStateActions {
   mapClick: () => void;
   refreshLayer: (layer?: string) => Promise<void>;
   selectFeature: (f: Feature<Point | Polygon>, layerName?: string, layer?: L.Layer) => void;
-  selectHospital: (f: Feature<Point>) => Promise<void>;
+  selectHospital: (f: Feature<Point>, layerName?: string) => Promise<void>;
   setZoomLevel: (zoom: number) => void;
   toggleRoutekaartActivity: () => Promise<void>; 
   updateActiveLayers: (layer: string, add: boolean) => Promise<void>;
@@ -346,10 +346,10 @@ export const appStateMgmt = {
         }
         update({ app: { selectedItem: () => f, selectedLayer, selectedHospital: new_sh } });
       },
-      selectHospital: async (f) => {
-        console.log('Select hospital');
+      selectHospital: async (f, layerName: string) => {
+        console.log('Select hospital (cure location); layerName = ' + layerName);
         const { app } = states();
-        const { activeLayers, selectedHospital, selectedLayer, selectedMarkersLayer, ziekenhuizen } = app;
+        const { activeLayers, selectedHospital, selectedMarkersLayer, poliklinieken, ziekenhuizen } = app;
         if (selectedHospital && selectedHospital.properties?.Locatienummer === f.properties?.Locatienummer) return;
         const updating = [] as Array<Promise<{ [key: string]: L.GeoJSON }>>;
         activeLayers?.forEach((layer) => {
@@ -361,18 +361,19 @@ export const appStateMgmt = {
             .forEach((key) => (acc[key] = cur[key]));
           return acc;
         }, {} as { [key: string]: L.GeoJSON });
-        if (selectedMarkersLayer && ziekenhuizen) {
+        const cureLayer = layerName == 'ziekenhuizen' ? ziekenhuizen : poliklinieken;
+        if (selectedMarkersLayer && cureLayer) {
           selectedMarkersLayer.clearLayers();
           selectedMarkersLayer.bringToBack();
           const id = f.properties?.Locatienummer;
           const organisatie = f.properties?.Organisatie;
           organisatie &&
-            ziekenhuizen.features
+          cureLayer.features
               .filter((z) => z.properties && z.properties.Organisatie === organisatie)
-              .forEach((z) => highlightMarker(selectedMarkersLayer, z, selectedLayer, z.properties?.Locatienummer === id));
+              .forEach((z) => highlightMarker(selectedMarkersLayer, z, layerName, z.properties?.Locatienummer === id));
         }
         update({
-          app: { selectedHospital: () => f, selectedLayer: 'ziekenhuizen', selectedItem: undefined, ...result },
+          app: { selectedHospital: () => f, selectedLayer: layerName, selectedItem: undefined, ...result },
         });
       },
       refreshLayer: async (layer?: string) => {
