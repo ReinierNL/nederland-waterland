@@ -1,6 +1,8 @@
 import { Feature } from 'geojson';
 import { capitalize } from '../utils';
 import rk_legend from '../assets/rk_legend.json'
+// import wn_legend from '../assets/wn_legend.json'
+// import wn_props from '../assets/wn_props.json'
 
 export const toColorFactory = (layerName: string, legendPropName: string): ((f?: Feature) => string) => {
   const propertyStyle = propertyStyles[layerName];
@@ -15,6 +17,22 @@ export const toColorFactory = (layerName: string, legendPropName: string): ((f?:
       min = items[i][1];
     }
     return items[items.length - 1][2];
+  };
+};
+
+export const toStringColorFactory = (layerName: string, legendPropName: string): ((f?: Feature) => string) => {
+// returns a getColor function that maps a string to a color (using the stringlegend property style field)
+  const propertyStyle = propertyStyles[layerName];
+  if (!propertyStyle || !propertyStyle.stringlegend) return () => 'red';
+  const items = propertyStyle.stringlegend.items;
+  return (f?: Feature) => {
+    const value = f && f.properties ? f.properties[legendPropName] : undefined;
+    if (typeof value === 'undefined') return items[0][1];
+    // let min = -Number.MAX_VALUE;
+    for (let i = 0; i < items.length - 1; i++) {
+      if (value == items[i][0]) return items[i][1];
+    }
+    return items[items.length - 1][1];
   };
 };
 
@@ -33,6 +51,37 @@ export const toFilterFactory = (layerName: string, legendPropName: string): ((f?
     return items[items.length - 1][0];
   };
 };
+
+// feature style for Warmtenetten Vattenfall:
+
+const wn_legend = {
+  "items": [
+    ["KOUDE PLAN", "#1fcc1f", "koude (gepland)"],
+    ["KOUDE TRANSPORT", "#2723fa", "koude (transport)"],
+    ["KOUDE WIJK", "#7f7cfa", "koude (wijk)"],
+    ["WARMTE PLAN", "#ffa502", "warmte (gepland)"],
+    ["WARMTE TRANSPORT", "#ff0000", "warmtenet (transport)"],
+    ["WARMTE WIJK", "#ff7f7f", "warmtenet (wijk)"]
+  ],
+  "title": "type leiding"
+} as { items: Array<[value: string, color: string, title: string]>; title: string } ;
+
+const wn_properties = {
+  "NETTYPE": {
+    title: () => 'Type',
+    value: (s: string) => s.toLowerCase(),
+  }, 
+  "STATUS": {
+    title: () => 'Status',
+    value: (s: string) => s.toLowerCase(),
+  },
+} as { [key: string]: { title: (s: string) => string; value: (s: any) => string | number } };
+
+const wn_vf_featurestyle = {
+  stringlegend: wn_legend,
+  properties: wn_properties,
+};
+
 
 export const propertyStyles = {
   _template: {
@@ -679,6 +728,16 @@ export const propertyStyles = {
     },
   },
 
+  wn_vf_almere: wn_vf_featurestyle,
+  wn_vf_amsterdam: wn_vf_featurestyle,
+  wn_vf_arnhem: wn_vf_featurestyle,
+  wn_vf_ede: wn_vf_featurestyle,
+  wn_vf_leiden: wn_vf_featurestyle,
+  wn_vf_lelystad: wn_vf_featurestyle,
+  wn_vf_nijmegen: wn_vf_featurestyle,
+  wn_vf_rotterdam: wn_vf_featurestyle,
+  wn_vf_vlieland: wn_vf_featurestyle,
+  
   ziekenhuizen: {
     legend: rk_legend,
     properties: {
@@ -693,6 +752,7 @@ export const propertyStyles = {
   string,
   {
     legend?: { items: Array<[active: boolean, max: number, color: string, title: string]>; title: string };
+    stringlegend?: { items: Array<[value: string, color: string, title: string]>; title: string };
     properties: { [key: string]: { title: (s: string) => string; value: (s: any) => string | number } };
   }
 >;

@@ -18,8 +18,8 @@ export const InfoPanel: MeiosisComponent = () => {
       const propStyle = selectedLayer && propertyStyles[selectedLayer];
       const properties = propStyle && propStyle.properties;
       return ([
-        selectedLayer && !isSportLayer(selectedLayer) && m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
-        selectedLayer && isSportLayer(selectedLayer) && m('h4.title', `Selectie sportsector: ${layerTitles[selectedLayer] || selectedLayer}`),
+        // selectedLayer && !isSportLayer(selectedLayer) && m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
+        // selectedLayer && isSportLayer(selectedLayer) && m('h4.title', `Selectie sportsector: ${layerTitles[selectedLayer] || selectedLayer}`),
         properties &&
         m('.info-panel', [
           props &&

@@ -15,6 +15,7 @@ export const Legend: MeiosisComponent = () => {
     }) => {
       const propertyStyle = selectedLayer && propertyStyles[selectedLayer];
       const legend = propertyStyle && propertyStyle.legend;
+      const stringlegend = propertyStyle && propertyStyle.stringlegend;
       const canUncheckItem = legend && legend.items.reduce((acc, cur) => (acc += cur[0] ? 1 : 0), 0) > 1;
       return (
         !isCareOrCureLayer(selectedLayer!) &&
@@ -37,7 +38,21 @@ export const Legend: MeiosisComponent = () => {
               m('span', item[3]),
             ])
           ),
+        ]),
+
+        stringlegend && stringlegend.items && (stringlegend.items.length > 0) &&
+        m('.legend', [
+          m('h5', { style: 'margin-bottom: 0;' }, `Legenda ${stringlegend.title}`),
+          stringlegend.items.map((item) =>
+            m('.legend-item', [
+              m('.legend-rectangle', {
+                style: `background-color: ${item[1]}`,
+              }),
+              m('span', item[2]),
+            ])
+          ),
         ])
+
       );
     },
   };

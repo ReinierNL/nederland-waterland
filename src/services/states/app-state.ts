@@ -1,12 +1,12 @@
 import m from 'mithril';
 import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
-import { FeatureCollection, Feature, Point, GeoJsonObject, Polygon } from 'geojson';
+import { FeatureCollection, Feature, GeoJsonObject, Point, LineString, Polygon } from 'geojson';
 import { actions } from '..';
 import L, { LeafletEvent } from 'leaflet';
 import { NamedGeoJSONOptions } from '../../components';
-import { toColorFactory, toFilterFactory } from '../../models';
-import { isCareLayer, isCareOrCureLayer, isSportLayer } from '../../components/utils_rs';
+import { toColorFactory, toFilterFactory, toStringColorFactory } from '../../models';
+import { isCareLayer, isCareOrCureLayer, isSportLayer, isVattenfallLayer } from '../../components/utils_rs';
 import { pointToLayerCare, pointToTitledLayer } from '../../components/markers'
 
 // layer data:
@@ -31,10 +31,11 @@ import wko_obes from '../../data/WKO_OBES.json';
 // import wko_installaties:  loaded dynamically. see wko_installatiesLayer
 // // wko restriction layers
 import wko_diepte from '../../data/WKO Restrictie Diepte.json';
-// import wko_natuur: loaded dynamcally. see wko_natuurLayer
+// import wko_natuur: loaded dynamically. see wko_natuurLayer
 import wko_ordening from '../../data/WKO Restrictie Ordening.json';
-// import wko_specprovbeleid: loaded dynamcally. see wko_spec_prov_beleidLayer
+// import wko_specprovbeleid: loaded dynamically. see wko_spec_prov_beleidLayer
 import wko_verbod from '../../data/WKO Verbodsgebieden.json';
+// import wn_vf_xxx: loaded dynamically  (9 layers)
 import ziekenhuizen from '../../data/ziekenhuizen.json';
 
 // Add curline        // (RS): What is curline??
@@ -78,6 +79,15 @@ export interface IAppStateModel {
     wko_ordening: FeatureCollection;
     wko_specprovbeleidLayer: L.GeoJSON;
     wko_verbod: FeatureCollection;
+    wn_vf_almereLayer: L.GeoJSON;
+    wn_vf_amsterdamLayer: L.GeoJSON;
+    wn_vf_arnhemLayer: L.GeoJSON;
+    wn_vf_edeLayer: L.GeoJSON;
+    wn_vf_leidenLayer: L.GeoJSON;
+    wn_vf_lelystadLayer: L.GeoJSON;
+    wn_vf_nijmegenLayer: L.GeoJSON;
+    wn_vf_rotterdamLayer: L.GeoJSON;
+    wn_vf_vlielandLayer: L.GeoJSON;
     ziekenhuizen: FeatureCollection<Point>;
     /** Bounding box size */
     size: number;
@@ -97,7 +107,7 @@ export interface IAppStateModel {
 export interface IAppStateActions {
   mapClick: () => void;
   refreshLayer: (layer?: string) => Promise<void>;
-  selectFeature: (f: Feature<Point | Polygon>, layerName?: string, layer?: L.Layer) => void;
+  selectFeature: (f: Feature<Point | LineString | Polygon>, layerName?: string, layer?: L.Layer) => void;
   selectHospital: (f: Feature<Point>, layerName?: string) => Promise<void>;
   setZoomLevel: (zoom: number) => void;
   toggleRoutekaartActivity: () => Promise<void>; 
@@ -131,6 +141,27 @@ const highlightMarker = (selectedMarkersLayer: L.GeoJSON, f: Feature, layerName:
         })
     );
   };
+};
+
+const createLayerVF = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
+  const getColor = toStringColorFactory(name, legendPropName);
+  return L.geoJSON(initialData, {
+    onEachFeature: (feature: Feature<LineString, any>, layer: L.Layer) => {
+      layer.on('click', (e: LeafletEvent) => {
+        // actions.selectFeature(feature as Feature<LineString>, e.target?.options?.name, layer);
+        actions.selectFeature(feature as Feature<LineString>, name, layer);
+      });
+    },
+    style: (f) => {
+      const color = getColor(f);
+      return {
+        color,
+        fillColor: color,
+        fillOpacity: 0.8,
+      };
+    },
+    name,
+  } as NamedGeoJSONOptions);
 };
 
 const createLeafletLayer = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
@@ -281,6 +312,17 @@ export const appStateMgmt = {
 
       wko_verbod,
       wateren_potentie_gt1haLayer: createLeafletLayer('wateren_potentie_gt1ha', 'AVGwocGJ_1'),
+
+      wn_vf_almereLayer: createLayerVF('wn_vf_almere', 'NETTYPE', undefined),
+      wn_vf_amsterdamLayer: createLayerVF('wn_vf_amsterdam', 'NETTYPE', undefined),
+      wn_vf_arnhemLayer: createLayerVF('wn_vf_arnhem', 'NETTYPE', undefined),
+      wn_vf_edeLayer: createLayerVF('wn_vf_ede', 'NETTYPE', undefined),
+      wn_vf_leidenLayer: createLayerVF('wn_vf_leiden', 'NETTYPE', undefined),
+      wn_vf_lelystadLayer: createLayerVF('wn_vf_lelystad', 'NETTYPE', undefined),
+      wn_vf_nijmegenLayer: createLayerVF('wn_vf_nijmegen', 'NETTYPE', undefined),
+      wn_vf_rotterdamLayer: createLayerVF('wn_vf_rotterdam', 'NETTYPE', undefined),
+      wn_vf_vlielandLayer: createLayerVF('wn_vf_vlieland', 'NETTYPE', undefined),
+
       poliklinieken,
       ziekenhuizen,
       activeLayers: new Set(),
@@ -393,9 +435,19 @@ export const appStateMgmt = {
         update({ app: { rk_active } });
       },
       updateActiveLayers: async (selectedLayer: string, add: boolean) => {
-        console.log('updateActiveLayers')
+        console.log(`updateActiveLayers; selectedLayer=${selectedLayer}`)
         const { app } = states();
-        const { activeLayers, selectedHospital: old_sh, selectedLayer: old_sl, selectedMarkersLayer } = app;
+        const { activeLayers, 
+                selectedHospital: old_sh,
+                selectedLayer: old_sl, 
+                selectedMarkersLayer } = app;
+        // console.log(`selectedLayer=${selectedLayer}; old_sl=${old_sl}`)
+        if ( isVattenfallLayer(selectedLayer) && add ) {
+          const result = await loadGeoJSON_VF(selectedLayer, app);
+          return result
+        } else {
+          console.log('NOT calling loadGeoJSON_VF');
+        };
         var new_sh = old_sh;
         if (add) {
           activeLayers!.add(selectedLayer);
@@ -411,11 +463,52 @@ export const appStateMgmt = {
           update({ app: { activeLayers, selectedLayer, selectedHospital: new_sh, ...result } });
         } else {
           update({ app: { activeLayers, selectedLayer, selectedHospital: new_sh } });
-        }
+        };
       },
     } as IAppStateActions;
   },
 } as IAppState;
+
+const loadGeoJSON_VF = async (layer: string, app: { [key: string]: L.GeoJSON }) => {
+// loads GeoJSOn data for a Vattenfall warmtenetten layer, if not already loaded
+  // console.log(`LoadGeoJSON2`);
+  const layerName = layer + 'Layer';
+  // console.log(`layerName: ${layerName}`);
+  var city = layerName.substring(6, layerName.length - 5);
+  city = city.charAt(0).toUpperCase() + city.slice(1)
+  // console.log(`stad: ${city}`);
+
+  const filename = `Warmtenetten Vattenfall.${city}.geojson`
+  // const host = `http://localhost:3366`;
+  const host = `https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl`;
+  console.log(`preparing to request: ${layerName}`);
+  const geojson = app[layerName] ? (app[layerName] as L.GeoJSON) : undefined;
+
+  if (geojson) {
+    // console.log(`requesting`);
+    // console.log(`geojson._layers.length = ${Object.keys(geojson._layers).length}`);
+    if (Object.keys(geojson._layers).length > 0) { 
+      // if it already contains data there's no need to load it again
+      return {} 
+    }
+    const record = await m.request<{ id: number; features: FeatureCollection }>({
+      method: 'GET',
+      url: `${host}/${filename}`,
+    });
+    if (record && record.features) {
+      // console.log(`Request returned data (features)`);
+      geojson.clearLayers();
+      geojson.addData(record.features);
+      return { [layerName]: geojson };
+    } else {
+      console.log(`NO data (or no features) was received; url=${host}/${filename}`);
+      return {};
+    }
+  } else {
+    console.log(`sent no request (no geojson)`);
+  }
+  return {};
+};
 
 const loadGeoJSON = async (layer: string, selectedHospital: Feature, app: { [key: string]: L.GeoJSON }) => {
   const layerName = layer + 'Layer';

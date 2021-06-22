@@ -17,7 +17,7 @@ import logoDeltares from 'url:../assets/Deltares.png';
 import logoSyntraal from 'url:../assets/Syntraal.png';
 import logoTNO from 'url:../assets/TNO.png';
 import logoEVZ from 'url:../assets/evz.png';
-import { isCureLayer, isCareOrCureLayer } from './utils_rs';
+import { isCureLayer, isCareOrCureLayer, isSportLayer, isEnergyRelatedLayer } from './utils_rs';
 import layerTitles from '../assets/layerTitles.json';
 import layerPercentages from '../assets/layer_percentages.json';
 import { pointToLayerCare, pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
@@ -54,7 +54,8 @@ export const HomePage: MeiosisComponent = () => {
   let wko_ordeningLayer: L.GeoJSON;
   //let wko_specprovbeleidLayer: L.GeoJSON; // dynamic
   let wko_verbodLayer: L.GeoJSON;
-
+  //let wn_vf_xxxLayer: L.GeoJSON; // dynamic (9 layers)
+  
   return {
     view: ({ attrs: { state, actions } }) => {
       // console.log(state);
@@ -90,6 +91,15 @@ export const HomePage: MeiosisComponent = () => {
         wko_ordening,
         wko_specprovbeleidLayer,
         wko_verbod,
+        wn_vf_almereLayer,
+        wn_vf_amsterdamLayer,
+        wn_vf_arnhemLayer,
+        wn_vf_edeLayer,
+        wn_vf_leidenLayer,
+        wn_vf_lelystadLayer,
+        wn_vf_nijmegenLayer,
+        wn_vf_rotterdamLayer,
+        wn_vf_vlielandLayer,
       } = state.app;
 
       const { mapClick, setZoomLevel, toggleRoutekaartActivity, updateActiveLayers } = actions;
@@ -365,6 +375,8 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'wko_verbod',
                 } as NamedGeoJSONOptions);
 
+                // wn_vf_xxxLayer: dynamic layer (9 layers)
+
                 ziekenhuizenLayer_rk = L.geoJSON(ziekenhuizen, {
                   pointToLayer: pointToLayerZHrk,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
@@ -386,7 +398,8 @@ export const HomePage: MeiosisComponent = () => {
                   ],
                 } as any; //Control.Layers.TreeObject;
 
-                const overlayTree = [{
+                const overlayTree = [
+                {
                   label: 'Maatschappelijk vastgoed',
                   children: [
                     { 
@@ -431,10 +444,24 @@ export const HomePage: MeiosisComponent = () => {
                     },
                     {
                       label: 'Aardgasvrije wijken en warmtenetten',
+                      collapsed: true,
                       children: [
                         { label: 'Aardgasvrije wijken en buurten', layer: gl_wk_buLayer },
                         { label: 'Noord-Brabant - lokaal', layer: warmtenetten_nbr_lokaalLayer },
                         { label: 'Noord-Brabant - infra', layer: warmtenetten_nbr_infraLayer },
+                        { label: 'warmtenetten Vattenfall',
+                          children: [
+                            { label: 'Almere', layer: wn_vf_almereLayer, },
+                            { label: 'Amsterdam', layer: wn_vf_amsterdamLayer, },
+                            { label: 'Arnhem', layer: wn_vf_arnhemLayer, },
+                            { label: 'Ede', layer: wn_vf_edeLayer, },
+                            { label: 'Leiden', layer: wn_vf_leidenLayer, },
+                            { label: 'Lelystad', layer: wn_vf_lelystadLayer, },
+                            { label: 'Nijmegen', layer: wn_vf_nijmegenLayer, },
+                            { label: 'Rotterdam', layer: wn_vf_rotterdamLayer, },
+                            { label: 'Vlieland', layer: wn_vf_vlielandLayer, },
+                          ],
+                        },
                       ],
                     },
                     {
@@ -481,10 +508,20 @@ export const HomePage: MeiosisComponent = () => {
             },
             [
               m('h3', 'De zorgduurzaamkaart'),
+
+              selectedLayer && 
+                isCareOrCureLayer(selectedLayer) &&
+                  selectedLayer && m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
+              selectedLayer && 
+                isSportLayer(selectedLayer) &&
+                  selectedLayer && m('h4.title', `Selectie sport: ${layerTitles[selectedLayer] || selectedLayer}`),
+              selectedLayer && 
+                isEnergyRelatedLayer(selectedLayer) &&
+                  selectedLayer && m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
+  
               selectedHospital &&
                 selectedHospital.properties && [
                   [
-                    selectedLayer && m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
                     m('table.hospital-feature-props', [
                       ...Object.keys(selectedHospital.properties)
                         .filter(
