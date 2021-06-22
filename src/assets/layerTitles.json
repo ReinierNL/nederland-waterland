@@ -23,5 +23,16 @@
   "wko_ordening": "WKO restrictie: Ordening",
   "wko_specprovbeleid": "WKO restrictie: SpecProvBeleid",
   "wko_verbod": "WKO restrictie: Verbod",
+
+  "wn_vf_almere": "Warmtenet Almere (Vattenfall)",
+  "wn_vf_amsterdam": "Warmtenet Amsterdam (Vattenfall)",
+  "wn_vf_arnhem": "Warmtenet Arnhem (Vattenfall)",
+  "wn_vf_ede": "Warmtenet Ede (Vattenfall)",
+  "wn_vf_leiden": "Warmtenet Leiden (Vattenfall)",
+  "wn_vf_lelystad": "Warmtenet Lelystad (Vattenfall)",
+  "wn_vf_nijmegen": "Warmtenet Nijmegen (Vattenfall)",
+  "wn_vf_rotterdam": "Warmtenet Rotterdam (Vattenfall)",
+  "wn_vf_vlieland": "Warmtenet Vlieland (Vattenfall)",
+    
   "ziekenhuizen_rk": "Ziekenhuizen"
 }
