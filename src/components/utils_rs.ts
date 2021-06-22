@@ -12,7 +12,14 @@ export const isCareOrCureLayer = (layername: string): boolean => {
   return isCareLayer(layername) || isCureLayer(layername)
 }
 
+export const isEnergyRelatedLayer = (layername: string): boolean => {
+  return !isCareOrCureLayer(layername) && !isSportLayer(layername)
+}
+
 export const isSportLayer = (layername: string): boolean => {
   return layername == 'skating' || layername == 'swimming'
 }
 
+export const isVattenfallLayer = (layername: string): boolean => {
+  return layername.substring(0, 5) == 'wn_vf'
+}
