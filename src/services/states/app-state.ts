@@ -515,7 +515,7 @@ const loadGeoJSON = async (layer: string, selectedHospital: Feature, app: { [key
   const id = (selectedHospital.properties as any).Locatienummer;
   const geojson = app[layerName] ? (app[layerName] as L.GeoJSON) : undefined;
   if (geojson) {
-    console.log(`pprocess.env.GIS_SERVER: ${process.env.GIS_SERVER}`);
+    console.log(`process.env.GIS_SERVER: ${process.env.GIS_SERVER}`);
     const the_url = `${process.env.GIS_SERVER || 'https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/geojson-server/api/'}${layer}/id/${id}`;
     console.log(`URL: ${the_url}`);
     const record = await m.request<{ id: number; data: FeatureCollection }>({
