@@ -21,7 +21,7 @@ import {
 export const pointToLayerCare = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
     var layerIcon = careIconRed;
     if (feature.properties && feature.properties['Routekaart']) {
-        if (feature.properties['Routekaart'] == 'Concept ingeleverd') {
+        if (feature.properties['Routekaart'] == 'Voorlopig') {
         layerIcon = careIconPurple;
         } else {
         layerIcon = careIconGreen;   // does not occur yet
