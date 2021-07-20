@@ -562,19 +562,16 @@ export const HomePage: MeiosisComponent = () => {
             rk_active && selectedLayer && isCareOrCureLayer(selectedLayer) && [
               m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
               m('.text-routekaart',
-                `Routekaarten concept: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
-              ),
-              m('.text-routekaart',
-                `Routekaarten definitief: ${layerPercentages[selectedLayer][1]} % van alle organisaties`
+                `Routekaarten: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
               ),
             ],
             rk_active && isCureLayer(selectedLayer!) && [
               m('.header-routekaart', 'Doelstelling klimaatakkoord'),
-              m('.text-routekaart', 'Totale CO₂-emissie (peiljaar 2016): 100 %'),
+              m('.text-routekaart', 'Totale CO₂-emissie (peiljaar): 100 %'),
               m('.text-routekaart',
-                'Voorspelde CO₂-besparing 2030 (o.b.v. definitief ingeleverde routekaarten): 3.6 %'
+                'Voorspelde CO₂-besparing 2030 (o.b.v. ingeleverde routekaarten): 59 %'
               ),
-              m('.text-routekaart', 'Ambitie CO₂-besparing 2030 portefeuilleroutekaart: 49 %'),
+              m('.text-routekaart', 'Ambitie CO₂-besparing 2030 klimaatakkoord: 49 %'),
             ],
           ]),
 
