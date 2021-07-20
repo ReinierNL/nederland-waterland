@@ -1,7 +1,7 @@
 {
-    "ziekenhuizen": [27.1, 48.6],
-    "poliklinieken": [27.1, 48.6],
-    "vvt": [4.1, 0],
-    "ggz": [2.0, 0],
-    "ghz": [1.4, 0]
+    "ziekenhuizen": [76.8],
+    "poliklinieken": [76.8],
+    "vvt": [4.1],
+    "ggz": [2.0],
+    "ghz": [1.4]
 }
