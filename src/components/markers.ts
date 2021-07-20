@@ -82,7 +82,7 @@ export const pointToLayerZHrk = (feature: Feature<Point, any>, latlng: L.LatLng)
     // for the ziekenhuizen_routekaarten layer: return green, orange or red icon
     var layerIcon = ziekenhuisIconRed;
     if (feature.properties && feature.properties['Routekaart']) {
-        if (feature.properties['Routekaart'] == 'Concept ingeleverd') {
+        if (feature.properties['Routekaart'] == 'Voorlopig') {
         layerIcon = ziekenhuisIconPurple;
         } else {
         layerIcon = ziekenhuisIconGreen;
