@@ -17,7 +17,7 @@ import logoDeltares from 'url:../assets/Deltares.png';
 import logoSyntraal from 'url:../assets/Syntraal.png';
 import logoTNO from 'url:../assets/TNO.png';
 import logoEVZ from 'url:../assets/evz.png';
-import { isCureLayer, isCareOrCureLayer, isSportLayer, isEnergyRelatedLayer } from './utils_rs';
+import { isCareLayer, isCareOrCureLayer, isCureLayer, isSportLayer, isEnergyRelatedLayer } from './utils_rs';
 import layerTitles from '../assets/layerTitles.json';
 import layerPercentages from '../assets/layer_percentages.json';
 import { pointToLayerCare, pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
@@ -559,10 +559,19 @@ export const HomePage: MeiosisComponent = () => {
           ),
 
           m('.bottom15', [
-            rk_active && selectedLayer && isCareOrCureLayer(selectedLayer) && [
+            rk_active && selectedLayer && isCureLayer(selectedLayer) && [
               m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
               m('.text-routekaart',
                 `Routekaarten: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
+              ),
+            ],
+            rk_active && selectedLayer && isCareLayer(selectedLayer) && [
+              m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
+              m('.text-routekaart',
+                `Routekaarten voorlopig: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
+              ),
+              m('.text-routekaart',
+                `Routekaarten definitief en/of vastgesteld RvB: 0 % van alle organisaties`
               ),
             ],
             rk_active && isCureLayer(selectedLayer!) && [
@@ -579,10 +588,9 @@ export const HomePage: MeiosisComponent = () => {
           !isCareOrCureLayer(selectedLayer!) && m(Legend, { state, actions }),
           isCareOrCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
         ]),
-        m(
-          '.disclaimer',
+        m('.disclaimer',
           'Data over WKO bronnen is afkomstig van de WKO-bodemenergietool (wkotool.nl). ' +
-            'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
+          'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
         ),
       ];
     },
