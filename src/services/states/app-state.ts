@@ -6,7 +6,7 @@ import { actions } from '..';
 import L, { LeafletEvent } from 'leaflet';
 import { NamedGeoJSONOptions } from '../../components';
 import { toColorFactory, toFilterFactory, toStringColorFactory } from '../../models';
-import { isCareLayer, isCareOrCureLayer, isSportLayer, isVattenfallLayer } from '../../components/utils_rs';
+import { isCareLayer, isCareOrCureLayer, isCureLayer, isSportLayer, isVattenfallLayer } from '../../components/utils_rs';
 import { pointToLayerCare, pointToTitledLayer } from '../../components/markers'
 
 // layer data:
@@ -392,6 +392,10 @@ export const appStateMgmt = {
         console.log('Select hospital (cure location); layerName = ' + layerName);
         const { app } = states();
         const { activeLayers, selectedHospital, selectedMarkersLayer, poliklinieken, ziekenhuizen } = app;
+        var sActiveLayers = ''
+        activeLayers?.forEach((layer) => {
+          sActiveLayers = sActiveLayers + `${layer}`  + ', '
+        });  // trailing comma and space are not removed (not necessary)
         if (selectedHospital && selectedHospital.properties?.Locatienummer === f.properties?.Locatienummer) return;
         const updating = [] as Array<Promise<{ [key: string]: L.GeoJSON }>>;
         activeLayers?.forEach((layer) => {
@@ -403,16 +407,23 @@ export const appStateMgmt = {
             .forEach((key) => (acc[key] = cur[key]));
           return acc;
         }, {} as { [key: string]: L.GeoJSON });
-        const cureLayer = layerName == 'ziekenhuizen' ? ziekenhuizen : poliklinieken;
-        if (selectedMarkersLayer && cureLayer) {
+        if (selectedMarkersLayer) {
           selectedMarkersLayer.clearLayers();
           selectedMarkersLayer.bringToBack();
           const id = f.properties?.Locatienummer;
           const organisatie = f.properties?.Organisatie;
-          organisatie &&
-          cureLayer.features
-              .filter((z) => z.properties && z.properties.Organisatie === organisatie)
-              .forEach((z) => highlightMarker(selectedMarkersLayer, z, layerName, z.properties?.Locatienummer === id));
+          if (ziekenhuizen && sActiveLayers.includes('ziekenhuizen')) {
+            organisatie &&
+            ziekenhuizen.features
+                .filter((z) => z.properties && z.properties.Organisatie === organisatie)
+                .forEach((z) => highlightMarker(selectedMarkersLayer, z, 'ziekenhuizen', z.properties?.Locatienummer === id));
+          }
+          if (poliklinieken && sActiveLayers.includes('poliklinieken')) {
+            organisatie &&
+            poliklinieken.features
+                .filter((z) => z.properties && z.properties.Organisatie === organisatie)
+                .forEach((z) => highlightMarker(selectedMarkersLayer, z, 'poliklinieken', z.properties?.Locatienummer === id));
+          }
         }
         update({
           app: { selectedHospital: () => f, selectedLayer: layerName, selectedItem: undefined, ...result },
@@ -456,7 +467,7 @@ export const appStateMgmt = {
           if (old_sl === selectedLayer) selectedMarkersLayer?.clearLayers();
           selectedLayer = ''
         }
-        if (selectedLayer != 'ziekenhuizen') new_sh = undefined;
+        if (!isCureLayer(selectedLayer)) new_sh = undefined;
         // console.log(activeLayers);
         if (add && new_sh && new_sh.properties && new_sh.properties.Locatienummer) {
           const result = await loadGeoJSON(selectedLayer, new_sh, app);
