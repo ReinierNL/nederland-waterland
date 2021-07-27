@@ -231,6 +231,16 @@ export const propertyStyles = {
     },
   },
 
+  poliklinieken: {
+    legend: rk_legend,
+    properties: {
+      "Locatienummer": {
+        title: () => 'Locatienummer',
+        value: (n: number) => `${n}`,
+      },
+    },
+  },
+
   rioolleidingen: {
     properties: {
       FID_1: {
