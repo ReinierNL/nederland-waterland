@@ -588,7 +588,7 @@ export const HomePage: MeiosisComponent = () => {
             ],
             rk_active && isCareLayer(selectedLayer!) && [
               m('.header-routekaart', 'Data'),
-              m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_care.xlsx']", 'Routekaart status data langdurige zorg (Excel (binnenkort))'),
+              m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_care.xlsx']", 'Routekaart status data langdurige zorg (Excel)'),
             ],
           ]),
 
