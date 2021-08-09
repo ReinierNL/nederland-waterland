@@ -582,6 +582,15 @@ export const HomePage: MeiosisComponent = () => {
               ),
               m('.text-routekaart', 'Ambitie CO₂-besparing 2030 klimaatakkoord: 49 %'),
             ],
+            rk_active && isCureLayer(selectedLayer!) && [
+              m('.header-routekaart', 'Data'),
+              m("a#[href='https://test.txt']", 'Test.txt'),
+              m("a#[href='https://routekaart_status_care.xlsx']", 'Routekaart status data ziekenhuizen (Excel)'),
+            ],
+            rk_active && isCareLayer(selectedLayer!) && [
+              m('.header-routekaart', 'Data'),
+              m("a#[href='routekaart_status_cure.xlsx']", 'Routekaart status data langdurige zorg (Excel)'),
+            ],
           ]),
 
           // legend: two versions
