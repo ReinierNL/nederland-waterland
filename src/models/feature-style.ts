@@ -169,6 +169,10 @@ export const propertyStyles = {
         title: () => 'Routekaart',
         value: (s: string) => s == undefined ? 'Niet ingeleverd' : s,
       },
+      "Ambitie": {
+        title: () => 'Ambitie',
+        value: (s: string) => s,
+      },
     },
   },
 
@@ -206,6 +210,10 @@ export const propertyStyles = {
       "Routekaart": {
         title: () => 'Routekaart',
         value: (s: string) => s == undefined ? 'Niet ingeleverd' : s,
+      },
+      "Ambitie": {
+        title: () => 'Ambitie',
+        value: (s: string) => s,
       },
     },
   },
@@ -399,6 +407,10 @@ export const propertyStyles = {
       "Routekaart": {
         title: () => 'Routekaart',
         value: (s: string) => s == undefined ? 'Niet ingeleverd' : s,
+      },
+      "Ambitie": {
+        title: () => 'Ambitie',
+        value: (s: string) => s,
       },
     },
   },
