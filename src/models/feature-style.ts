@@ -171,7 +171,7 @@ export const propertyStyles = {
       },
       "Ambitie": {
         title: () => 'Ambitie',
-        value: (s: string) => s,
+        value: (s: string) => s.replace('+-', ''),
       },
     },
   },
@@ -213,7 +213,7 @@ export const propertyStyles = {
       },
       "Ambitie": {
         title: () => 'Ambitie',
-        value: (s: string) => s,
+        value: (s: string) => s.replace('+-', ''),
       },
     },
   },
@@ -410,7 +410,7 @@ export const propertyStyles = {
       },
       "Ambitie": {
         title: () => 'Ambitie',
-        value: (s: string) => s,
+        value: (s: string) => s.replace('+-', ''),
       },
     },
   },
