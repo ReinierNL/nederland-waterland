@@ -216,16 +216,16 @@ export const propertyStyles = {
       title: 'wko value',
     },
     properties: {
-      "WK_CODE": {
-        title: () => 'Wijkcode',
-        value: (s: string) => s,
-      },
-      "Wijk\/Buurtnaam -renamed": {
-        title: () => 'Wijk/buurtnaam',
-        value: (s: string) => s,
-      },
       "GM_NAAM": {
-        title: () => 'Gemeentenaam',
+        title: () => 'Gemeente',
+        value: (s: string) => s,
+      },
+      "WK_NAAM": {
+        title: () => 'Wijk',
+        value: (s: string) => s,
+      },
+      "BU_NAAM": {
+        title: () => 'Buurt',
         value: (s: string) => s,
       },
     },
