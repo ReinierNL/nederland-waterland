@@ -167,8 +167,10 @@ export const HomePage: MeiosisComponent = () => {
                   // console.log('filter_main_branch called');
                   // const { selectedItem } = state.app;
                   // console.log('filter_main_branch: selected item: ' + selectedItem);
-                  const value = f && f.properties ? f.properties['IsMainBranch'] : undefined;
-                  return value == true
+                  // 2021-10-20: disabled this filter: this eliminates too many locations
+                  //const value = f && f.properties ? f.properties['IsMainBranch'] : undefined;
+                  //return value == true
+                  return true
                 };
                 
                 // layers:
