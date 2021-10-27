@@ -11,6 +11,7 @@ specifiers:
   '@types/leaflet.markercluster': ^1.4.4
   '@types/mithril': ^2.0.6
   '@types/osmtogeojson': ^2.2.29
+  chart.js: ^3.6.0
   leaflet: ^1.7.1
   leaflet.control.layers.tree: 1.0.2
   leaflet.markercluster: ^1.5.0
@@ -27,6 +28,7 @@ dependencies:
   '@turf/centroid': 6.3.0
   '@turf/helpers': 6.1.4
   '@turf/meta': 6.0.2
+  chart.js: 3.6.0
   leaflet: 1.7.1
   leaflet.control.layers.tree: 1.0.2_leaflet@1.7.1
   leaflet.markercluster: 1.5.0_leaflet@1.7.1
@@ -2321,6 +2323,10 @@ packages:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
     dev: true
+
+  /chart.js/3.6.0:
+    resolution: {integrity: sha512-iOzzDKePL+bj+ccIsVAgWQehCXv8xOKGbaU2fO/myivH736zcx535PGJzQGanvcSGVOqX6yuLZsN3ygcQ35UgQ==}
+    dev: false
 
   /chrome-trace-event/1.0.2:
     resolution: {integrity: sha512-9e/zx1jw7B4CO+c/RXoCsfg/x1AfUBioy4owYH0bJprEYAx5hRFLRhWBqHAG57D0ZM4H7vxbP7bPe0VwhQRYDQ==}

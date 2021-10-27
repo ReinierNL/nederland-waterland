@@ -7,7 +7,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster.js';
-import '../css/markercluster.overrule.css';   // overrules the default colors of MarkerCluster
+import '../css/markercluster.overrule.css'; // overrules the default colors of MarkerCluster
 import { MeiosisComponent } from '../services/meiosis';
 import { InfoPanel } from './info-panel';
 import { Feature, Point } from 'geojson';
@@ -20,8 +20,16 @@ import logoEVZ from 'url:../assets/evz.png';
 import { isCareLayer, isCareOrCureLayer, isCureLayer, isSportLayer, isEnergyRelatedLayer } from './utils_rs';
 import layerTitles from '../assets/layerTitles.json';
 import layerPercentages from '../assets/layer_percentages.json';
-import { pointToLayerCare, pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
-  pointToLayerSewage, pointToLayerSkating, pointToLayerSwimming, pointToLayerZHrk } from './markers'
+import {
+  pointToLayerCare,
+  pointToLayerGreenCircleMarker,
+  pointToLayerPurpleCircleMarker,
+  pointToLayerSewage,
+  pointToLayerSkating,
+  pointToLayerSwimming,
+  pointToLayerZHrk,
+} from './markers';
+import { ChartJs } from './chart-js';
 
 export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
   name: string;
@@ -55,7 +63,7 @@ export const HomePage: MeiosisComponent = () => {
   //let wko_specprovbeleidLayer: L.GeoJSON; // dynamic
   let wko_verbodLayer: L.GeoJSON;
   //let wn_vf_xxxLayer: L.GeoJSON; // dynamic (9 layers)
-  
+
   return {
     view: ({ attrs: { state, actions } }) => {
       // console.log(state);
@@ -135,7 +143,7 @@ export const HomePage: MeiosisComponent = () => {
                 map.on('overlayadd', (e: any) => updateActiveLayers(e.layer.options.name, true));
                 map.on('overlayremove', (e: any) => updateActiveLayers(e.layer.options.name, false));
                 map.on('zoomend', () => setZoomLevel(map.getZoom()));
-                map.on('click', () => mapClick())
+                map.on('click', () => mapClick());
                 L.control.scale({ imperial: false, metric: true }).addTo(map);
                 // Add the PDOK map
                 const pdokachtergrondkaartGrijs = new L.TileLayer(
@@ -160,7 +168,6 @@ export const HomePage: MeiosisComponent = () => {
                 // Hash in URL
                 // new (L as any).Hash(map);
 
-
                 const filter_main_branch = (f?: Feature): boolean => {
                   // can we determine selected item from app state?
                   // (no: this function one is only executed once)
@@ -170,9 +177,9 @@ export const HomePage: MeiosisComponent = () => {
                   // 2021-10-20: disabled this filter: this eliminates too many locations
                   //const value = f && f.properties ? f.properties['IsMainBranch'] : undefined;
                   //return value == true
-                  return true
+                  return true;
                 };
-                
+
                 // layers:
 
                 effluentLayer = L.geoJSON(effluent, {
@@ -313,8 +320,8 @@ export const HomePage: MeiosisComponent = () => {
                   pointToLayer: pointToLayerGreenCircleMarker,
                   onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
                     layer.on('click', () => {
-                        actions.selectFeature(feature as Feature<Point>, 'wko_gwi', layer);
-                      });
+                      actions.selectFeature(feature as Feature<Point>, 'wko_gwi', layer);
+                    });
                   },
                   name: 'wko_gwi',
                 } as NamedGeoJSONOptions);
@@ -365,8 +372,8 @@ export const HomePage: MeiosisComponent = () => {
                 wko_verbodLayer = L.geoJSON(wko_verbod, {
                   onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
                     layer.on('click', function () {
-                        actions.selectFeature(feature as Feature<Point>, 'wko_verbod', layer);
-                      });
+                      actions.selectFeature(feature as Feature<Point>, 'wko_verbod', layer);
+                    });
                   },
                   style: () => {
                     return {
@@ -401,104 +408,106 @@ export const HomePage: MeiosisComponent = () => {
                 } as any; //Control.Layers.TreeObject;
 
                 const overlayTree = [
-                {
-                  label: 'Maatschappelijk vastgoed',
-                  children: [
-                    { 
-                      label: 'Zorggebouwen',
-                      children: [
-                        { label: 'Ziekenhuizen', layer: ziekenhuizenLayer_rk },
-                        { label: 'Buitenpoliklinieken', layer: polikliniekenLayer_rk },
-                        { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer_rk },
-                        { label: 'Geesteljke gezondheidszorg', layer: ggzLayer_rk },
-                        { label: 'Gehandicaptenzorg', layer: ghzLayer_rk },
-                      ]
-                    },
-                    { 
-                      label: 'Sport',
-                      children: [
-                        { label: 'IJsbanen', layer: skatingsLayer },
-                        { label: 'Zwembaden', layer: swimmingsLayer },
-                      ]
-                    },
-                  ],
-                },
-                {
-                  label: 'Energie-potentie',
-                  children: [
-                    {
-                      label: 'Oppervlaktewater - TEO',
-                      children: [{ label: 'TEO potentie *', layer: wateren_potentie_gt1haLayer }],
-                    },
-                    {
-                      label: 'Afvalwater - TEA',
-                      children: [
-                        { label: 'rioolwaterzuiveringen', layer: rwzisLayer },
-                        {
-                          label: '<span style="color:#8080FF"><b>&nbsp;&#x23AF;&nbsp;</b>rioolleidingen</span> *',
-                          layer: rioolleidingenLayer,
-                        },
-                        {
-                          label: '<span style="color:blue"><b>&nbsp;&#x23AF;&nbsp;</b>effluentleidingen</span>',
-                          layer: effluentLayer,
-                        },
-                      ],
-                    },
-                    {
-                      label: 'Aardgasvrije wijken en warmtenetten',
-                      collapsed: true,
-                      children: [
-                        { label: 'Aardgasvrije wijken en buurten', layer: gl_wk_buLayer },
-                        { label: 'Noord-Brabant - lokaal', layer: warmtenetten_nbr_lokaalLayer },
-                        { label: 'Noord-Brabant - infra', layer: warmtenetten_nbr_infraLayer },
-                        { label: 'warmtenetten Vattenfall',
-                          children: [
-                            { label: 'Almere', layer: wn_vf_almereLayer, },
-                            { label: 'Amsterdam', layer: wn_vf_amsterdamLayer, },
-                            { label: 'Arnhem', layer: wn_vf_arnhemLayer, },
-                            { label: 'Ede', layer: wn_vf_edeLayer, },
-                            { label: 'Leiden', layer: wn_vf_leidenLayer, },
-                            { label: 'Lelystad', layer: wn_vf_lelystadLayer, },
-                            { label: 'Nijmegen', layer: wn_vf_nijmegenLayer, },
-                            { label: 'Rotterdam', layer: wn_vf_rotterdamLayer, },
-                            { label: 'Vlieland', layer: wn_vf_vlielandLayer, },
-                          ],
-                        },
-                      ],
-                    },
-                    {
-                      label: 'WKO',
-                      selectAllCheckbox: false,
-                      children: [
-                        {
-                          label: 'Installaties',
-                          selectAllCheckbox: false,
-                          collapsed: true,
-                          children: [
-                            { label: 'WKO grondwaterinfiltratie', layer: wko_gwiLayer },
-                            { label: 'WKO grondwaterinfiltratie en -onttrekking', layer: wko_gwioLayer },
-                            { label: 'WKO grondwateronttrekking *', layer: wko_gwoLayer },
-                            { label: 'WKO gesloten bodemenergiesysteem *', layer: wko_gbesLayer },
-                            { label: 'WKO open bodemenergiesystemen', layer: wko_obesLayer },
-                            { label: 'WKO Installaties *', layer: wko_installatiesLayer },
-                          ],
-                        },
-                        {
-                          label: 'Restricties',
-                          selectAllCheckbox: false,
-                          collapsed: true,
-                          children: [
-                            { label: '&nbsp; &#x1F7E6; &nbsp;WKO Diepte', layer: wko_diepteLayer },
-                            { label: '&nbsp; &#x1F7E9; &nbsp;WKO Natuur *', layer: wko_natuurLayer },
-                            { label: '&nbsp; &#x1F7EA; &nbsp;WKO Ordening', layer: wko_ordeningLayer },
-                            { label: '&nbsp; &#x1F7E7; &nbsp;WKO SpecProvBeleid *', layer: wko_specprovbeleidLayer },
-                            { label: '&nbsp; &#x1F7E8; &nbsp;WKO Verbodsgebieden', layer: wko_verbodLayer },
-                          ],
-                        },
-                      ],
-                    },
-                  ]
-                }] as any; // Control.Layers.TreeObject;
+                  {
+                    label: 'Maatschappelijk vastgoed',
+                    children: [
+                      {
+                        label: 'Zorggebouwen',
+                        children: [
+                          { label: 'Ziekenhuizen', layer: ziekenhuizenLayer_rk },
+                          { label: 'Buitenpoliklinieken', layer: polikliniekenLayer_rk },
+                          { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer_rk },
+                          { label: 'Geesteljke gezondheidszorg', layer: ggzLayer_rk },
+                          { label: 'Gehandicaptenzorg', layer: ghzLayer_rk },
+                        ],
+                      },
+                      {
+                        label: 'Sport',
+                        children: [
+                          { label: 'IJsbanen', layer: skatingsLayer },
+                          { label: 'Zwembaden', layer: swimmingsLayer },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    label: 'Energie-potentie',
+                    children: [
+                      {
+                        label: 'Oppervlaktewater - TEO',
+                        children: [{ label: 'TEO potentie *', layer: wateren_potentie_gt1haLayer }],
+                      },
+                      {
+                        label: 'Afvalwater - TEA',
+                        children: [
+                          { label: 'rioolwaterzuiveringen', layer: rwzisLayer },
+                          {
+                            label: '<span style="color:#8080FF"><b>&nbsp;&#x23AF;&nbsp;</b>rioolleidingen</span> *',
+                            layer: rioolleidingenLayer,
+                          },
+                          {
+                            label: '<span style="color:blue"><b>&nbsp;&#x23AF;&nbsp;</b>effluentleidingen</span>',
+                            layer: effluentLayer,
+                          },
+                        ],
+                      },
+                      {
+                        label: 'Aardgasvrije wijken en warmtenetten',
+                        collapsed: true,
+                        children: [
+                          { label: 'Aardgasvrije wijken en buurten', layer: gl_wk_buLayer },
+                          { label: 'Noord-Brabant - lokaal', layer: warmtenetten_nbr_lokaalLayer },
+                          { label: 'Noord-Brabant - infra', layer: warmtenetten_nbr_infraLayer },
+                          {
+                            label: 'warmtenetten Vattenfall',
+                            children: [
+                              { label: 'Almere', layer: wn_vf_almereLayer },
+                              { label: 'Amsterdam', layer: wn_vf_amsterdamLayer },
+                              { label: 'Arnhem', layer: wn_vf_arnhemLayer },
+                              { label: 'Ede', layer: wn_vf_edeLayer },
+                              { label: 'Leiden', layer: wn_vf_leidenLayer },
+                              { label: 'Lelystad', layer: wn_vf_lelystadLayer },
+                              { label: 'Nijmegen', layer: wn_vf_nijmegenLayer },
+                              { label: 'Rotterdam', layer: wn_vf_rotterdamLayer },
+                              { label: 'Vlieland', layer: wn_vf_vlielandLayer },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        label: 'WKO',
+                        selectAllCheckbox: false,
+                        children: [
+                          {
+                            label: 'Installaties',
+                            selectAllCheckbox: false,
+                            collapsed: true,
+                            children: [
+                              { label: 'WKO grondwaterinfiltratie', layer: wko_gwiLayer },
+                              { label: 'WKO grondwaterinfiltratie en -onttrekking', layer: wko_gwioLayer },
+                              { label: 'WKO grondwateronttrekking *', layer: wko_gwoLayer },
+                              { label: 'WKO gesloten bodemenergiesysteem *', layer: wko_gbesLayer },
+                              { label: 'WKO open bodemenergiesystemen', layer: wko_obesLayer },
+                              { label: 'WKO Installaties *', layer: wko_installatiesLayer },
+                            ],
+                          },
+                          {
+                            label: 'Restricties',
+                            selectAllCheckbox: false,
+                            collapsed: true,
+                            children: [
+                              { label: '&nbsp; &#x1F7E6; &nbsp;WKO Diepte', layer: wko_diepteLayer },
+                              { label: '&nbsp; &#x1F7E9; &nbsp;WKO Natuur *', layer: wko_natuurLayer },
+                              { label: '&nbsp; &#x1F7EA; &nbsp;WKO Ordening', layer: wko_ordeningLayer },
+                              { label: '&nbsp; &#x1F7E7; &nbsp;WKO SpecProvBeleid *', layer: wko_specprovbeleidLayer },
+                              { label: '&nbsp; &#x1F7E8; &nbsp;WKO Verbodsgebieden', layer: wko_verbodLayer },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ] as any; // Control.Layers.TreeObject;
                 (L.control.layers as any).tree(baseTree, overlayTree).addTo(map);
               },
             })
@@ -511,16 +520,19 @@ export const HomePage: MeiosisComponent = () => {
             [
               m('h3', 'De zorgduurzaamkaart'),
 
-              selectedLayer && 
+              selectedLayer &&
                 isCareOrCureLayer(selectedLayer) &&
-                  selectedLayer && m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
-              selectedLayer && 
+                selectedLayer &&
+                m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
+              selectedLayer &&
                 isSportLayer(selectedLayer) &&
-                  selectedLayer && m('h4.title', `Selectie sport: ${layerTitles[selectedLayer] || selectedLayer}`),
-              selectedLayer && 
+                selectedLayer &&
+                m('h4.title', `Selectie sport: ${layerTitles[selectedLayer] || selectedLayer}`),
+              selectedLayer &&
                 isEnergyRelatedLayer(selectedLayer) &&
-                  selectedLayer && m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
-  
+                selectedLayer &&
+                m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
+
               selectedHospital &&
                 selectedHospital.properties && [
                   [
@@ -557,50 +569,60 @@ export const HomePage: MeiosisComponent = () => {
                 m('b', 'Toon routekaart informatie'),
               ],
 
-            ],
+              m(ChartJs, { width: 800, height: 400 }),
+            ]
           ),
 
           m('.bottom15', [
-            rk_active && selectedLayer && isCureLayer(selectedLayer) && [
-              m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
-              m('.text-routekaart',
-                `Routekaarten: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
-              ),
-            ],
-            rk_active && selectedLayer && isCareLayer(selectedLayer) && [
-              m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
-              m('.text-routekaart',
-                `Routekaarten voorlopig: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
-              ),
-              m('.text-routekaart',
-                `Routekaarten definitief en/of vastgesteld RvB: 0 % van alle organisaties`
-              ),
-            ],
-            rk_active && isCureLayer(selectedLayer!) && [
-              m('.header-routekaart', 'Doelstelling klimaatakkoord'),
-              m('.text-routekaart', 'Totale CO₂-emissie (peiljaar): 100 %'),
-              m('.text-routekaart',
-                'Voorspelde CO₂-besparing 2030 (o.b.v. ingeleverde routekaarten): 59 %'
-              ),
-              m('.text-routekaart', 'Ambitie CO₂-besparing 2030 klimaatakkoord: 49 %'),
-            ],
-            rk_active && isCureLayer(selectedLayer!) && [
-              m('.header-routekaart', 'Data'),
-              m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_cure.xlsx']", 'Routekaart status data ziekenhuizen (Excel)'),
-            ],
-            rk_active && isCareLayer(selectedLayer!) && [
-              m('.header-routekaart', 'Data'),
-              m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_care.xlsx']", 'Routekaart status data langdurige zorg (Excel)'),
-            ],
+            rk_active &&
+              selectedLayer &&
+              isCureLayer(selectedLayer) && [
+                m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
+                m('.text-routekaart', `Routekaarten: ${layerPercentages[selectedLayer][0]} % van alle organisaties`),
+              ],
+            rk_active &&
+              selectedLayer &&
+              isCareLayer(selectedLayer) && [
+                m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
+                m(
+                  '.text-routekaart',
+                  `Routekaarten voorlopig: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
+                ),
+                m('.text-routekaart', `Routekaarten definitief en/of vastgesteld RvB: 0 % van alle organisaties`),
+              ],
+            rk_active &&
+              isCureLayer(selectedLayer!) && [
+                m('.header-routekaart', 'Doelstelling klimaatakkoord'),
+                m('.text-routekaart', 'Totale CO₂-emissie (peiljaar): 100 %'),
+                m('.text-routekaart', 'Voorspelde CO₂-besparing 2030 (o.b.v. ingeleverde routekaarten): 59 %'),
+                m('.text-routekaart', 'Ambitie CO₂-besparing 2030 klimaatakkoord: 49 %'),
+              ],
+            rk_active &&
+              isCureLayer(selectedLayer!) && [
+                m('.header-routekaart', 'Data'),
+                m(
+                  "a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_cure.xlsx']",
+                  'Routekaart status data ziekenhuizen (Excel)'
+                ),
+              ],
+            rk_active &&
+              isCareLayer(selectedLayer!) && [
+                m('.header-routekaart', 'Data'),
+                m(
+                  "a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_care.xlsx']",
+                  'Routekaart status data langdurige zorg (Excel)'
+                ),
+              ],
           ]),
 
           // legend: two versions
           !isCareOrCureLayer(selectedLayer!) && m(Legend, { state, actions }),
           isCareOrCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
         ]),
-        m('.disclaimer',
+        m(
+          '.disclaimer',
           'Data over WKO bronnen is afkomstig van de WKO-bodemenergietool (wkotool.nl). ' +
-          'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
+            'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
         ),
       ];
     },
