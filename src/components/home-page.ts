@@ -137,26 +137,25 @@ export const HomePage: MeiosisComponent = () => {
                 map.on('zoomend', () => setZoomLevel(map.getZoom()));
                 map.on('click', () => mapClick())
                 L.control.scale({ imperial: false, metric: true }).addTo(map);
-                // Add the PDOK map
-                const pdokachtergrondkaartGrijs = new L.TileLayer(
-                  'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaartgrijs/EPSG:3857/{z}/{x}/{y}.png',
+
+                // nieuwe BRT achtegrgondkaart (eind 2021)
+                const pdok_brt_standaard = new L.TileLayer(
+                  'https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0?layer=standaard&style=default&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG:28992:{z}&TileCol={x}&TileRow={y}',
                   {
                     minZoom: 3,
                     maxZoom: 18,
                     attribution: 'Map data: <a href="http://www.kadaster.nl">Kadaster</a>',
                   }
                 );
-                // pdokachtergrondkaartGrijs.addTo(map);
-                const pdokachtergrondkaart = new L.TileLayer(
-                  'https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857/{z}/{x}/{y}.png',
+                const pdok_brt_grijs = new L.TileLayer(
+                  'https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0?layer=grijs&style=default&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG:28992:{z}&TileCol={x}&TileRow={y}',
                   {
                     minZoom: 3,
                     maxZoom: 18,
-                    // tms: true,
                     attribution: 'Map data: <a href="http://www.kadaster.nl">Kadaster</a>',
                   }
                 );
-                pdokachtergrondkaart.addTo(map);
+                pdok_brt_standaard.addTo(map);
                 // Hash in URL
                 // new (L as any).Hash(map);
 
@@ -395,8 +394,8 @@ export const HomePage: MeiosisComponent = () => {
                 const baseTree = {
                   label: 'Achtergrondkaart',
                   children: [
-                    { label: 'grijs', layer: pdokachtergrondkaartGrijs },
-                    { label: 'normaal', layer: pdokachtergrondkaart },
+                    { label: 'normaal', layer: pdok_brt_standaard },
+                    { label: 'grijs', layer: pdok_brt_grijs },
                   ],
                 } as any; //Control.Layers.TreeObject;
 
