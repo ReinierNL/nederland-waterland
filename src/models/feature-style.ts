@@ -1,5 +1,6 @@
 import { Feature } from 'geojson';
 import { capitalize } from '../utils';
+import care_legend from '../assets/care_legend.json'
 import rk_legend from '../assets/rk_legend.json'
 // import wn_legend from '../assets/wn_legend.json'
 // import wn_props from '../assets/wn_props.json'
@@ -135,7 +136,7 @@ export const propertyStyles = {
   },
 
   ggz: {
-    legend: rk_legend,
+    legend: care_legend,
     properties: {
       "Naam": {
         title: () => 'Naam',
@@ -177,7 +178,7 @@ export const propertyStyles = {
   },
 
   ghz: {
-    legend: rk_legend,
+    legend: care_legend,
     properties: {
       "Naam": {
         title: () => 'Naam',
@@ -374,7 +375,7 @@ export const propertyStyles = {
   },
 
   vvt: {
-    legend: rk_legend,
+    legend: care_legend,
     properties: {
       "Naam": {
         title: () => 'Naam',
