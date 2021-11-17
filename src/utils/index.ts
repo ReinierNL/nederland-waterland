@@ -3,9 +3,19 @@ import m from 'mithril';
 import { FeatureCollection } from 'geojson';
 import area from '@turf/area';
 import centroid from '@turf/centroid';
-import care_green_png from 'url:../assets/Care_icon_green_34_t.png'
+
+import care_green1_png from 'url:../assets/Care_icon_green_1.png'
+import care_green2_png from 'url:../assets/Care_icon_green_2.png'
+import care_green3_png from 'url:../assets/Care_icon_green_3.png'
+import care_green4_png from 'url:../assets/Care_icon_green_4.png'
 import care_purple_png from 'url:../assets/Care_icon_purple_34_t.png'
 import care_red_png from 'url:../assets/Care_icon_red_34_t.png'
+import care_green1_cc_png from 'url:../assets/Care_icon_green_1_cc.png'
+import care_green2_cc_png from 'url:../assets/Care_icon_green_2_cc.png'
+import care_green3_cc_png from 'url:../assets/Care_icon_green_3_cc.png'
+import care_green4_cc_png from 'url:../assets/Care_icon_green_4_cc.png'
+import care_purple_cc_png from 'url:../assets/Care_icon_purple_cc.png'
+
 import skating_png from 'url:../assets/skating.png'
 import swimming_png from 'url:../assets/swimming.png'
 import sewage from 'url:../assets/sewage_v2a.png';
@@ -73,11 +83,75 @@ export const createIcon = (mapIconColor: string) =>
     popupAnchor: [0, -30],
   });
 
-  export const careIconGreen = L.icon({
+  export const careIconGreen1 = L.icon({
     className: 'leaflet-data-marker',
-    iconUrl: care_green_png,
+    iconUrl: care_green1_png,
     iconAnchor: [16, 16],
     iconSize: [33, 33],
+    popupAnchor: [0, -30],
+  });
+  
+  export const careIconGreen2 = L.icon({
+    className: 'leaflet-data-marker',
+    iconUrl: care_green2_png,
+    iconAnchor: [16, 16],
+    iconSize: [33, 33],
+    popupAnchor: [0, -30],
+  });
+  
+  export const careIconGreen3 = L.icon({
+    className: 'leaflet-data-marker',
+    iconUrl: care_green3_png,
+    iconAnchor: [16, 16],
+    iconSize: [33, 33],
+    popupAnchor: [0, -30],
+  });
+  
+  export const careIconGreen4 = L.icon({
+    className: 'leaflet-data-marker',
+    iconUrl: care_green4_png,
+    iconAnchor: [16, 16],
+    iconSize: [33, 33],
+    popupAnchor: [0, -30],
+  });
+  
+  export const careIconGreen1CC = L.icon({
+    className: 'leaflet-data-marker',
+    iconUrl: care_green1_cc_png,
+    iconAnchor: [19, 19],
+    iconSize: [39, 39],
+    popupAnchor: [0, -30],
+  });
+  
+  export const careIconGreen2CC = L.icon({
+    className: 'leaflet-data-marker',
+    iconUrl: care_green2_cc_png,
+    iconAnchor: [19, 19],
+    iconSize: [39, 39],
+    popupAnchor: [0, -30],
+  });
+  
+  export const careIconGreen3CC = L.icon({
+    className: 'leaflet-data-marker',
+    iconUrl: care_green3_cc_png,
+    iconAnchor: [19, 19],
+    iconSize: [39, 39],
+    popupAnchor: [0, -30],
+  });
+  
+  export const careIconGreen4CC = L.icon({
+    className: 'leaflet-data-marker',
+    iconUrl: care_green4_cc_png,
+    iconAnchor: [19, 19],
+    iconSize: [39, 39],
+    popupAnchor: [0, -30],
+  });
+  
+  export const careIconPurpleCC = L.icon({
+    className: 'leaflet-data-marker',
+    iconUrl: care_purple_cc_png,
+    iconAnchor: [19, 19],
+    iconSize: [39, 39],
     popupAnchor: [0, -30],
   });
   
