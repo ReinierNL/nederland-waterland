@@ -12,6 +12,7 @@ import { MeiosisComponent } from '../services/meiosis';
 import { InfoPanel } from './info-panel';
 import { Feature, Point } from 'geojson';
 import { Legend } from './legend';
+import { Legend_care } from './legend_care';
 import { Legend_zh } from './legend_zh';
 import logoDeltares from 'url:../assets/Deltares.png';
 import logoSyntraal from 'url:../assets/Syntraal.png';
@@ -559,6 +560,7 @@ export const HomePage: MeiosisComponent = () => {
             ],
           ),
 
+          // routekaart information:
           m('.bottom15', [
             rk_active && selectedLayer && isCureLayer(selectedLayer) && [
               m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
@@ -595,7 +597,8 @@ export const HomePage: MeiosisComponent = () => {
 
           // legend: two versions
           !isCareOrCureLayer(selectedLayer!) && m(Legend, { state, actions }),
-          isCareOrCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
+          isCareLayer(selectedLayer!) && m(Legend_care, { state, actions }),
+          isCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
         ]),
         m('.disclaimer',
           'Data over WKO bronnen is afkomstig van de WKO-bodemenergietool (wkotool.nl). ' +
