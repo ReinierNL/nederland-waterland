@@ -6,8 +6,16 @@
 import { Feature, Point } from 'geojson';
 import L from 'leaflet';
 import {
-    careIconGreen,
+    careIconGreen1,
+    careIconGreen2,
+    careIconGreen3,
+    careIconGreen4,
     careIconPurple,
+    careIconGreen1CC,
+    careIconGreen2CC,
+    careIconGreen3CC,
+    careIconGreen4CC,
+    careIconPurpleCC,
     careIconRed,
     sewageIcon,
     skatingIcon,
@@ -20,13 +28,43 @@ import {
 
 export const pointToLayerCare = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
     var layerIcon = careIconRed;
-    if (feature.properties && feature.properties['Routekaart']) {
-        if (feature.properties['Routekaart'] == 'Voorlopig') {
-        layerIcon = careIconPurple;
-        } else {
-        layerIcon = careIconGreen;   // does not occur yet
-        }
+    var ambitie = null
+    var status = null
+    if (feature.properties && feature.properties['Ambitie']) {
+         ambitie = feature.properties['Ambitie'];
     }
+    if (feature.properties && feature.properties['Routekaart']) {
+        status = feature.properties['Routekaart'];
+    }
+    // in practice, status and ambitie are always both true or both false
+    if (status && ambitie && status == 'Voorlopig') {
+      layerIcon = (ambitie == 'Niet bekend')
+                ? careIconPurple
+                : (ambitie == 'EM ingepland')
+                ? careIconGreen4
+                : (ambitie == 'Route tot +-2025')
+                ? careIconGreen3
+                : (ambitie == 'Route tot 2030')
+                ? careIconGreen2
+                : (ambitie == 'Route tot 2050')
+                ? careIconGreen1
+                : careIconRed;
+    }
+  
+    if (status && ambitie && status == 'Vastgesteld') {
+        layerIcon = (ambitie == 'Niet bekend')
+        ? careIconPurpleCC
+        : (ambitie == 'EM ingepland')
+        ? careIconGreen4CC
+        : (ambitie == 'Route tot +-2025')
+        ? careIconGreen3CC
+        : (ambitie == 'Route tot 2030')
+        ? careIconGreen2CC
+        : (ambitie == 'Route tot 2050')
+        ? careIconGreen1CC
+        : careIconRed;
+}
+
     return new L.Marker(latlng, {
         icon: layerIcon,
         title: feature.properties.Naam,
