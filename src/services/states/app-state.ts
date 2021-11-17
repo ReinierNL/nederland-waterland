@@ -340,7 +340,7 @@ export const appStateMgmt = {
         selectedMarkersLayer!.clearLayers();
         var new_sl = selectedLayer;
         if (isCareOrCureLayer(new_sl!) || isSportLayer(new_sl!)) {
-          new_sl = undefined
+          // new_sl = undefined    // if setting it to undefined, the legend disappears
           console.log('mapclick calling update()');
           update({ app: { selectedItem: undefined, selectedLayer: new_sl, selectedHospital: undefined } });
         };
