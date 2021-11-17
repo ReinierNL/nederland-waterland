@@ -269,6 +269,37 @@ table.hospital-feature-props {
 .legend-checkbox {
   vertical-align: middle;
 }
+
+.legend-circle1 {
+  display: inline-block;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: green;
+}
+.legend-circle2 {
+  transform: translate(1px, 1px); 
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: white;
+}
+.legend-circle3 {
+  transform: translate(1px, 1px); 
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: green;
+}
+.legend-circle4 {
+  transform: translate(1px, 1px); 
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: purple;
+}
+
 .bottom15 {
   position: absolute;
   bottom: 15vh;
