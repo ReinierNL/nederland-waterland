@@ -561,7 +561,7 @@ export const HomePage: MeiosisComponent = () => {
           ),
 
           // routekaart information:
-          m('.bottom15', [
+          m('.bottom25', [
             rk_active && selectedLayer && isCureLayer(selectedLayer) && [
               m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
               m('.text-routekaart',
