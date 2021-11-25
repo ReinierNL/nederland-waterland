@@ -232,7 +232,8 @@ table.hospital-feature-props {
 
 .info-panel,
 .legend,
-.bottom15 {
+.bottom15,
+.bottom25 {
   left: 70vw;
   margin-left: 5px;
 }
@@ -298,6 +299,11 @@ table.hospital-feature-props {
   height: 14px;
   border-radius: 50%;
   background-color: purple;
+}
+
+.bottom25 {
+  position: absolute;
+  bottom: 25vh;
 }
 
 .bottom15 {
