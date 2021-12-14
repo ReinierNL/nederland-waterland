@@ -4,12 +4,16 @@ export const isCareLayer = (layername: string): boolean => {
   return layername == 'vvt' || layername == 'ghz' || layername == 'ggz'
 }
 
+export const isCategoralLayer = (layername: string): boolean => {
+  return layername == 'categorale_instellingen'
+}
+
 export const isCureLayer = (layername: string): boolean => {
   return layername == 'ziekenhuizen' || layername == 'poliklinieken'
 }
 
 export const isCareOrCureLayer = (layername: string): boolean => {
-  return isCareLayer(layername) || isCureLayer(layername)
+  return isCareLayer(layername) || isCategoralLayer(layername) || isCureLayer(layername)
 }
 
 export const isEnergyRelatedLayer = (layername: string): boolean => {
