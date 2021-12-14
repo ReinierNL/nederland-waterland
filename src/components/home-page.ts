@@ -141,7 +141,7 @@ export const HomePage: MeiosisComponent = () => {
                 map.on('click', () => mapClick())
                 L.control.scale({ imperial: false, metric: true }).addTo(map);
 
-                // nieuwe BRT achtegrgondkaart (eind 2021)
+                // nieuwe BRT achtergondkaart (eind 2021)
                 const pdok_brt_standaard = new L.TileLayer(
                   'https://service.pdok.nl/brt/achtergrondkaart/wmts/v2_0?layer=standaard&style=default&tilematrixset=EPSG:3857&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG:28992:{z}&TileCol={x}&TileRow={y}',
                   {
