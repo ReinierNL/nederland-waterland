@@ -401,11 +401,12 @@ export const HomePage: MeiosisComponent = () => {
                 } as any; //Control.Layers.TreeObject;
 
                 const overlayTree = [
-                {
+                  {
                   label: 'Maatschappelijk vastgoed',
                   children: [
                     { 
-                      label: 'Zorggebouwen',
+                      label: 'Zorg',
+                      collapsed: true,
                       children: [
                         { label: 'Ziekenhuizen', layer: ziekenhuizenLayer_rk },
                         { label: 'Buitenpoliklinieken', layer: polikliniekenLayer_rk },
@@ -416,6 +417,7 @@ export const HomePage: MeiosisComponent = () => {
                     },
                     { 
                       label: 'Sport',
+                      collapsed: true,
                       children: [
                         { label: 'IJsbanen', layer: skatingsLayer },
                         { label: 'Zwembaden', layer: swimmingsLayer },
@@ -423,15 +425,20 @@ export const HomePage: MeiosisComponent = () => {
                     },
                   ],
                 },
+                {label: '<div class="leaflet-control-layers-separator"></div>'},
                 {
                   label: 'Energie-potentie',
                   children: [
                     {
-                      label: 'Oppervlaktewater - TEO',
-                      children: [{ label: 'TEO potentie *', layer: wateren_potentie_gt1haLayer }],
+                      label: 'Aquathermie - oppervlaktewater',
+                      collapsed: true,
+                      children: [
+                        { label: 'TEO potentie *', layer: wateren_potentie_gt1haLayer }
+                      ],
                     },
                     {
-                      label: 'Afvalwater - TEA',
+                      label: 'Aquathermie - Afvalwater',
+                      collapsed: true,
                       children: [
                         { label: 'rioolwaterzuiveringen', layer: rwzisLayer },
                         {
@@ -446,12 +453,15 @@ export const HomePage: MeiosisComponent = () => {
                     },
                     {
                       label: 'Aardgasvrije wijken en warmtenetten',
-                      collapsed: true,
                       children: [
-                        { label: 'Aardgasvrije wijken en buurten', layer: gl_wk_buLayer },
-                        { label: 'Noord-Brabant - lokaal', layer: warmtenetten_nbr_lokaalLayer },
-                        { label: 'Noord-Brabant - infra', layer: warmtenetten_nbr_infraLayer },
-                        { label: 'warmtenetten Vattenfall',
+                        { label: 'Programma Aardgasvrije Wijken', 
+                          collapsed: true,
+                          children: [
+                            { label: 'Programma Aardgasvrije Wijken', layer: gl_wk_buLayer },
+                          ]
+                        },
+                        { label: 'Warmtenetten Vattenfall',
+                          collapsed: true,
                           children: [
                             { label: 'Almere', layer: wn_vf_almereLayer, },
                             { label: 'Amsterdam', layer: wn_vf_amsterdamLayer, },
@@ -462,6 +472,13 @@ export const HomePage: MeiosisComponent = () => {
                             { label: 'Nijmegen', layer: wn_vf_nijmegenLayer, },
                             { label: 'Rotterdam', layer: wn_vf_rotterdamLayer, },
                             { label: 'Vlieland', layer: wn_vf_vlielandLayer, },
+                          ],
+                        },
+                        { label: 'Warmtenetten Noord-Brabant',
+                          collapsed: true,
+                          children: [
+                            { label: 'Noord-Brabant - lokaal', layer: warmtenetten_nbr_lokaalLayer },
+                            { label: 'Noord-Brabant - infra', layer: warmtenetten_nbr_infraLayer },
                           ],
                         },
                       ],
