@@ -98,6 +98,16 @@ export const propertyStyles = {
     },
   },
 
+  categorale_instellingen: {
+    legend: rk_legend,
+    properties: {
+      "Locatienummer": {
+        title: () => 'Locatienummer',
+        value: (n: number) => `${n}`,
+      },
+    },
+  },
+
   effluent: {
     properties: {
       FID_1: {

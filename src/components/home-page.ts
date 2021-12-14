@@ -30,6 +30,7 @@ export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
 
 export const HomePage: MeiosisComponent = () => {
   let map: L.Map;
+  let categorale_instellingenLayer_rk: L.GeoJSON;
   let polikliniekenLayer_rk: L.GeoJSON;
   let ziekenhuizenLayer_rk: L.GeoJSON;
   let vvtLayer_rk: L.GeoJSON;
@@ -68,6 +69,7 @@ export const HomePage: MeiosisComponent = () => {
         rk_active,
         // layers and layer data objects (json):
         wateren_potentie_gt1haLayer,
+        categorale_instellingen,
         poliklinieken,
         ziekenhuizen,
         ggz,
@@ -174,6 +176,16 @@ export const HomePage: MeiosisComponent = () => {
                 };
                 
                 // layers:
+
+                categorale_instellingenLayer_rk = L.geoJSON(categorale_instellingen, {
+                  pointToLayer: pointToLayerZHrk,
+                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectHospital(feature as Feature<Point>, 'categorale_instellingen');
+                    });
+                  },
+                  name: 'categorale_instellingen',
+                } as NamedGeoJSONOptions);
 
                 effluentLayer = L.geoJSON(effluent, {
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
@@ -410,6 +422,7 @@ export const HomePage: MeiosisComponent = () => {
                       children: [
                         { label: 'Ziekenhuizen', layer: ziekenhuizenLayer_rk },
                         { label: 'Buitenpoliklinieken', layer: polikliniekenLayer_rk },
+                        { label: 'Categorale instellingen', layer: categorale_instellingenLayer_rk },
                         { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer_rk },
                         { label: 'Geesteljke gezondheidszorg', layer: ggzLayer_rk },
                         { label: 'Gehandicaptenzorg', layer: ghzLayer_rk },

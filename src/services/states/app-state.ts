@@ -10,6 +10,8 @@ import { isCareLayer, isCareOrCureLayer, isCureLayer, isSportLayer, isVattenfall
 import { pointToLayerCare, pointToTitledLayer } from '../../components/markers'
 
 // layer data:
+import categorale_instellingen from '../../data/categorale instellingen.json';
+import effluent from '../../data/Syntraal_effluent.json';
 import ggz from '../../data/ggz.json';
 import ghz from '../../data/ghz.json';
 // import rioolleidingen:  loaded dynamically. see rioolleidingenLayer
@@ -59,6 +61,7 @@ export interface IAppStateModel {
     ggz: FeatureCollection<Point>;
     ghz: FeatureCollection<Point>;
     gl_wk_bu: FeatureCollection;
+    categorale_instellingen: FeatureCollection<Point>;
     poliklinieken: FeatureCollection<Point>;
     rioolleidingenLayer: L.GeoJSON;
     rwzis: FeatureCollection<Point>;
@@ -323,6 +326,7 @@ export const appStateMgmt = {
       wn_vf_rotterdamLayer: createLayerVF('wn_vf_rotterdam', 'NETTYPE', undefined),
       wn_vf_vlielandLayer: createLayerVF('wn_vf_vlieland', 'NETTYPE', undefined),
 
+      categorale_instellingen,
       poliklinieken,
       ziekenhuizen,
       activeLayers: new Set(),
@@ -391,7 +395,7 @@ export const appStateMgmt = {
       selectHospital: async (f, layerName: string) => {
         console.log('Select hospital (cure location); layerName = ' + layerName);
         const { app } = states();
-        const { activeLayers, selectedHospital, selectedMarkersLayer, poliklinieken, ziekenhuizen } = app;
+        const { activeLayers, selectedHospital, selectedMarkersLayer, categorale_instellingen, poliklinieken, ziekenhuizen } = app;
         var sActiveLayers = ''
         activeLayers?.forEach((layer) => {
           sActiveLayers = sActiveLayers + `${layer}`  + ', '
@@ -423,6 +427,12 @@ export const appStateMgmt = {
             poliklinieken.features
                 .filter((z) => z.properties && z.properties.Organisatie === organisatie)
                 .forEach((z) => highlightMarker(selectedMarkersLayer, z, 'poliklinieken', z.properties?.Locatienummer === id));
+          }
+          if (categorale_instellingen && sActiveLayers.includes('categorale_instellingen')) {
+            organisatie &&
+            categorale_instellingen.features
+                .filter((z) => z.properties && z.properties.Organisatie === organisatie)
+                .forEach((z) => highlightMarker(selectedMarkersLayer, z, 'categorale_instellingen', z.properties?.Locatienummer === id));
           }
         }
         update({
