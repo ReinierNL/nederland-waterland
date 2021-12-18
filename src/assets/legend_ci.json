@@ -1,0 +1,8 @@
+{
+    "items": [
+        [true, 0, "#40aa40", "Definitief / vastgesteld RvB"],
+        [true, 0, "purple", "Voorlopig"],
+        [true, 0, "red", "Nog niet ingeleverd"]
+        ],
+    "title": "routekaart Categorale instellingen"
+}

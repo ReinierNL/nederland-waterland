@@ -1,8 +1,0 @@
-{
-    "items": [
-        [true, 0, "#40aa40", "Definitief en/of vastgesteld RvB"],
-        [true, 0, "purple", "Voorlopig"],
-        [true, 0, "red", "Niet ingeleverd"]
-        ],
-    "title": "routekaart ingeleverd"
-}
