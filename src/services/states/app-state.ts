@@ -67,6 +67,7 @@ export interface IAppStateModel {
     rwzis: FeatureCollection<Point>;
     skatings: FeatureCollection;
     swimmings: FeatureCollection;
+    tvw: L.GeoJSON;
     vvt: FeatureCollection<Point>;
     warmtenetten_nbr_infra: FeatureCollection;
     warmtenetten_nbr_lokaal: FeatureCollection;
@@ -144,6 +145,28 @@ const highlightMarker = (selectedMarkersLayer: L.GeoJSON, f: Feature, layerName:
         })
     );
   };
+};
+
+const createLayerTVW = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
+  return L.geoJSON(initialData, {
+    onEachFeature: (feature: Feature<LineString, any>, layer: L.Layer) => {
+      layer.on('click', (e: LeafletEvent) => {
+        // actions.selectFeature(feature as Feature<LineString>, e.target?.options?.name, layer);
+        actions.selectFeature(feature as Feature<LineString>, name, layer);
+      });
+    },
+    style: (f) => {
+      const color = '#233d5a';
+      const opacity = 1 - (f?.properties[legendPropName]-1)/4
+      return {
+        color: 'White',
+        weight: 1,
+        fillColor: color,
+        fillOpacity: opacity,
+      };
+    },
+    name,
+  } as NamedGeoJSONOptions);
 };
 
 const createLayerVF = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
@@ -250,6 +273,7 @@ export const appStateMgmt = {
       gl_wk_bu,
       skatings,
       swimmings,
+      tvwLayer: createLayerTVW('tvw', 'TVW_status', tvw),
       warmtenetten_nbr_lokaal,
       warmtenetten_nbr_infra,
       wko_gwi,

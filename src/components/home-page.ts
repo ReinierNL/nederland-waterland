@@ -43,6 +43,7 @@ export const HomePage: MeiosisComponent = () => {
   let gl_wk_buLayer: L.GeoJSON;
   let skatingsLayer: L.GeoJSON;
   let swimmingsLayer: L.GeoJSON;
+  // let tvwLayer: L.GeoJSON;  // dynamic
   let warmtenetten_nbr_lokaalLayer: L.GeoJSON;
   let warmtenetten_nbr_infraLayer: L.GeoJSON;
   let wko_gwiLayer: L.GeoJSON;
@@ -81,6 +82,7 @@ export const HomePage: MeiosisComponent = () => {
         gl_wk_bu,
         skatings,
         swimmings,
+        tvwLayer,
         warmtenetten_nbr_lokaal,
         warmtenetten_nbr_infra,
         wko_gwi,
@@ -587,6 +589,11 @@ export const HomePage: MeiosisComponent = () => {
                 m('b', 'Toon routekaart informatie'),
               ],
 
+              (selectedLayer == 'tvw') && selectedItem && selectedItem.properties && selectedItem.properties.pdf && [
+                m(`a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/TVW/${selectedItem.properties.pdf}']`, 
+                { target: '_blank' },
+                `Download PDF`),
+              ],
             ],
           ),
 
@@ -629,6 +636,7 @@ export const HomePage: MeiosisComponent = () => {
           !isCareOrCureLayer(selectedLayer!) && m(Legend, { state, actions }),
           isCareLayer(selectedLayer!) && m(Legend_care, { state, actions }),
           isCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
+          selectedLayer && isTVWLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
         ]),
         m('.disclaimer',
           'Data over WKO bronnen is afkomstig van de WKO-bodemenergietool (wkotool.nl). ' +

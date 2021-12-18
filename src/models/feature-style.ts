@@ -384,6 +384,32 @@ export const propertyStyles = {
     },
   },
 
+  tvw: {
+    discretelegend: {
+      items: [
+        [1, '#233d5a', 'Vastgesteld; beschikbaar'],
+        [2, '#576b81', 'Vastgesteld; niet beschikbaar'],
+        [3, '#8c9aa9', 'In concept; beschikbaar'],
+        [4, '#c5ccd4', 'In concept; niet beschikbaar'],
+      ],
+      title: 'Status',
+    },
+    properties: {
+      "Gemeentenaam": {
+        title: () => 'Gemeente',
+        value: (s: string) => s,
+      },
+      "stand_TVW": {
+        title: () => 'Status',
+        value: (s: string) => capitalize(s.replace('Onze transitievisie warmte is ', '')),
+      },
+      "ATT_NAME": {
+        title: () => 'Document',
+        value: (s: string) => s == undefined ? 'Niet beschikbaar' : 'PDF beschikbaar',
+      },
+    }
+  },
+
   vvt: {
     legend: care_legend,
     properties: {
@@ -784,6 +810,7 @@ export const propertyStyles = {
 } as Record<
   string,
   {
+    discretelegend?: { items: Array<[value: number|string, color: string, title: string]>; title: string };
     legend?: { items: Array<[active: boolean, max: number, color: string, title: string]>; title: string };
     stringlegend?: { items: Array<[value: string, color: string, title: string]>; title: string };
     properties: { [key: string]: { title: (s: string) => string; value: (s: any) => string | number } };
