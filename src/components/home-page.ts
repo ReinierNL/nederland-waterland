@@ -606,8 +606,9 @@ export const HomePage: MeiosisComponent = () => {
             rk_active && selectedLayer && isCureLayer(selectedLayer) && [
               m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
               m('.text-routekaart',
-                `Routekaarten: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
+                `${layerPercentages[selectedLayer][0]} % aangeleverd`
               ),
+              m('.text-routekaart', 'Directe CO₂-emissie reductie 2030: 59 %'),
             ],
             rk_active && selectedLayer && isCareLayer(selectedLayer) && [
               m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
@@ -615,24 +616,19 @@ export const HomePage: MeiosisComponent = () => {
                 `Routekaarten voorlopig: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
               ),
               m('.text-routekaart',
-                `Routekaarten definitief en/of vastgesteld RvB: 0 % van alle organisaties`
+                `Routekaarten definitief / vastgesteld RvB: 0 % van alle organisaties`
               ),
             ],
-            rk_active && isCureLayer(selectedLayer!) && [
-              m('.header-routekaart', 'Doelstelling klimaatakkoord'),
-              m('.text-routekaart', 'Totale CO₂-emissie (peiljaar): 100 %'),
-              m('.text-routekaart',
-                'Voorspelde CO₂-besparing 2030 (o.b.v. ingeleverde routekaarten): 59 %'
-              ),
-              m('.text-routekaart', 'Ambitie CO₂-besparing 2030 klimaatakkoord: 49 %'),
+            rk_active && selectedLayer && isCureLayer(selectedLayer!) && [
+              m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_cure.xlsx']", 
+              { style: 'font-weight: bold' },
+              'Download overzicht ziekenhuizen (Excel)'),
             ],
-            rk_active && isCureLayer(selectedLayer!) && [
-              m('.header-routekaart', 'Data'),
-              m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_cure.xlsx']", 'Routekaart status data ziekenhuizen (Excel)'),
-            ],
-            rk_active && isCareLayer(selectedLayer!) && [
-              m('.header-routekaart', 'Data'),
-              m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_care.xlsx']", 'Routekaart status data langdurige zorg (Excel)'),
+            rk_active && selectedLayer && isCareLayer(selectedLayer!) && [
+              // m('.header-routekaart', 'Data'),
+              m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_care.xlsx']", 
+              { style: 'font-weight: bold' },
+              'Download overzicht langdurige zorg (Excel)'),
             ],
           ]),
 
