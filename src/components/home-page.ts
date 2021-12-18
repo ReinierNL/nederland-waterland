@@ -393,8 +393,8 @@ export const HomePage: MeiosisComponent = () => {
                 const baseTree = {
                   label: 'Achtergrondkaart',
                   children: [
-                    { label: 'normaal', layer: pdok_brt_standaard },
-                    { label: 'grijs', layer: pdok_brt_grijs },
+                    { label: 'Normaal', layer: pdok_brt_standaard },
+                    { label: 'Grijs', layer: pdok_brt_grijs },
                   ],
                 } as any; //Control.Layers.TreeObject;
 
@@ -404,7 +404,6 @@ export const HomePage: MeiosisComponent = () => {
                   children: [
                     { 
                       label: 'Zorg',
-                      collapsed: true,
                       children: [
                         { label: 'Ziekenhuizen', layer: ziekenhuizenLayer_rk },
                         { label: 'Buitenpoliklinieken', layer: polikliniekenLayer_rk },
@@ -424,19 +423,24 @@ export const HomePage: MeiosisComponent = () => {
                     },
                   ],
                 },
-                {label: '<div class="leaflet-control-layers-separator"></div>'},
+                { label: '<div class="leaflet-control-layers-separator"></div>' },
                 {
                   label: 'Energie-potentie',
                   children: [
                     {
-                      label: 'Aquathermie - oppervlaktewater',
+                      label: 'Transitievisie Warmte',
+                      collapsed: true,
+                      children: [{ label: 'Gemeenten', layer: tvwLayer }],
+                    },
+                    {
+                      label: 'Aquathermie - oppervlaktewater (TEO)',
                       collapsed: true,
                       children: [
                         { label: 'TEO potentie *', layer: wateren_potentie_gt1haLayer }
                       ],
                     },
                     {
-                      label: 'Aquathermie - Afvalwater',
+                      label: 'Aquathermie - afvalwater (TEA)',
                       collapsed: true,
                       children: [
                         { label: 'rioolwaterzuiveringen', layer: rwzisLayer },
@@ -496,7 +500,7 @@ export const HomePage: MeiosisComponent = () => {
                             { label: 'WKO grondwateronttrekking *', layer: wko_gwoLayer },
                             { label: 'WKO gesloten bodemenergiesysteem *', layer: wko_gbesLayer },
                             { label: 'WKO open bodemenergiesystemen', layer: wko_obesLayer },
-                            { label: 'WKO Installaties *', layer: wko_installatiesLayer },
+                            { label: 'WKO installaties *', layer: wko_installatiesLayer },
                           ],
                         },
                         {
