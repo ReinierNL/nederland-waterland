@@ -564,7 +564,7 @@ export const HomePage: MeiosisComponent = () => {
                         .filter(
                           (key) =>
                             !selectedHospital.properties ||
-                            (selectedHospital.properties.hasOwnProperty(key) && key != 'active')
+                            (selectedHospital.properties.hasOwnProperty(key) && key != 'active' && key != 'Locatienummer')
                         )
                         .map((key) =>
                           m('tr', [
