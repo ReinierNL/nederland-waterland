@@ -230,10 +230,6 @@ export const propertyStyles = {
   },
 
   gl_wk_bu: {
-    legend: {
-      items: [],
-      title: 'wko value',
-    },
     properties: {
       "GM_NAAM": {
         title: () => 'Gemeente',
@@ -298,10 +294,6 @@ export const propertyStyles = {
   },
 
   rwzis: {
-    legend: {
-      items: [],
-      title: 'rwzi value',
-    },
     properties: {
       Name: {
         title: () => 'Naam',
@@ -335,10 +327,6 @@ export const propertyStyles = {
   },
 
   skating: {
-    legend: {
-      items: [],
-      title: 'value',
-    },
     properties: {
       "Naam": {
         title: () => 'Naam',
@@ -360,10 +348,6 @@ export const propertyStyles = {
   },
 
   swimming: {
-    legend: {
-      items: [],
-      title: 'value',
-    },
     properties: {
       "naam": {
         title: () => 'Naam',
@@ -453,10 +437,6 @@ export const propertyStyles = {
   },
 
   warmtenetten_nbr_infra: {
-    legend: {
-      items: [],
-      title: 'value',
-    },
     properties: {
       "t": {
         title: () => 'Type',
@@ -466,10 +446,6 @@ export const propertyStyles = {
   },
 
   warmtenetten_nbr_lokaal: {
-    legend: {
-      items: [],
-      title: 'value',
-    },
     properties: {
       "naam_warmt": {
         title: () => 'Naam warmtenet',
@@ -533,10 +509,6 @@ export const propertyStyles = {
   },
 
   wko_diepte: {
-    legend: {
-      items: [],
-      title: 'value',
-    },
     properties: {
       "fid": {
         title: () => 'ID',
@@ -554,10 +526,6 @@ export const propertyStyles = {
   },
 
   wko_natuur: {
-    legend: {
-      items: [],
-      title: 'value',
-    },
     properties: {
       "id": {
         title: () => 'ID',
@@ -567,10 +535,6 @@ export const propertyStyles = {
   },
 
   wko_ordening: {
-    legend: {
-      items: [],
-      title: 'value',
-    },
     properties: {
       "fid": {
         title: () => 'ID',
@@ -588,10 +552,6 @@ export const propertyStyles = {
   },
 
   wko_specprovbeleid: {
-    legend: {
-      items: [],
-      title: 'value',
-    },
     properties: {
       "fid": {
         title: () => 'ID',
@@ -609,10 +569,6 @@ export const propertyStyles = {
   },
 
   wko_verbod: {
-    legend: {
-      items: [],
-      title: 'value',
-    },
     properties: {
       "fid": {
         title: () => 'ID',
@@ -626,10 +582,6 @@ export const propertyStyles = {
   },
 
   wko_gbes: {
-    legend: {
-      items: [],
-      title: 'Bodemzijdig vermogen',
-    },
     properties: {
       "Installatie ID": {
         title: () => 'Installatie ID',
@@ -659,10 +611,6 @@ export const propertyStyles = {
   },
 
   wko_gwi: {
-    legend: {
-      items: [],
-      title: 'wko value',
-    },
     properties: {
       "Installatie ID": {
         title: () => 'Installatie ID',
@@ -684,10 +632,6 @@ export const propertyStyles = {
   },
 
   wko_gwio: {
-    legend: {
-      items: [],
-      title: 'wko value',
-    },
     properties: {
       "Installatie ID": {
         title: () => 'Installatie ID',
@@ -709,10 +653,6 @@ export const propertyStyles = {
   },
 
   wko_gwo: {
-    legend: {
-      items: [],
-      title: 'wko value',
-    },
     properties: {
       "Installatie ID": {
         title: () => 'Installatie ID',
@@ -734,10 +674,6 @@ export const propertyStyles = {
   },
 
   wko_installaties: {
-    legend: {
-      items: [],
-      title: "WKO installatie",
-    },
     properties: {
       "Installatie ID": {
         title: () => 'Installatie ID',
@@ -767,10 +703,6 @@ export const propertyStyles = {
   },
 
   wko_obes: {
-    legend: {
-      items: [],
-      title: 'pompcapaciteit',
-    },
     properties: {
       "Status put": {
         title: () => 'Status put',
