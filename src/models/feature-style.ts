@@ -99,7 +99,7 @@ export const propertyStyles = {
   },
 
   categorale_instellingen: {
-    legend: rk_legend,
+    legend: legend_ci,
     properties: {
       "Locatienummer": {
         title: () => 'Locatienummer',
@@ -247,7 +247,7 @@ export const propertyStyles = {
   },
 
   poliklinieken: {
-    legend: rk_legend,
+    legend: legend_pk,
     properties: {
       "Locatienummer": {
         title: () => 'Locatienummer',
@@ -730,7 +730,7 @@ export const propertyStyles = {
   wn_vf_vlieland: wn_vf_featurestyle,
   
   ziekenhuizen: {
-    legend: rk_legend,
+    legend: legend_zh,
     properties: {
       "Locatienummer": {
         title: () => 'Locatienummer',
