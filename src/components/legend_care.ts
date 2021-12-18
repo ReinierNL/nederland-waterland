@@ -15,7 +15,7 @@ export const Legend_care: MeiosisComponent = () => {
       const legend = propertyStyle && propertyStyle.legend;
       return (
         legend && m('.legend', [
-          m('h5', { style: 'margin-bottom: 0;' }, `Legenda ${legend.title}`),
+          m('h5', { style: 'margin-bottom: 10;' }, `Legenda ${legend.title}`),
           legend.items.map((item) =>
             m('.legend-item', [
               m('.legend-circle1', {style: `background-color: ${item[0]}`}, [
@@ -26,7 +26,7 @@ export const Legend_care: MeiosisComponent = () => {
                   ])
                 ]),
               ]),
-              m('span', {style: `height: 20px; vertical-align: middle; margin-left: 8px`}, item[4]),    /* the item label */
+              m('.legend-circle-item', item[4]),    /* the item label */
             ])
           ),
         ])
