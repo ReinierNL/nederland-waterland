@@ -644,7 +644,7 @@ export const HomePage: MeiosisComponent = () => {
           selectedLayer && isTVWLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
           selectedLayer && isVattenfallLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
         ]),
-        m('.disclaimer',
+        selectedLayer && isWKOLayer(selectedLayer!) && m('.disclaimer',
           'Data over WKO bronnen is afkomstig van de WKO-bodemenergietool (wkotool.nl). ' +
           'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
         ),
