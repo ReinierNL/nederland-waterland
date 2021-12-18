@@ -9,7 +9,7 @@ export const isCategoralLayer = (layername: string): boolean => {
 }
 
 export const isCureLayer = (layername: string): boolean => {
-  return layername == 'ziekenhuizen' || layername == 'poliklinieken'
+  return layername == 'ziekenhuizen' || layername == 'poliklinieken' || layername == 'categorale_instellingen'
 }
 
 export const isCareOrCureLayer = (layername: string): boolean => {
