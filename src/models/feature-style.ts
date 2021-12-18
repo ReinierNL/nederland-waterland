@@ -53,7 +53,7 @@ export const toFilterFactory = (layerName: string, legendPropName: string): ((f?
   };
 };
 
-// feature style for Warmtenetten Vattenfall:
+// feature style for all Warmtenetten Vattenfall layers:
 
 const wn_legend = {
   "items": [
