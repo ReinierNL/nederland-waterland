@@ -1,6 +1,7 @@
 {
     "ziekenhuizen": [81.2],
     "poliklinieken": [81.2],
+    "categorale_instellingen": [81.2],
     "vvt": [3.7],
     "ggz": [3.9],
     "ghz": [1.5]
