@@ -274,21 +274,6 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'vvt',
                 } as NamedGeoJSONOptions).eachLayer((l) => vvtLayer_rk.addLayer(l));
 
-                wko_diepteLayer = L.geoJSON(wko_diepte, {
-                  onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectFeature(feature as Feature<Point>, 'wko_diepte', layer);
-                    });
-                  },
-                  style: () => {
-                    return {
-                      color: 'cornflowerblue',
-                      fillColor: 'blue',
-                    };
-                  },
-                  name: 'wko_diepte',
-                } as NamedGeoJSONOptions);
-
                 warmtenetten_nbr_lokaalLayer = L.geoJSON(warmtenetten_nbr_lokaal, {
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
@@ -305,6 +290,21 @@ export const HomePage: MeiosisComponent = () => {
                     });
                   },
                   name: 'warmtenetten_nbr_infra',
+                } as NamedGeoJSONOptions);
+
+                wko_diepteLayer = L.geoJSON(wko_diepte, {
+                  onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
+                    layer.on('click', () => {
+                      actions.selectFeature(feature as Feature<Point>, 'wko_diepte', layer);
+                    });
+                  },
+                  style: () => {
+                    return {
+                      color: 'cornflowerblue',
+                      fillColor: 'blue',
+                    };
+                  },
+                  name: 'wko_diepte',
                 } as NamedGeoJSONOptions);
 
                 wko_gwiLayer = L.geoJSON(wko_gwi, {
