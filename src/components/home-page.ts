@@ -113,31 +113,12 @@ export const HomePage: MeiosisComponent = () => {
       const { mapClick, setZoomLevel, toggleRoutekaartActivity, updateActiveLayers } = actions;
 
       return [
-        m(
-          'nav',
-          { style: 'width:100%;height:130px;' },
-          m('ul.list-inline', [
-            m(
-              'li',
-              m('img', {
-                src: logoEVZ,
-                alt: 'logo EVZ',
-                width: '110px',
-                style: 'margin-left: 70.5px; margin-top: 10px',
-              })
-            ),
-            m('li.logo', m('img', { src: logoTNO, alt: 'logo TNO', width: '82px' })),
-            m('li.logo', m('img', { src: logoDeltares, alt: 'logo Deltares', width: '114px' })),
-            m('li.logo', m('img', { src: logoSyntraal, alt: 'logo Syntraal', width: '140px' })),
-          ])
-        ),
         m('.content', [
-          m(
-            '.container',
+          m('.container',
             { style: 'position: fixed;' },
             m('#map', {
               style:
-                'height: 95vh; width: 70vw; margin: 0; padding: 0; overflow: hidden; box-shadow: (0px 0px 20px rgba(0,0,0,.3))',
+                'height: 97vh; width: 70vw; margin: 0; padding: 0; overflow: hidden; box-shadow: (0px 0px 20px rgba(0,0,0,.3))',
               oncreate: () => {
                 map = L.map('map', {}).setView([52.0, 5.2], 8);
                 map.on('overlayadd', (e: any) => updateActiveLayers(e.layer.options.name, true));
@@ -538,12 +519,28 @@ export const HomePage: MeiosisComponent = () => {
               },
             })
           ),
-          m(
-            '.panel',
-            {
-              style: 'position: absolute; top: 130px; left: 70vw; padding: 5px;',
-            },
+          m('.panel',
+            { style: 'position: absolute; top: 0px; left: 70vw; padding: 5px;' },
             [
+              m('nav',
+                { style: 'width:100%;height:130px;' },
+                m('ul.list-inline', [
+                  m('li',
+                    m('img', {
+                      src: logoEVZ,
+                      alt: 'logo EVZ',
+                      width: '110px',
+                    })
+                  ),
+                  // ((selectedLayer == undefined) || (!isDeltaresLayer(selectedLayer) && !isSyntraalLayer(selectedLayer))) &&
+                    m('li.logo', m('img', { src: logoTNO, alt: 'logo TNO', width: '82px' })),
+                  selectedLayer && isDeltaresLayer(selectedLayer) && 
+                    m('li.logo', m('img', { src: logoDeltares, alt: 'logo Deltares', width: '114px' })),
+                  selectedLayer && isSyntraalLayer(selectedLayer) && 
+                    m('li.logo', m('img', { src: logoSyntraal, alt: 'logo Syntraal', width: '140px' })),
+                ])
+              ),
+      
               m('h3', 'De zorgduurzaamkaart'),
 
               selectedLayer && 
