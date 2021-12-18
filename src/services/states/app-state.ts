@@ -406,9 +406,7 @@ export const appStateMgmt = {
             const id = f.properties?.Id;
             overlay &&
               overlay.features
-                .filter(
-                  (z) => z.properties?.Organisatie === organisatie
-                )
+                .filter((z) => z.properties?.Organisatie === organisatie)
                 .forEach((z) => highlightMarker(selectedMarkersLayer, z, selectedLayer, z.properties?.Id === id));
           } else {
             highlightMarker(selectedMarkersLayer, f, selectedLayer!);
