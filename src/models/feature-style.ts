@@ -1,9 +1,6 @@
 import { Feature } from 'geojson';
 import { capitalize } from '../utils';
 import care_legend from '../assets/care_legend.json'
-import rk_legend from '../assets/rk_legend.json'
-// import wn_legend from '../assets/wn_legend.json'
-// import wn_props from '../assets/wn_props.json'
 import legend_ci from '../assets/legend_ci.json'
 import legend_pk from '../assets/legend_pk.json'
 import legend_zh from '../assets/legend_zh.json'
