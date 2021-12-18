@@ -11,14 +11,17 @@ import '../css/markercluster.overrule.css';   // overrules the default colors of
 import { MeiosisComponent } from '../services/meiosis';
 import { InfoPanel } from './info-panel';
 import { Feature, Point } from 'geojson';
-import { Legend } from './legend';
 import { Legend_care } from './legend_care';
+import { Legend_discr } from './legend_discr';
+// import { Legend_str } from './legend_str';
+import { Legend_teo } from './legend_teo';
 import { Legend_zh } from './legend_zh';
 import logoDeltares from 'url:../assets/Deltares.png';
 import logoSyntraal from 'url:../assets/Syntraal.png';
 import logoTNO from 'url:../assets/TNO.png';
 import logoEVZ from 'url:../assets/evz.png';
-import { isCareLayer, isCareOrCureLayer, isCureLayer, isSportLayer, isEnergyRelatedLayer } from './utils_rs';
+import { isCareLayer, isCareOrCureLayer, isCureLayer, isDeltaresLayer, isEnergyRelatedLayer, 
+  isSportLayer, isSyntraalLayer, isTEOLayer, isTVWLayer, isVattenfallLayer, isWKOLayer } from './utils_rs';
 import layerTitles from '../assets/layerTitles.json';
 import layerPercentages from '../assets/layer_percentages.json';
 import { pointToLayerCare, pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
@@ -632,11 +635,13 @@ export const HomePage: MeiosisComponent = () => {
             ],
           ]),
 
-          // legend: two versions
-          !isCareOrCureLayer(selectedLayer!) && m(Legend, { state, actions }),
-          isCareLayer(selectedLayer!) && m(Legend_care, { state, actions }),
-          isCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
+          // legend: five versions
+          // selectedLayer && !isCareOrCureLayer(selectedLayer!) && !isTEOLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
+          selectedLayer && isCareLayer(selectedLayer!) && m(Legend_care, { state, actions }),
+          selectedLayer && isCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
+          selectedLayer && isTEOLayer(selectedLayer!) && m(Legend_teo, { state, actions }),
           selectedLayer && isTVWLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
+          selectedLayer && isVattenfallLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
         ]),
         m('.disclaimer',
           'Data over WKO bronnen is afkomstig van de WKO-bodemenergietool (wkotool.nl). ' +

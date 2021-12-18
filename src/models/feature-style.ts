@@ -5,7 +5,9 @@ import legend_ci from '../assets/legend_ci.json'
 import legend_pk from '../assets/legend_pk.json'
 import legend_zh from '../assets/legend_zh.json'
 
-export const toColorFactory = (layerName: string, legendPropName: string): ((f?: Feature) => string) => {
+export const toColorFactoryInterval = (layerName: string, legendPropName: string): ((f?: Feature) => string) => {
+// returns a getColor function that maps a numeric value to a color (using propertyStyles[layerName])
+console.log(`toColorFactoryInterval (layer=${layerName})`);
   const propertyStyle = propertyStyles[layerName];
   if (!propertyStyle || !propertyStyle.legend) return () => 'blue';
   const items = propertyStyle.legend.items;
@@ -21,15 +23,15 @@ export const toColorFactory = (layerName: string, legendPropName: string): ((f?:
   };
 };
 
-export const toStringColorFactory = (layerName: string, legendPropName: string): ((f?: Feature) => string) => {
-// returns a getColor function that maps a string to a color (using the stringlegend property style field)
+export const toColorFactoryDiscrete = (layerName: string, legendPropName: string): ((f?: Feature) => string) => {
+  // returns a getColor function that maps a property value to a color (using propertyStyles[layerName])
+  console.log(`toColorFactoryDiscrete (layer=${layerName})`);
   const propertyStyle = propertyStyles[layerName];
-  if (!propertyStyle || !propertyStyle.stringlegend) return () => 'red';
-  const items = propertyStyle.stringlegend.items;
+  if (!propertyStyle || !propertyStyle.discretelegend) return () => 'blue';
+  const items = propertyStyle.discretelegend.items;
   return (f?: Feature) => {
     const value = f && f.properties ? f.properties[legendPropName] : undefined;
     if (typeof value === 'undefined') return items[0][1];
-    // let min = -Number.MAX_VALUE;
     for (let i = 0; i < items.length - 1; i++) {
       if (value == items[i][0]) return items[i][1];
     }
@@ -79,7 +81,7 @@ const wn_properties = {
 } as { [key: string]: { title: (s: string) => string; value: (s: any) => string | number } };
 
 const wn_vf_featurestyle = {
-  stringlegend: wn_legend,
+  discretelegend: wn_legend,
   properties: wn_properties,
 };
 
@@ -744,7 +746,7 @@ export const propertyStyles = {
   {
     discretelegend?: { items: Array<[value: number|string, color: string, title: string]>; title: string };
     legend?: { items: Array<[active: boolean, max: number, color: string, title: string]>; title: string };
-    stringlegend?: { items: Array<[value: string, color: string, title: string]>; title: string };
+    // stringlegend?: { items: Array<[value: string, color: string, title: string]>; title: string };
     properties: { [key: string]: { title: (s: string) => string; value: (s: any) => string | number } };
   }
 >;

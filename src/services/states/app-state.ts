@@ -5,7 +5,7 @@ import { FeatureCollection, Feature, GeoJsonObject, Point, LineString, Polygon }
 import { actions } from '..';
 import L, { LeafletEvent } from 'leaflet';
 import { NamedGeoJSONOptions } from '../../components';
-import { toColorFactory, toFilterFactory, toStringColorFactory } from '../../models';
+import { toColorFactoryDiscrete, toColorFactoryInterval, toFilterFactory } from '../../models';
 import { isCareLayer, isCareOrCureLayer, isCureLayer, isSportLayer, isVattenfallLayer } from '../../components/utils_rs';
 import { pointToLayerCare, pointToTitledLayer } from '../../components/markers'
 
@@ -170,7 +170,8 @@ const createLayerTVW = (name: string, legendPropName: string, initialData?: GeoJ
 };
 
 const createLayerVF = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
-  const getColor = toStringColorFactory(name, legendPropName);
+  console.log(`createLayerVF: name=${name}; legendProp=${legendPropName}`)
+  const getColor = toColorFactoryDiscrete(name, legendPropName);
   return L.geoJSON(initialData, {
     onEachFeature: (feature: Feature<LineString, any>, layer: L.Layer) => {
       layer.on('click', (e: LeafletEvent) => {
@@ -191,7 +192,7 @@ const createLayerVF = (name: string, legendPropName: string, initialData?: GeoJs
 };
 
 const createLeafletLayer = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
-  const getColor = toColorFactory(name, legendPropName);
+  const getColor = toColorFactoryInterval(name, legendPropName);
   const filter = toFilterFactory(name, legendPropName);
   return L.geoJSON(initialData, {
     pointToLayer: pointToTitledLayer,
