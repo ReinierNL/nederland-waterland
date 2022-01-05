@@ -385,9 +385,9 @@ export const propertyStyles = {
         title: () => 'Gemeente',
         value: (s: string) => s,
       },
-      "stand_TVW": {
+      "TVW_status": {
         title: () => 'Status',
-        value: (s: string) => capitalize(s.replace('Onze transitievisie warmte is ', '')),
+        value: (v: number) => v <= 2 ? 'Definitief vastgesteld door het gemeentebestuur' : 'In concept vastgesteld door het gemeentebestuur',
       },
       "pdf": {
         title: () => 'Document',
