@@ -584,11 +584,6 @@ export const HomePage: MeiosisComponent = () => {
               ],
 
 
-              (selectedLayer == 'tvw') && selectedItem && selectedItem.properties && selectedItem.properties.pdf && [
-                m(`a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/TVW/${selectedItem.properties.pdf}']`, 
-                { target: '_blank' },
-                `Download PDF`),
-              ],
             ],
           ),
 

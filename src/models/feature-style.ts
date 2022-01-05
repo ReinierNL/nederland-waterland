@@ -389,7 +389,7 @@ export const propertyStyles = {
         title: () => 'Status',
         value: (s: string) => capitalize(s.replace('Onze transitievisie warmte is ', '')),
       },
-      "ATT_NAME": {
+      "pdf": {
         title: () => 'Document',
         value: (s: string) => s == undefined ? 'Niet beschikbaar' : 'PDF beschikbaar',
       },
