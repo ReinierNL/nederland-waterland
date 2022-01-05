@@ -70,7 +70,6 @@ export const HomePage: MeiosisComponent = () => {
         selectedHospital,
         selectedLayer,
         selectedMarkersLayer,
-        rk_active,
         // layers and layer data objects (json):
         wateren_potentie_gt1haLayer,
         categorale_instellingen,
@@ -584,14 +583,6 @@ export const HomePage: MeiosisComponent = () => {
                 m("a#aardgasvrijewijken[href='https://www.aardgasvrijewijken.nl/']", 'Programma Aardgasvrije Wijken'),
               ],
 
-              isCareOrCureLayer(selectedLayer!) && [
-                m('input[type=checkbox].legend-checkbox', {
-                  disabled: !isCareOrCureLayer(selectedLayer!),
-                  checked: rk_active,
-                  onclick: () => toggleRoutekaartActivity(),
-                }),
-                m('b', 'Toon routekaart informatie'),
-              ],
 
               (selectedLayer == 'tvw') && selectedItem && selectedItem.properties && selectedItem.properties.pdf && [
                 m(`a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/TVW/${selectedItem.properties.pdf}']`, 
@@ -603,14 +594,14 @@ export const HomePage: MeiosisComponent = () => {
 
           // routekaart information:
           m('.bottom25', [
-            rk_active && selectedLayer && isCureLayer(selectedLayer) && [
+            selectedLayer && isCureLayer(selectedLayer) && [
               m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
               m('.text-routekaart',
                 `${layerPercentages[selectedLayer][0]} % aangeleverd`
               ),
               m('.text-routekaart', 'Directe CO₂-emissie reductie 2030: 59 %'),
             ],
-            rk_active && selectedLayer && isCareLayer(selectedLayer) && [
+            selectedLayer && isCareLayer(selectedLayer) && [
               m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
               m('.text-routekaart',
                 `Routekaarten voorlopig: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
@@ -619,12 +610,12 @@ export const HomePage: MeiosisComponent = () => {
                 `Routekaarten definitief / vastgesteld RvB: 0 % van alle organisaties`
               ),
             ],
-            rk_active && selectedLayer && isCureLayer(selectedLayer!) && [
+            selectedLayer && isCureLayer(selectedLayer!) && [
               m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_cure.xlsx']", 
               { style: 'font-weight: bold' },
               'Download overzicht ziekenhuizen (Excel)'),
             ],
-            rk_active && selectedLayer && isCareLayer(selectedLayer!) && [
+            selectedLayer && isCareLayer(selectedLayer!) && [
               // m('.header-routekaart', 'Data'),
               m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_care.xlsx']", 
               { style: 'font-weight: bold' },
