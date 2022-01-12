@@ -7,7 +7,7 @@ import legend_zh from '../assets/legend_zh.json'
 
 export const toColorFactoryInterval = (layerName: string, legendPropName: string): ((f?: Feature) => string) => {
 // returns a getColor function that maps a numeric value to a color (using propertyStyles[layerName])
-console.log(`toColorFactoryInterval (layer=${layerName})`);
+  // console.log(`toColorFactoryInterval (layer=${layerName})`);
   const propertyStyle = propertyStyles[layerName];
   if (!propertyStyle || !propertyStyle.legend) return () => 'blue';
   const items = propertyStyle.legend.items;
@@ -25,7 +25,7 @@ console.log(`toColorFactoryInterval (layer=${layerName})`);
 
 export const toColorFactoryDiscrete = (layerName: string, legendPropName: string): ((f?: Feature) => string) => {
   // returns a getColor function that maps a property value to a color (using propertyStyles[layerName])
-  console.log(`toColorFactoryDiscrete (layer=${layerName})`);
+  // console.log(`toColorFactoryDiscrete (layer=${layerName})`);
   const propertyStyle = propertyStyles[layerName];
   if (!propertyStyle || !propertyStyle.discretelegend) return () => 'blue';
   const items = propertyStyle.discretelegend.items;

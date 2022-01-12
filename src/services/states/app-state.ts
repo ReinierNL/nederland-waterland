@@ -170,7 +170,7 @@ const createLayerTVW = (name: string, legendPropName: string, initialData?: GeoJ
 };
 
 const createLayerVF = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
-  console.log(`createLayerVF: name=${name}; legendProp=${legendPropName}`)
+  // console.log(`createLayerVF: name=${name}; legendProp=${legendPropName}`)
   const getColor = toColorFactoryDiscrete(name, legendPropName);
   return L.geoJSON(initialData, {
     onEachFeature: (feature: Feature<LineString, any>, layer: L.Layer) => {
@@ -463,7 +463,7 @@ export const appStateMgmt = {
         });
       },
       refreshLayer: async (layer?: string) => {
-        console.log('refreshLayer. layer: ' + layer)
+        // console.log('refreshLayer. layer: ' + layer)
         const { app } = states();
         const { selectedHospital } = app;
         if (!selectedHospital || !layer) return;
@@ -479,7 +479,7 @@ export const appStateMgmt = {
         update({ app: { rk_active } });
       },
       updateActiveLayers: async (selectedLayer: string, add: boolean) => {
-        console.log(`updateActiveLayers; selectedLayer=${selectedLayer}`)
+        // console.log(`updateActiveLayers; selectedLayer=${selectedLayer}`)
         const { app } = states();
         const { activeLayers, 
                 selectedHospital: old_sh,
