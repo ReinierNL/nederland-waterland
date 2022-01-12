@@ -1,8 +1,8 @@
 {
-    "ziekenhuizen": [81.2],
-    "poliklinieken": [81.2],
-    "categorale_instellingen": [81.2],
-    "vvt": [3.7],
-    "ggz": [3.9],
-    "ghz": [1.5]
+    "ziekenhuizen": [88.2, 62,4],
+    "poliklinieken": [88.2, 62,4],
+    "categorale_instellingen": [88.2, 62,4],
+    "vvt": [3.7, 0.61],
+    "ggz": [3.9, 0.4],
+    "ghz": [1.5, 0.27]
 }
