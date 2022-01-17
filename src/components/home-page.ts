@@ -623,7 +623,7 @@ export const HomePage: MeiosisComponent = () => {
                 `Routekaarten voorlopig: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
               ),
               m('.text-routekaart',
-                `Routekaarten definitief / vastgesteld RvB: 0 % van alle organisaties`
+                `Routekaarten definitief / vastgesteld RvB: ${layerPercentages[selectedLayer][1]} % van alle organisaties`
               ),
             ],
             selectedLayer && isCureLayer(selectedLayer!) && [
