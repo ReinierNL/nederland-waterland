@@ -540,9 +540,12 @@ export const HomePage: MeiosisComponent = () => {
               },
             })
           ),
+
+          // the panel on the right
           m('.panel',
             { style: 'position: absolute; top: 0px; left: 70vw; padding: 5px;' },
             [
+              // the logos
               m('nav',
                 { style: 'width:100%;height:130px;' },
                 m('ul.list-inline', [
@@ -563,7 +566,7 @@ export const HomePage: MeiosisComponent = () => {
               ),
       
               m('h3', 'De zorgduurzaamkaart'),
-
+              // layer title
               selectedLayer && 
                 isCareOrCureLayer(selectedLayer) &&
                   selectedLayer && m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
