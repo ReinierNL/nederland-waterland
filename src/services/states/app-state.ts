@@ -39,6 +39,7 @@ import wko_ordening from '../../data/WKO Restrictie Ordening.json';
 import wko_verbod from '../../data/WKO Verbodsgebieden.json';
 // import wn_vf_xxx: loaded dynamically  (9 layers)
 import ziekenhuizen from '../../data/ziekenhuizen.json';
+import { BarControllerChartOptions } from 'chart.js';
 
 // Add curline        // (RS): What is curline??
 // is this to add a property 'active' so we can use it elsewhere?
