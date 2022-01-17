@@ -54,14 +54,14 @@ ziekenhuizen.features = ziekenhuizen.features.map((z: any) => ({
 export interface IAppStateModel {
   app: Partial<{
     zoom: -1;
-    // water?: FeatureCollection;
     /** Layer with selected markers */
     selectedMarkersLayer: L.GeoJSON;
+    /* overlay layers: */
+    categorale_instellingen: FeatureCollection<Point>;
     effluent: FeatureCollection;
     ggz: FeatureCollection<Point>;
     ghz: FeatureCollection<Point>;
     gl_wk_bu: FeatureCollection;
-    categorale_instellingen: FeatureCollection<Point>;
     poliklinieken: FeatureCollection<Point>;
     rioolleidingenLayer: L.GeoJSON;
     rwzis: FeatureCollection<Point>;
