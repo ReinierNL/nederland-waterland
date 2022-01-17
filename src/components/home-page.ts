@@ -403,126 +403,140 @@ export const HomePage: MeiosisComponent = () => {
 
                 const overlayTree = [
                   {
-                  label: 'Maatschappelijk vastgoed',
-                  children: [
-                    { 
-                      label: 'Zorg',
-                      children: [
-                        { label: 'Ziekenhuizen', layer: ziekenhuizenLayer_rk },
-                        { label: 'Buitenpoliklinieken', layer: polikliniekenLayer_rk },
-                        { label: 'Categorale instellingen', layer: categorale_instellingenLayer_rk },
-                        { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer_rk },
-                        { label: 'Geesteljke gezondheidszorg', layer: ggzLayer_rk },
-                        { label: 'Gehandicaptenzorg', layer: ghzLayer_rk },
-                      ]
-                    },
-                    { 
-                      label: 'Sport',
-                      collapsed: true,
-                      children: [
-                        { label: 'IJsbanen', layer: skatingsLayer },
-                        { label: 'Zwembaden', layer: swimmingsLayer },
-                      ]
-                    },
-                  ],
-                },
-                { label: '<div class="leaflet-control-layers-separator"></div>' },
-                {
-                  label: 'Energie-potentie',
-                  children: [
-                    {
-                      label: 'Transitievisie Warmte',
-                      collapsed: true,
-                      children: [{ label: 'Gemeenten', layer: tvwLayer }],
-                    },
-                    {
-                      label: 'Aquathermie - oppervlaktewater (TEO)',
-                      collapsed: true,
-                      children: [
-                        { label: 'TEO potentie *', layer: wateren_potentie_gt1haLayer }
-                      ],
-                    },
-                    {
-                      label: 'Aquathermie - afvalwater (TEA)',
-                      collapsed: true,
-                      children: [
-                        { label: 'rioolwaterzuiveringen', layer: rwzisLayer },
-                        {
-                          label: '<span style="color:#8080FF"><b>&nbsp;&#x23AF;&nbsp;</b>rioolleidingen</span> *',
-                          layer: rioolleidingenLayer,
-                        },
-                        {
-                          label: '<span style="color:blue"><b>&nbsp;&#x23AF;&nbsp;</b>effluentleidingen</span>',
-                          layer: effluentLayer,
-                        },
-                      ],
-                    },
-                    {
-                      label: 'Aardgasvrije wijken en warmtenetten',
-                      children: [
-                        { label: 'Programma Aardgasvrije Wijken', 
-                          collapsed: true,
-                          children: [
-                            { label: 'Programma Aardgasvrije Wijken', layer: gl_wk_buLayer },
-                          ]
-                        },
-                        { label: 'Warmtenetten Vattenfall',
-                          collapsed: true,
-                          children: [
-                            { label: 'Almere', layer: wn_vf_almereLayer, },
-                            { label: 'Amsterdam', layer: wn_vf_amsterdamLayer, },
-                            { label: 'Arnhem', layer: wn_vf_arnhemLayer, },
-                            { label: 'Ede', layer: wn_vf_edeLayer, },
-                            { label: 'Leiden', layer: wn_vf_leidenLayer, },
-                            { label: 'Lelystad', layer: wn_vf_lelystadLayer, },
-                            { label: 'Nijmegen', layer: wn_vf_nijmegenLayer, },
-                            { label: 'Rotterdam', layer: wn_vf_rotterdamLayer, },
-                            { label: 'Vlieland', layer: wn_vf_vlielandLayer, },
-                          ],
-                        },
-                        { label: 'Warmtenetten Noord-Brabant',
-                          collapsed: true,
-                          children: [
-                            { label: 'Noord-Brabant - lokaal', layer: warmtenetten_nbr_lokaalLayer },
-                            { label: 'Noord-Brabant - infra', layer: warmtenetten_nbr_infraLayer },
-                          ],
-                        },
-                      ],
-                    },
-                    {
-                      label: 'WKO',
-                      selectAllCheckbox: false,
-                      children: [
-                        {
-                          label: 'Installaties',
-                          selectAllCheckbox: false,
-                          collapsed: true,
-                          children: [
-                            { label: 'WKO grondwaterinfiltratie', layer: wko_gwiLayer },
-                            { label: 'WKO grondwaterinfiltratie en -onttrekking', layer: wko_gwioLayer },
-                            { label: 'WKO grondwateronttrekking *', layer: wko_gwoLayer },
-                            { label: 'WKO gesloten bodemenergiesysteem *', layer: wko_gbesLayer },
-                            { label: 'WKO open bodemenergiesystemen', layer: wko_obesLayer },
-                            { label: 'WKO installaties *', layer: wko_installatiesLayer },
-                          ],
-                        },
-                        {
-                          label: 'Restricties',
-                          selectAllCheckbox: false,
-                          collapsed: true,
-                          children: [
-                            { label: '&nbsp; &#x1F7E6; &nbsp;WKO Diepte', layer: wko_diepteLayer },
-                            { label: '&nbsp; &#x1F7E9; &nbsp;WKO Natuur *', layer: wko_natuurLayer },
-                            { label: '&nbsp; &#x1F7EA; &nbsp;WKO Ordening', layer: wko_ordeningLayer },
-                            { label: '&nbsp; &#x1F7E7; &nbsp;WKO SpecProvBeleid *', layer: wko_specprovbeleidLayer },
-                            { label: '&nbsp; &#x1F7E8; &nbsp;WKO Verbodsgebieden', layer: wko_verbodLayer },
-                          ],
-                        },
-                      ],
-                    },
-                  ]
-                }] as any; // Control.Layers.TreeObject;
-                (L.control.layers as any).tree(baseTree, overlayTree).addTo(map);
+                    label: 'Maatschappelijk vastgoed',
+                    children: [
+                      { 
+                        label: 'Zorg',
+                        children: [
+                          { label: 'Ziekenhuizen', layer: ziekenhuizenLayer_rk },
+                          { label: 'Buitenpoliklinieken', layer: polikliniekenLayer_rk },
+                          { label: 'Categorale instellingen', layer: categorale_instellingenLayer_rk },
+                          { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer_rk },
+                          { label: 'Geesteljke gezondheidszorg', layer: ggzLayer_rk },
+                          { label: 'Gehandicaptenzorg', layer: ghzLayer_rk },
+                        ]
+                      },
+                      { 
+                        label: 'Sport',
+                        collapsed: true,
+                        children: [
+                          { label: 'Grijs', layer: pdok_brt_grijs },
+                          { label: 'IJsbanen', layer: skatingsLayer },
+                          { label: 'Zwembaden', layer: swimmingsLayer },
+                        ]
+                      },
+                    ],
+                  },
+                  { label: '<div class="leaflet-control-layers-separator"></div>' },
+                  {
+                    label: 'Energie-potentie',
+                    children: [
+                      {
+                        label: 'Transitievisie Warmte',
+                        collapsed: true,
+                        children: [{ label: 'Gemeenten', layer: tvwLayer }],
+                      },
+                      {
+                        label: 'Aquathermie - oppervlaktewater (TEO)',
+                        collapsed: true,
+                        children: [
+                          { label: 'TEO potentie *', layer: wateren_potentie_gt1haLayer }
+                        ],
+                      },
+                      {
+                        label: 'Aquathermie - afvalwater (TEA)',
+                        collapsed: true,
+                        children: [
+                          { label: 'rioolwaterzuiveringen', layer: rwzisLayer },
+                          {
+                            label: '<span style="color:#8080FF"><b>&nbsp;&#x23AF;&nbsp;</b>rioolleidingen</span> *',
+                            layer: rioolleidingenLayer,
+                          },
+                          {
+                            label: '<span style="color:blue"><b>&nbsp;&#x23AF;&nbsp;</b>effluentleidingen</span>',
+                            layer: effluentLayer,
+                          },
+                        ],
+                      },
+                      {
+                        label: 'Aardgasvrije wijken en warmtenetten',
+                        children: [
+                          { label: 'Programma Aardgasvrije Wijken', 
+                            collapsed: true,
+                            children: [
+                              { label: 'Programma Aardgasvrije Wijken', layer: gl_wk_buLayer },
+                            ]
+                          },
+                          { label: 'Warmtenetten Vattenfall',
+                            collapsed: true,
+                            // collapsed: false,
+                            children: [
+                              // { label: 'Ede WMTS', layer: wn_vf_ede_wmts, },
+                              // { label: 'Provincies', layer: provincies_localhost },
+                              { label: '(Almere)', layer: null, },
+                              { label: '(Amsterdam)', layer: null, },
+                              { label: 'Arnhem', layer: wn_vf_arnhemLayer, },
+                              { label: 'Ede', layer: wn_vf_edeLayer, },
+                              { label: 'Leiden', layer: wn_vf_leidenLayer, },
+                              { label: 'Lelystad', layer: wn_vf_lelystadLayer, },
+                              { label: 'Nijmegen', layer: wn_vf_nijmegenLayer, },
+                              { label: 'Rotterdam', layer: wn_vf_rotterdamLayer, },
+                              { label: 'Vlieland', layer: wn_vf_vlielandLayer, },
+                            ],
+                          },
+                          { label: 'Warmtenetten Noord-Brabant',
+                            collapsed: true,
+                            children: [
+                              { label: 'Noord-Brabant - lokaal', layer: warmtenetten_nbr_lokaalLayer },
+                              { label: 'Noord-Brabant - infra', layer: warmtenetten_nbr_infraLayer },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        label: 'WKO',
+                        selectAllCheckbox: false,
+                        children: [
+                          {
+                            label: 'Installaties',
+                            selectAllCheckbox: false,
+                            collapsed: true,
+                            children: [
+                              { label: 'WKO grondwaterinfiltratie', layer: wko_gwiLayer },
+                              { label: 'WKO grondwaterinfiltratie en -onttrekking', layer: wko_gwioLayer },
+                              { label: 'WKO grondwateronttrekking *', layer: wko_gwoLayer },
+                              { label: 'WKO gesloten bodemenergiesysteem *', layer: wko_gbesLayer },
+                              { label: 'WKO open bodemenergiesystemen', layer: wko_obesLayer },
+                              { label: 'WKO installaties *', layer: wko_installatiesLayer },
+                            ],
+                          },
+                          {
+                            label: 'Restricties',
+                            selectAllCheckbox: false,
+                            collapsed: true,
+                            children: [
+                              { label: '&nbsp; &#x1F7E6; &nbsp;WKO Diepte', layer: wko_diepteLayer },
+                              { label: '&nbsp; &#x1F7E9; &nbsp;WKO Natuur *', layer: wko_natuurLayer },
+                              { label: '&nbsp; &#x1F7EA; &nbsp;WKO Ordening', layer: wko_ordeningLayer },
+                              { label: '&nbsp; &#x1F7E7; &nbsp;WKO SpecProvBeleid *', layer: wko_specprovbeleidLayer },
+                              { label: '&nbsp; &#x1F7E8; &nbsp;WKO Verbodsgebieden', layer: wko_verbodLayer },
+                            ],
+                          },
+                        ],
+                      },
+                    ]
+                  },
+                  { label: '<div class="leaflet-control-layers-separator" id="PIN"></div>' },
+                  { label: '<div id="PIN2">Pin icon here</div>' },
+                  { label: '<div class="leaflet-control-layers-separator"></div>' },
+                ] as any; // Control.Layers.TreeObject;
+
+                const treeWithlayers = (L.control.layers as any).tree(baseTree, overlayTree, {
+                  collapsed: true,
+                  // collapsed: false,
+                  // collapsed: tree_collapsed,
+                });
+                treeWithlayers.addTo(map);
               },
             })
           ),
