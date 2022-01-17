@@ -686,6 +686,45 @@ export const HomePage: MeiosisComponent = () => {
                 m("a#aardgasvrijewijken[href='https://www.aardgasvrijewijken.nl/']", 'Programma Aardgasvrije Wijken'),
               ],
 
+              // console.log('Before Chart'),
+              // m.route &&
+              //   console.log('m.route exists'),
+              // console.log(m.route.param('test')),
+              // console.log('m.route.param(): ', m.route.param()),
+
+              m(ChartJs, {
+                width: "175",
+                height: "140",
+                data: {
+                  type: 'bar',
+                  data: {
+                    labels: provincies,
+                    datasets: [
+                      {
+                        label: 'BVO oppervlakte 2020',
+                        data: sum_of_bvo_2020,
+                        backgroundColor: 'rgba(68, 114, 196, 0.5)',
+                        borderColor: 'rgba(68, 114, 196, 1)',
+                        borderWidth: 1,
+                      },
+                      {
+                        label: 'BVO oppervlakte 2030',
+                        data: sum_of_bvo_2030,
+                        backgroundColor: 'rgba(237, 125, 49, 0.5)',
+                        borderColor: 'rgba(237, 125, 49, 1)',
+                        borderWidth: 1,
+                      },
+                    ],
+                  },
+                  options: {
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                      },
+                    },
+                  },
+                },
+              }),
 
             ],
           ),
