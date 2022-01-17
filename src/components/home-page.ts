@@ -579,26 +579,25 @@ export const HomePage: MeiosisComponent = () => {
                 isEnergyRelatedLayer(selectedLayer) &&
                   selectedLayer && m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
   
-              selectedHospital &&
-                selectedHospital.properties && [
-                  [
-                    m('table.hospital-feature-props', [
-                      ...Object.keys(selectedHospital.properties)
-                        .filter(
-                          (key) =>
-                            !selectedHospital.properties ||
-                            (selectedHospital.properties.hasOwnProperty(key) && key != 'active' && key != 'Locatienummer')
-                        )
-                        .map((key) =>
-                          m('tr', [
-                            m('td.bold.toright', key),
-                            m('td', !selectedHospital.properties ? '' : selectedHospital.properties[key]),
-                          ])
-                        ),
-                    ]),
-                  ],
+              // info panel; for hospital or other layers
+              selectedHospital && selectedHospital.properties && [
+                [
+                  m('table.hospital-feature-props', [
+                    ...Object.keys(selectedHospital.properties)
+                      .filter(
+                        (key) =>
+                          !selectedHospital.properties ||
+                          (selectedHospital.properties.hasOwnProperty(key) && key != 'active' && key != 'Locatienummer')
+                      )
+                      .map((key) =>
+                        m('tr', [
+                          m('td.bold.toright', key),
+                          m('td', !selectedHospital.properties ? '' : selectedHospital.properties[key]),
+                        ])
+                    ),
+                  ]),
                 ],
-
+              ],
               selectedItem && m(InfoPanel, { state, actions }), // InfoPanel shows attributes of selected item
 
               selectedLayer == 'gl_wk_bu' && [
