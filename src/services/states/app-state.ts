@@ -102,8 +102,8 @@ export interface IAppStateModel {
     selectedHospital: Feature<Point>;
     /** Layers that are loaded */
     activeLayers: Set<string>;
-    /** is the routekaarten info active */
-    rk_active: boolean;
+    /** is the layer tree collapsed */
+    tree_collapsed: boolean;
     [key: string]: L.GeoJSON | any;
   }>;
 }
@@ -114,7 +114,7 @@ export interface IAppStateActions {
   selectFeature: (f: Feature<Point | LineString | Polygon>, layerName?: string, layer?: L.Layer) => void;
   selectHospital: (f: Feature<Point>, layerName?: string) => Promise<void>;
   setZoomLevel: (zoom: number) => void;
-  toggleRoutekaartActivity: () => Promise<void>; 
+  toggleTreeCollapsed: () => boolean;
   updateActiveLayers: (layer: string, add: boolean) => Promise<void>;
 }
 
@@ -471,13 +471,17 @@ export const appStateMgmt = {
         update({ app: { ...result } });
       },
       setZoomLevel: (zoom: number) => update({ app: { zoom } }),
-      toggleRoutekaartActivity: async () => {
-        console.log('toggleRoutekaartActivity')
+
+      toggleTreeCollapsed: () => {
+        // console.log('toggleTreeCollapsed');
         const { app } = states();
-        var { rk_active } = app;
-        rk_active = !rk_active;
-        update({ app: { rk_active } });
+        const { tree_collapsed } = app;
+        const new_value = tree_collapsed == undefined ? true : !tree_collapsed;
+        console.log(`toggleTreeCollapsed: new_value = ${new_value}`);
+        update({ app: { tree_collapsed: new_value } });
+        return new_value
       },
+
       updateActiveLayers: async (selectedLayer: string, add: boolean) => {
         // console.log(`updateActiveLayers; selectedLayer=${selectedLayer}`)
         const { app } = states();

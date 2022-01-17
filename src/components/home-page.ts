@@ -74,6 +74,7 @@ export const HomePage: MeiosisComponent = () => {
         selectedHospital,
         selectedLayer,
         selectedMarkersLayer,
+        tree_collapsed,
         // layers and layer data objects (json):
         categorale_instellingen,
         effluent,
@@ -113,15 +114,16 @@ export const HomePage: MeiosisComponent = () => {
         ziekenhuizen,
       } = state.app;
 
-      const { mapClick, setZoomLevel, toggleRoutekaartActivity, updateActiveLayers } = actions;
+      const { mapClick, setZoomLevel, toggleTreeCollapsed, updateActiveLayers } = actions;
+
+      console.log(`selectedLayer: ${selectedLayer}; tree_collapsed: ${tree_collapsed}`)
 
       return [
         m('.content', [
           m('.container',
             { style: 'position: fixed;' },
             m('#map', {
-              style:
-                'height: 97vh; width: 70vw; margin: 0; padding: 0; overflow: hidden; box-shadow: (0px 0px 20px rgba(0,0,0,.3))',
+              style: 'height: 97vh; width: 70vw; margin: 0; padding: 0; overflow: hidden; box-shadow: (0px 0px 20px rgba(0,0,0,.3))',
               oncreate: () => {
                 map = L.map('map', {}).setView([52.0, 5.2], 8);
                 map.on('overlayadd', (e: any) => updateActiveLayers(e.layer.options.name, true));
