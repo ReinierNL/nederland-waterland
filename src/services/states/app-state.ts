@@ -258,11 +258,13 @@ interface IPathOptions extends L.PathOptions {
 export const appStateMgmt = {
   initial: {
     app: {
-      vvt,
+      categorale_instellingen,
+      effluent,
       ggz,
       ghz,
+      gl_wk_bu,
+      poliklinieken,
       rwzis,
-      effluent,
       rioolleidingenLayer: L.geoJSON(undefined, {
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', (e) => {
@@ -271,10 +273,10 @@ export const appStateMgmt = {
         },
         name: 'rioolleidingen',
       } as NamedGeoJSONOptions),
-      gl_wk_bu,
       skatings,
       swimmings,
       tvwLayer: createLayerTVW('tvw', 'TVW_status', tvw),
+      vvt,
       warmtenetten_nbr_lokaal,
       warmtenetten_nbr_infra,
       wko_gwi,
@@ -337,7 +339,6 @@ export const appStateMgmt = {
         },
         name: 'wko_specprovbeleid',
       } as NamedGeoJSONOptions),
-
       wko_verbod,
       wateren_potentie_gt1haLayer: createLeafletLayer('wateren_potentie_gt1ha', 'AVGwocGJ_1'),
 
@@ -351,9 +352,8 @@ export const appStateMgmt = {
       wn_vf_rotterdamLayer: createLayerVF('wn_vf_rotterdam', 'NETTYPE', undefined),
       wn_vf_vlielandLayer: createLayerVF('wn_vf_vlieland', 'NETTYPE', undefined),
 
-      categorale_instellingen,
-      poliklinieken,
       ziekenhuizen,
+
       activeLayers: new Set(),
       selectedMarkersLayer: L.geoJSON(undefined),
     },
