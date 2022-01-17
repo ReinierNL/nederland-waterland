@@ -26,6 +26,10 @@ import layerTitles from '../assets/layerTitles.json';
 import layerPercentages from '../assets/layer_percentages.json';
 import { pointToLayerCare, pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
   pointToLayerSewage, pointToLayerSkating, pointToLayerSwimming, pointToLayerZHrk } from './markers'
+import { ChartJs } from './chart-js';
+import { Chart } from 'chart.js';
+
+import { provincies, sum_of_bvo_2020, sum_of_bvo_2030 } from '../data/data_evz.json';
 
 export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
   name: string;
