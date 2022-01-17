@@ -22,6 +22,7 @@ export const InfoPanel: MeiosisComponent = () => {
               ...Object.keys(props)
                 .filter((key) => !properties || properties.hasOwnProperty(key))
                 .map((key) => [
+                  // perhaps a bit ugly: fields with name 'pdf' are treated differently
                   (key != 'pdf') && m('tr', [
                     m('td.bold.toright', !properties ? key : properties[key].title(key)),
                     m('td', !properties ? props[key] : properties[key].value(props[key])),
