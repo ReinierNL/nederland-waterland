@@ -101,6 +101,8 @@ export interface IAppStateModel {
     selectedHospital: Feature<Point>;  // (deprecated?)
     activeLayers: Set<string>;         // Layers that are loaded
     tree_collapsed: boolean;           // is the layer tree collapsed
+    charts_shown: boolean;             // are the charts shown
+    selected_province: string;         // empty if zoomlevel is too low
     [key: string]: L.GeoJSON | any;
   }>;
 }
@@ -352,7 +354,9 @@ export const appStateMgmt = {
       ziekenhuizen,
 
       activeLayers: new Set(),
+      charts_shown: false,
       selectedMarkersLayer: L.geoJSON(undefined),
+      selected_province: '',
     },
   } as IAppStateModel,
 
