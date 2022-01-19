@@ -518,9 +518,9 @@ export const HomePage: MeiosisComponent = () => {
                       },
                     ]
                   },
-                  { label: '<div class="leaflet-control-layers-separator" id="PIN"></div>' },
-                  { label: '<div id="PIN2">Pin icon here</div>' },
-                  { label: '<div class="leaflet-control-layers-separator"></div>' },
+                  // { label: '<div class="leaflet-control-layers-separator" id="PIN"></div>' },
+                  // { label: '<div id="PIN2">Pin icon here</div>' },
+                  // { label: '<div class="leaflet-control-layers-separator"></div>' },
                 ] as any; // Control.Layers.TreeObject;
 
                 const treeWithlayers = (L.control.layers as any).tree(baseTree, overlayTree, {
