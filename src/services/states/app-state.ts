@@ -1,15 +1,17 @@
-import m from 'mithril';
 import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
-import { FeatureCollection, Feature, GeoJsonObject, Point, LineString, Polygon } from 'geojson';
+import { FeatureCollection, Feature, Point, LineString, Polygon } from 'geojson';
 import { actions } from '..';
-import L, { LatLng, LeafletEvent } from 'leaflet';
+import L, { LatLng } from 'leaflet';
 
 // under the ./src folder
 import { NamedGeoJSONOptions } from '../../components';
-import { toColorFactoryDiscrete, toColorFactoryInterval, toFilterFactory } from '../../models';
-import { isCareLayer, isCareOrCureLayer, isCureLayer, isSportLayer, isVattenfallLayer } from '../../components/utils_rs';
-import { pointToLayerCare, pointToTitledLayer } from '../../components/markers'
+import { isCareOrCureLayer, isCureLayer, isSportLayer, isVattenfallLayer } from '../../components/utils_rs';
+import { highlightMarker, 
+       // pointToGrayCircleMarkerLayer,
+       //  pointToGreenCircleMarkerLayer, 
+       //  pointToYellowCircleMarkerLayer 
+       } from '../../components/markers'
 import { get_nearest_province } from '../../services/provinces';
 import { createLayerTVW, createLayerVF, createLeafletLayer, loadGeoJSON, loadGeoJSON_VF } from '../../models/layer_generators';
 
@@ -54,6 +56,39 @@ ziekenhuizen.features = ziekenhuizen.features.map((z: any) => ({
     active: true,
   },
 }));
+
+// these functions couldn't be moved to markers.ts:
+
+const pointToGrayCircleMarkerLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
+  const marker = new L.CircleMarker(latlng, {
+    radius: 10,
+    stroke: false,
+    fillColor: 'gray',
+    fillOpacity: 0.6,
+  });
+  feature.properties && feature.properties.PC6 && marker.bindTooltip(feature.properties.PC6);
+  return marker;
+}; // pointToGrayCircleMarkerLayer
+
+const pointToGreenCircleMarkerLayer = (_feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
+  return new L.CircleMarker(latlng, {
+    radius: 5,
+    stroke: false,
+    fillColor: 'green',
+    fillOpacity: 0.8,
+  });
+}; // pointToGreenCircleMarkerLayer
+
+const pointToYellowCircleMarkerLayer = (_feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
+  return new L.CircleMarker(latlng, {
+    radius: 5,
+    weight: 1,
+    color: 'orange',
+    fillColor: 'yellow',
+    fillOpacity: 0.8,
+  });
+}; // pointToYellowCircleMarkerLayer
+
 
 /** Application state */
 export interface IAppStateModel {
@@ -127,60 +162,6 @@ export interface IAppState {
   initial: IAppStateModel;
   actions: (us: UpdateStream, states: Stream<IAppModel>) => IAppStateActions;
 }
-
-const highlightMarker = (selectedMarkersLayer: L.GeoJSON, f: Feature, layerName: string = '', primarySelection = true) => {
-  if (f.geometry.type !== 'Point') return;
-  const lng = f.geometry.coordinates[0];
-  const lat = f.geometry.coordinates[1];
-  const color = primarySelection ? 'blue' : undefined;
-  selectedMarkersLayer.addLayer(
-    L.circleMarker([lat, lng], {
-      radius: 20,
-      color,
-      fillColor: 'blue',
-      fillOpacity: 0.3,
-      opacity: 1,
-    })
-  );
-  if (isCareLayer(layerName)) {
-    selectedMarkersLayer.addLayer(
-      pointToLayerCare(f as any, new L.LatLng(lat, lng))
-        .on('click', () => {
-          actions.selectFeature(f as Feature<Point>, layerName);
-        })
-    );
-  };
-};
-
-const pointToGrayCircleMarkerLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
-  const marker = new L.CircleMarker(latlng, {
-    radius: 10,
-    stroke: false,
-    fillColor: 'gray',
-    fillOpacity: 0.6,
-  });
-  feature.properties && feature.properties.PC6 && marker.bindTooltip(feature.properties.PC6);
-  return marker;
-};
-
-const pointToGreenCircleMarkerLayer = (_feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
-  return new L.CircleMarker(latlng, {
-    radius: 5,
-    stroke: false,
-    fillColor: 'green',
-    fillOpacity: 0.8,
-  });
-};
-
-const pointToYellowCircleMarkerLayer = (_feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
-  return new L.CircleMarker(latlng, {
-    radius: 5,
-    weight: 1,
-    color: 'orange',
-    fillColor: 'yellow',
-    fillOpacity: 0.8,
-  });
-};
 
 let highlightedLayer: L.Path;
 let highlightedColor = '';
