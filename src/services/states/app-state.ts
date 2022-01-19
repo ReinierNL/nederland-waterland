@@ -55,9 +55,6 @@ ziekenhuizen.features = ziekenhuizen.features.map((z: any) => ({
 /** Application state */
 export interface IAppStateModel {
   app: Partial<{
-    zoom: -1;
-    /** Layer with selected markers */
-    selectedMarkersLayer: L.GeoJSON;
     /* overlay layers: */
     categorale_instellingen: FeatureCollection<Point>;
     effluent: FeatureCollection;
@@ -95,17 +92,15 @@ export interface IAppStateModel {
     wn_vf_rotterdamLayer: L.GeoJSON;
     wn_vf_vlielandLayer: L.GeoJSON;
     ziekenhuizen: FeatureCollection<Point>;
-    /** Bounding box size */
-    size: number;
-    /** Last item that was clicked */
-    selectedItem: Feature<Point>;
-    /** Last item's layer name */
-    selectedLayer: string;
-    selectedHospital: Feature<Point>;
-    /** Layers that are loaded */
-    activeLayers: Set<string>;
-    /** is the layer tree collapsed */
-    tree_collapsed: boolean;
+    // other state variables:
+    zoom: -1;                          // the current zoom level
+    selectedMarkersLayer: L.GeoJSON;   // Layer with selected markers 
+    size: number;                      // Bounding box size  (deprecated?)
+    selectedItem: Feature<Point>;      // Last item that was clicked
+    selectedLayer: string;             // Last item's layer name
+    selectedHospital: Feature<Point>;  // (deprecated?)
+    activeLayers: Set<string>;         // Layers that are loaded
+    tree_collapsed: boolean;           // is the layer tree collapsed
     [key: string]: L.GeoJSON | any;
   }>;
 }
