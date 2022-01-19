@@ -594,11 +594,11 @@ export const HomePage: MeiosisComponent = () => {
                   m("a#aardgasvrijewijken[href='https://www.aardgasvrijewijken.nl/']", 'Programma Aardgasvrije Wijken'),
                 ],
                 
-                // m('input[type=checkbox].legend-checkbox', {
-                //   checked: charts_shown,
-                //   onclick: () => toggleChartsShown(),
-                // }),
-                // m('b', 'Toon grafieken'),
+                m('input[type=checkbox].legend-checkbox', {
+                  checked: chartsShown,
+                  onclick: () => toggleChartsShown(),
+                }),
+                m('b', 'Toon grafieken'),
 
                 chartsShown && m('.row', [
                   m('.col s12', {style: 'background: rgba(255, 255, 255, 0.8)'}, [
