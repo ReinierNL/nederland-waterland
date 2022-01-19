@@ -59,8 +59,8 @@ Chart.register(
 );
 
 export const ChartJs: FactoryComponent<{
-  width?: number;
-  height?: number;
+  width?: number|string;
+  height?: number|string;
   data: ChartConfiguration<keyof ChartTypeRegistry, (number | ScatterDataPoint | BubbleDataPoint | null)[], unknown>;
 }> = () => {
   let canvas: HTMLCanvasElement;
