@@ -65,6 +65,10 @@ export const HomePage: MeiosisComponent = () => {
   //let wn_vf_xxxLayer: L.GeoJSON; // dynamic (9 layers)
   
   return {
+    oninit: () => {
+      // console.log(`m.route: ${m.route()}`);
+      console.log(`window.location.href: ${window.location.href}`);
+    },
     view: ({ attrs: { state, actions } }) => {
       // console.log(state);
       const {
