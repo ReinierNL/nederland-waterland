@@ -30,7 +30,8 @@ import {
   ScatterDataPoint,
   BubbleDataPoint,
 } from 'chart.js';
-import { onChartClick } from './chart_data_utils';
+
+//import { onChartClick } from './chart_data_utils';
 
 Chart.register(
   ArcElement,
@@ -77,9 +78,9 @@ export const ChartJs: FactoryComponent<{
     },
     oncreate: ({ dom, attrs: { data, onClick } }) => {
       canvas = dom as HTMLCanvasElement;
-      if (onClick && data.options) {
-        data.options.onClick = onChartClick(onClick);
-      }
+      // if (onClick && data.options) {
+      //   data.options.onClick = onChartClick(onClick);
+      // }
       chart = new Chart(canvas, data);
     },
   };
