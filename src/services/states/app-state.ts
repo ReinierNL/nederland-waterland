@@ -117,6 +117,7 @@ export interface IAppStateActions {
   toggleChartsShown: () => boolean;
   toggleTreeCollapsed: () => boolean;
   updateActiveLayers: (layer: string, add: boolean) => Promise<void>;
+  setSelectedProvince: (provinceName: string) => void;
 }
 
 export interface IAppState {
@@ -533,6 +534,12 @@ export const appStateMgmt = {
         } else {
           update({ app: { activeLayers, selectedLayer, selectedHospital: new_sh } });
         };
+      },
+
+      setSelectedProvince: (selected_province: string) => {
+        // if (['Limburg', 'Zeeland'].indexOf(selected_province) < 0) return;
+        console.log(`setSelectedProvince: ${selected_province}`);
+        update({ app: { selected_province }});
       },
     } as IAppStateActions;
   },
