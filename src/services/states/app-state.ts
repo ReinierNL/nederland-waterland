@@ -4,10 +4,13 @@ import { IAppModel, UpdateStream } from '../meiosis';
 import { FeatureCollection, Feature, GeoJsonObject, Point, LineString, Polygon } from 'geojson';
 import { actions } from '..';
 import L, { LatLng, LeafletEvent } from 'leaflet';
+
+// under the ./src folder
 import { NamedGeoJSONOptions } from '../../components';
 import { toColorFactoryDiscrete, toColorFactoryInterval, toFilterFactory } from '../../models';
 import { isCareLayer, isCareOrCureLayer, isCureLayer, isSportLayer, isVattenfallLayer } from '../../components/utils_rs';
 import { pointToLayerCare, pointToTitledLayer } from '../../components/markers'
+import { createLayerTVW, createLayerVF, createLeafletLayer, loadGeoJSON, loadGeoJSON_VF } from '../../models/layer_generators';
 
 // layer data:
 import categorale_instellingen from '../../data/categorale instellingen.json';
@@ -147,73 +150,6 @@ const highlightMarker = (selectedMarkersLayer: L.GeoJSON, f: Feature, layerName:
         })
     );
   };
-};
-
-const createLayerTVW = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
-  return L.geoJSON(initialData, {
-    onEachFeature: (feature: Feature<LineString, any>, layer: L.Layer) => {
-      layer.on('click', (e: LeafletEvent) => {
-        // actions.selectFeature(feature as Feature<LineString>, e.target?.options?.name, layer);
-        actions.selectFeature(feature as Feature<LineString>, name, layer);
-      });
-    },
-    style: (f) => {
-      const color = '#233d5a';
-      const opacity = 1 - (f?.properties[legendPropName]-1)/4
-      return {
-        color: 'White',
-        weight: 1,
-        fillColor: color,
-        fillOpacity: opacity,
-      };
-    },
-    name,
-  } as NamedGeoJSONOptions);
-};
-
-const createLayerVF = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
-  // console.log(`createLayerVF: name=${name}; legendProp=${legendPropName}`)
-  const getColor = toColorFactoryDiscrete(name, legendPropName);
-  return L.geoJSON(initialData, {
-    onEachFeature: (feature: Feature<LineString, any>, layer: L.Layer) => {
-      layer.on('click', (e: LeafletEvent) => {
-        // actions.selectFeature(feature as Feature<LineString>, e.target?.options?.name, layer);
-        actions.selectFeature(feature as Feature<LineString>, name, layer);
-      });
-    },
-    style: (f) => {
-      const color = getColor(f);
-      return {
-        color,
-        fillColor: color,
-        fillOpacity: 0.8,
-      };
-    },
-    name,
-  } as NamedGeoJSONOptions);
-};
-
-const createLeafletLayer = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
-  const getColor = toColorFactoryInterval(name, legendPropName);
-  const filter = toFilterFactory(name, legendPropName);
-  return L.geoJSON(initialData, {
-    pointToLayer: pointToTitledLayer,
-    onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-      layer.on('click', (e: LeafletEvent) => {
-        actions.selectFeature(feature as Feature<Point>, e.target?.options?.name, layer);
-      });
-    },
-    filter,
-    style: (f) => {
-      const color = getColor(f);
-      return {
-        color,
-        fillColor: color,
-        fillOpacity: 0.8,
-      };
-    },
-    name,
-  } as NamedGeoJSONOptions);
 };
 
 const pointToGrayCircleMarkerLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.CircleMarker<any> => {
@@ -544,72 +480,3 @@ export const appStateMgmt = {
     } as IAppStateActions;
   },
 } as IAppState;
-
-const loadGeoJSON_VF = async (layer: string, app: { [key: string]: L.GeoJSON }) => {
-// loads GeoJSOn data for a Vattenfall warmtenetten layer, if not already loaded
-  // console.log(`LoadGeoJSON2`);
-  const layerName = layer + 'Layer';
-  // console.log(`layerName: ${layerName}`);
-  var city = layerName.substring(6, layerName.length - 5);
-  city = city.charAt(0).toUpperCase() + city.slice(1)
-  // console.log(`stad: ${city}`);
-
-  const filename = `Warmtenetten Vattenfall.${city}.geojson`
-  // const host = `http://localhost:3366`;
-  const host = `https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl`;
-  console.log(`preparing to request: ${layerName}`);
-  const geojson = app[layerName] ? (app[layerName] as L.GeoJSON) : undefined;
-
-  if (geojson) {
-    // console.log(`requesting`);
-    // console.log(`geojson._layers.length = ${Object.keys(geojson._layers).length}`);
-    if (Object.keys(geojson._layers).length > 0) { 
-      // if it already contains data there's no need to load it again
-      return {} 
-    }
-    const record = await m.request<{ id: number; features: FeatureCollection }>({
-      method: 'GET',
-      url: `${host}/${filename}`,
-    });
-    if (record && record.features) {
-      // console.log(`Request returned data (features)`);
-      geojson.clearLayers();
-      geojson.addData(record.features);
-      return { [layerName]: geojson };
-    } else {
-      console.log(`NO data (or no features) was received; url=${host}/${filename}`);
-      return {};
-    }
-  } else {
-    console.log(`sent no request (no geojson)`);
-  }
-  return {};
-};
-
-const loadGeoJSON = async (layer: string, selectedHospital: Feature, app: { [key: string]: L.GeoJSON }) => {
-  const layerName = layer + 'Layer';
-  const id = (selectedHospital.properties as any).Locatienummer;
-  const geojson = app[layerName] ? (app[layerName] as L.GeoJSON) : undefined;
-  if (geojson) {
-    console.log(`process.env.GIS_SERVER: ${process.env.GIS_SERVER}`);
-    const the_url = `${process.env.GIS_SERVER || 'https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/geojson-server/api/'}${layer}/id/${id}`;
-    console.log(`URL: ${the_url}`);
-    const record = await m.request<{ id: number; data: FeatureCollection }>({
-      method: 'GET',
-      // url: `${process.env.GIS_SERVER || 'http://localhost:3366/api/'}${layer}/id/${id}`,
-      // url: `${process.env.GIS_SERVER || 'http://163.158.64.118:3366/api/'}${layer}/id/${id}`,
-      // url: `${process.env.GIS_SERVER || 'https://assistance.hex.tno.nl/geojson-server/api/'}${layer}/id/${id}`,
-      url: `${process.env.GIS_SERVER || 'https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/geojson-server/api/'}${layer}/id/${id}`,
-    });
-    if (record && record.data) {
-      geojson.clearLayers();
-      geojson.addData(record.data);
-      return { [layerName]: geojson };
-      // update({ app: { activeLayers, [layerName]: geojson } });
-    } else {
-      return {};
-      // update({ app: { activeLayers } });
-    }
-  }
-  return {};
-};
