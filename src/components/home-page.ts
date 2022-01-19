@@ -74,10 +74,12 @@ export const HomePage: MeiosisComponent = () => {
     view: ({ attrs: { state, actions } }) => {
       // console.log(state);
       const {
+        charts_shown,
         selectedItem,
         selectedHospital,
         selectedLayer,
         selectedMarkersLayer,
+        selected_province,
         tree_collapsed,
         // layers and layer data objects (json):
         categorale_instellingen,
@@ -120,7 +122,8 @@ export const HomePage: MeiosisComponent = () => {
 
       const { mapClick, setZoomLevel, toggleTreeCollapsed, updateActiveLayers } = actions;
 
-      console.log(`selectedLayer: ${selectedLayer}; tree_collapsed: ${tree_collapsed}`)
+      console.log(`selectedLayer: ${selectedLayer}; tree_collapsed: ${tree_collapsed}; charts shown: ${charts_shown}`);
+      //console.log(`Selected province: ${selected_province}`);
 
       return [
         m('.content', [
