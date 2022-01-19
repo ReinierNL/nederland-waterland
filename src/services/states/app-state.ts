@@ -114,6 +114,7 @@ export interface IAppStateActions {
   selectFeature: (f: Feature<Point | LineString | Polygon>, layerName?: string, layer?: L.Layer) => void;
   selectHospital: (f: Feature<Point>, layerName?: string) => Promise<void>;
   setZoomLevel: (zoom: number) => void;
+  toggleChartsShown: () => boolean;
   toggleTreeCollapsed: () => boolean;
   updateActiveLayers: (layer: string, add: boolean) => Promise<void>;
 }
@@ -482,6 +483,15 @@ export const appStateMgmt = {
         update({ app: { ...result } });
       },
       setZoomLevel: (zoom: number) => update({ app: { zoom } }),
+      toggleChartsShown: () => {
+        console.log('toggleChartsShown');
+        const { app } = states();
+        const { charts_shown } = app;
+        const new_value = charts_shown == undefined ? true : !charts_shown;
+        console.log(`toggleChartsShown: new_value = ${new_value}`);
+        update({ app: { charts_shown: new_value } });
+        return new_value
+      },
 
       toggleTreeCollapsed: () => {
         // console.log('toggleTreeCollapsed');
