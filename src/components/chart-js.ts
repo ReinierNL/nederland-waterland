@@ -30,6 +30,7 @@ import {
   ScatterDataPoint,
   BubbleDataPoint,
 } from 'chart.js';
+import { onChartClick } from './chart_data_utils';
 
 Chart.register(
   ArcElement,
@@ -58,20 +59,27 @@ Chart.register(
   SubTitle
 );
 
+
 export const ChartJs: FactoryComponent<{
   width?: number|string;
   height?: number|string;
+  onClick?: (label: string) => void;
   data: ChartConfiguration<keyof ChartTypeRegistry, (number | ScatterDataPoint | BubbleDataPoint | null)[], unknown>;
 }> = () => {
   let canvas: HTMLCanvasElement;
   let chart: Chart;
 
   return {
-    view: ({ attrs: { width = 600, height = 400 } }) => {
-      return m(`canvas.pie-chart[width=${width}][height=${height}]`);
+    view: ({ attrs: { width = 300, height = 200 } }) => {
+      // return m(`canvas.pie-chart[width="${width}"][height="${height}"]`);
+      // return m(`canvas.bar-chart[width=${width}][height=${height}]`);
+      return m(`canvas.bar-chart`, { style: `width: ${width}; height: ${height}` });
     },
-    oncreate: ({ dom, attrs: { data } }) => {
+    oncreate: ({ dom, attrs: { data, onClick } }) => {
       canvas = dom as HTMLCanvasElement;
+      if (onClick && data.options) {
+        data.options.onClick = onChartClick(onClick);
+      }
       chart = new Chart(canvas, data);
     },
   };
