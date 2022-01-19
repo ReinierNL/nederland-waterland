@@ -120,7 +120,8 @@ export const HomePage: MeiosisComponent = () => {
         ziekenhuizen,
       } = state.app;
 
-      const { mapClick, setZoomLevel, toggleTreeCollapsed, updateActiveLayers } = actions;
+      const { handleMoveEnd, mapClick, setZoomLevel, toggleChartsShown, toggleTreeCollapsed, updateActiveLayers, 
+        setSelectedProvince } = actions;
 
       console.log(`selectedLayer: ${selectedLayer}; tree_collapsed: ${tree_collapsed}; charts shown: ${charts_shown}`);
       //console.log(`Selected province: ${selected_province}`);
