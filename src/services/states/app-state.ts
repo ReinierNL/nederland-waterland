@@ -3,7 +3,7 @@ import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
 import { FeatureCollection, Feature, GeoJsonObject, Point, LineString, Polygon } from 'geojson';
 import { actions } from '..';
-import L, { LeafletEvent } from 'leaflet';
+import L, { LatLng, LeafletEvent } from 'leaflet';
 import { NamedGeoJSONOptions } from '../../components';
 import { toColorFactoryDiscrete, toColorFactoryInterval, toFilterFactory } from '../../models';
 import { isCareLayer, isCareOrCureLayer, isCureLayer, isSportLayer, isVattenfallLayer } from '../../components/utils_rs';
