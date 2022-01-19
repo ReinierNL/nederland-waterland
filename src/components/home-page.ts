@@ -28,6 +28,8 @@ import { pointToLayerCare, pointToLayerGreenCircleMarker, pointToLayerPurpleCirc
 import { ChartJs } from './chart-js';
 
 // import { provincies, sum_of_bvo_2020, sum_of_bvo_2030 } from '../data/data_evz.json';
+import { data_bvo, data_elec, data_gas, energy_use_types_for_province } from './chart_data_utils';
+
 
 export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
   name: string;
