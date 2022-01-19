@@ -13,7 +13,6 @@ import { InfoPanel } from './info-panel';
 import { Feature, Point } from 'geojson';
 import { Legend_care } from './legend_care';
 import { Legend_discr } from './legend_discr';
-// import { Legend_str } from './legend_str';
 import { Legend_teo } from './legend_teo';
 import { Legend_zh } from './legend_zh';
 import logoDeltares from 'url:../assets/Deltares.png';
@@ -27,9 +26,8 @@ import layerPercentages from '../assets/layer_percentages.json';
 import { pointToLayerCare, pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
   pointToLayerSewage, pointToLayerSkating, pointToLayerSwimming, pointToLayerZHrk } from './markers'
 import { ChartJs } from './chart-js';
-import { Chart } from 'chart.js';
 
-import { provincies, sum_of_bvo_2020, sum_of_bvo_2030 } from '../data/data_evz.json';
+// import { provincies, sum_of_bvo_2020, sum_of_bvo_2030 } from '../data/data_evz.json';
 
 export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
   name: string;
