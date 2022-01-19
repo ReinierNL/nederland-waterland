@@ -5,9 +5,7 @@ const { provincies, sum_of_bvo_2020, sum_of_bvo_2030, elec_2020, elec_2030 } = d
 import chartdata from '../data/chartdata.json';
 const { bvo, elec, gas, kWh_2020, kWh_2030, cons_per_bvo, cons_per_sector, bvo_per_year_category } = chartdata
 
-import { BubbleDataPoint, ChartConfiguration, ChartTypeRegistry, ScatterDataPoint } from 'chart.js';
-
-import { Chart, ChartEvent } from 'chart.js';
+import { BubbleDataPoint,  Chart, ChartConfiguration, ChartEvent, ChartTypeRegistry, ScatterDataPoint } from 'chart.js';
 
 // options (DRY)
 const oBeginAtZero = {
