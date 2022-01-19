@@ -5,7 +5,10 @@ import L, { LeafletEvent } from 'leaflet';
 import { actions } from '../services/meiosis';
 import { NamedGeoJSONOptions } from '../components';
 import { toColorFactoryDiscrete, toColorFactoryInterval, toFilterFactory } from '../models';
-import { pointToTitledLayer } from '../components/markers'
+// import { pointToTitledLayer } from '../components/markers'
+// this import caused an
+// Uncaught ReferenceError: Cannot access 'pointToTitledLayer' before initialization
+// the pointToTitledLayer function has been moved to this source file
 
 
 export const createLayerTVW = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
@@ -152,4 +155,20 @@ export const loadGeoJSON_VF = async (layer: string, app: { [key: string]: L.GeoJ
   }
   return {};
 }; // loadGeoJSON_VF
-  
+
+
+const pointToTitledLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+  // intended purpose: let the feature have a title that is shown when mouse is hovered over the feature
+  // this works for the care and cure layers, the rwzis, sports, but not for the water potential
+  // layer (TEO) which is created by createLeafletLayer. 
+  // probably because it is not a point layer
+  return new L.Marker(latlng, {
+    title: feature.properties.Name
+         ? feature.properties.Name
+         : feature.properties.Naam
+         ? feature.properties.Naam
+         : feature.properties.NAAM
+         ? feature.properties.NAAM
+         : '',
+  });
+}; // pointToTitledLayer

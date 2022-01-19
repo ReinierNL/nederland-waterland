@@ -132,20 +132,7 @@ export const pointToLayerZHrk = (feature: Feature<Point, any>, latlng: L.LatLng)
     });
 };
 
+// export const pointToTitledLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+// }; // pointToTitledLayer
+// has been moved to layer_generators.ts
 
-export const pointToTitledLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-    // intended purpose: let the feature have a title that is shown when mouse is hovered over the feature
-    // but.. it doesn't seem to work
-    // this works for the care and cure layers, the rwzis, sports, but not for the water potential
-    // layer (TEO) which is created by createLeafletLayer. 
-    // probably because it is not a point layer
-    return new L.Marker(latlng, {
-      title: feature.properties.Name
-        ? feature.properties.Name
-        : feature.properties.Naam
-        ? feature.properties.Naam
-        : feature.properties.NAAM
-        ? feature.properties.NAAM
-        : '',
-    });
-};
