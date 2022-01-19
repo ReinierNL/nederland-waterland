@@ -155,22 +155,7 @@ export const HomePage: MeiosisComponent = () => {
                   }
                 );
                 pdok_brt_standaard.addTo(map);
-                // Hash in URL
-                // new (L as any).Hash(map);
 
-
-                const filter_main_branch = (f?: Feature): boolean => {
-                  // can we determine selected item from app state?
-                  // (no: this function one is only executed once)
-                  // console.log('filter_main_branch called');
-                  // const { selectedItem } = state.app;
-                  // console.log('filter_main_branch: selected item: ' + selectedItem);
-                  // 2021-10-20: disabled this filter: this eliminates too many locations
-                  //const value = f && f.properties ? f.properties['IsMainBranch'] : undefined;
-                  //return value == true
-                  return true
-                };
-                
                 // layers:
 
                 categorale_instellingenLayer_rk = L.geoJSON(categorale_instellingen, {
@@ -199,7 +184,6 @@ export const HomePage: MeiosisComponent = () => {
 
                 ggzLayer_rk = (L as any).markerClusterGroup({ name: 'ggz' });
                 L.geoJSON(ggz, {
-                  filter: filter_main_branch,
                   pointToLayer: pointToLayerCare,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
@@ -211,7 +195,6 @@ export const HomePage: MeiosisComponent = () => {
 
                 ghzLayer_rk = (L as any).markerClusterGroup({ name: 'ghz' });
                 L.geoJSON(ghz, {
-                  filter: filter_main_branch,
                   pointToLayer: pointToLayerCare,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
@@ -274,7 +257,6 @@ export const HomePage: MeiosisComponent = () => {
 
                 vvtLayer_rk = (L as any).markerClusterGroup({ name: 'vvt' });
                 L.geoJSON(vvt, {
-                  filter: filter_main_branch,
                   pointToLayer: pointToLayerCare,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
@@ -427,7 +409,6 @@ export const HomePage: MeiosisComponent = () => {
                         label: 'Sport',
                         collapsed: true,
                         children: [
-                          { label: 'Grijs', layer: pdok_brt_grijs },
                           { label: 'IJsbanen', layer: skatingsLayer },
                           { label: 'Zwembaden', layer: swimmingsLayer },
                         ]
@@ -544,86 +525,6 @@ export const HomePage: MeiosisComponent = () => {
                   // collapsed: tree_collapsed,
                 });
                 treeWithlayers.addTo(map);
-
-                var customControl =  L.Control.extend({        
-                  options: {
-                    position: 'topleft'
-                  },
-            
-                  onAdd: function (map) {
-                    var container = L.DomUtil.create('input');
-                    container.type="button";
-                    container.title="No cat";
-                    container.value = "42";
-            
-                    container.style.backgroundColor = 'white';     
-                    // container.style.backgroundImage = "url(http://t1.gstatic.com/images?q=tbn:ANd9GcR6FCUMW5bPn8C4PbKak2BJQQsmC-K9-mbYBeFZm1ZM2w2GRy40Ew)";
-                    container.style.backgroundSize = "30px 30px";
-                    container.style.width = '50px';
-                    container.style.height = '50px';
-            
-                    container.onclick = function(){
-                      console.log('buttonClicked');
-                    }
-                    container.onmouseover = function(){
-                      container.style.backgroundColor = 'pink'; 
-                    }
-                    container.onmouseout = function(){
-                      container.style.backgroundColor = 'green'; 
-                    }
-            
-                    return container;
-                  }
-                });
-                const cc = new customControl();
-                map.addControl(cc);
-                //treeWithlayers.addControl(new customControl());
-
-                L.DomEvent.on(L.DomUtil.get('PIN2')!, 'click', function() {
-                  // const { app } = state();
-                  // const { tree_collapsed } = app;
-                  console.log(`Clicked on PIN2. tree_collapsed = ${tree_collapsed}`);
-                  const new_value = toggleTreeCollapsed()
-                  //console.log(`New value = ${new_value}`);
-                });
-
-                // const chart = new ChartJs({});
-                // map.addControl(chart);
-                //map.addControl(new Chart(map, {
-                // const chart = new Chart(L, {
-                //   width: "175",
-                //   height: "140",
-                //   data: {
-                //     type: 'bar',
-                //     data: {
-                //       labels: provincies,
-                //       datasets: [
-                //         {
-                //           label: 'BVO oppervlakte 2020',
-                //           data: sum_of_bvo_2020,
-                //           backgroundColor: 'rgba(68, 114, 196, 0.5)',
-                //           borderColor: 'rgba(68, 114, 196, 1)',
-                //           borderWidth: 1,
-                //         },
-                //         {
-                //           label: 'BVO oppervlakte 2030',
-                //           data: sum_of_bvo_2030,
-                //           backgroundColor: 'rgba(237, 125, 49, 0.5)',
-                //           borderColor: 'rgba(237, 125, 49, 1)',
-                //           borderWidth: 1,
-                //         },
-                //       ],
-                //     },
-                //     options: {
-                //       scales: {
-                //         y: {
-                //           beginAtZero: true,
-                //         },
-                //       },
-                //     },
-                //   },
-                // }));
-  
 
               },
             })
