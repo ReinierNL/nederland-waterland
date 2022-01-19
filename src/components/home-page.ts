@@ -531,158 +531,166 @@ export const HomePage: MeiosisComponent = () => {
                 treeWithlayers.addTo(map);
 
               },
-            })
-          ),
+            }), // map
 
-          // the panel on the right
-          m('.panel',
-            { style: 'position: absolute; top: 0px; left: 70vw; padding: 5px;' },
-            [
-              // the logos
-              m('nav',
-                { style: 'width:100%;height:130px;' },
-                m('ul.list-inline', [
-                  m('li',
-                    m('img', {
-                      src: logoEVZ,
-                      alt: 'logo EVZ',
-                      width: '110px',
-                    })
-                  ),
-                  // ((selectedLayer == undefined) || (!isDeltaresLayer(selectedLayer) && !isSyntraalLayer(selectedLayer))) &&
-                    m('li.logo', m('img', { src: logoTNO, alt: 'logo TNO', width: '82px' })),
-                  selectedLayer && isDeltaresLayer(selectedLayer) && 
-                    m('li.logo', m('img', { src: logoDeltares, alt: 'logo Deltares', width: '114px' })),
-                  selectedLayer && isSyntraalLayer(selectedLayer) && 
-                    m('li.logo', m('img', { src: logoSyntraal, alt: 'logo Syntraal', width: '140px' })),
-                ])
-              ),
-      
-              m('h3', 'De zorgduurzaamkaart'),
-              // layer title
-              selectedLayer && 
-                isCareOrCureLayer(selectedLayer) &&
-                  selectedLayer && m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
-              selectedLayer && 
-                isSportLayer(selectedLayer) &&
-                  selectedLayer && m('h4.title', `Selectie sport: ${layerTitles[selectedLayer] || selectedLayer}`),
-              selectedLayer && 
-                isEnergyRelatedLayer(selectedLayer) &&
-                  selectedLayer && m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
-  
-              // info panel; for hospital or other layers
-              selectedHospital && selectedHospital.properties && [
-                [
-                  m('table.hospital-feature-props', [
-                    ...Object.keys(selectedHospital.properties)
-                      .filter(
-                        (key) =>
-                          !selectedHospital.properties ||
-                          (selectedHospital.properties.hasOwnProperty(key) && key != 'active' && key != 'Locatienummer')
-                      )
-                      .map((key) =>
-                        m('tr', [
-                          m('td.bold.toright', key),
-                          m('td', !selectedHospital.properties ? '' : selectedHospital.properties[key]),
-                        ])
+            // the panel on the right
+            m('.panel',
+              { style: 'position: absolute; top: 0px; left: 70vw; width: 29vw; height: 97vh; padding: 10px;' },
+              [
+                // the logos
+                m('nav',
+                  { style: 'width:100%;height:130px;' },
+                  m('ul.list-inline', [
+                    m('li',
+                      m('img', {
+                        src: logoEVZ,
+                        alt: 'logo EVZ',
+                        width: '110px',
+                      })
                     ),
-                  ]),
+                    // ((selectedLayer == undefined) || (!isDeltaresLayer(selectedLayer) && !isSyntraalLayer(selectedLayer))) &&
+                      m('li.logo', m('img', { src: logoTNO, alt: 'logo TNO', width: '82px' })),
+                    selectedLayer && isDeltaresLayer(selectedLayer) && 
+                      m('li.logo', m('img', { src: logoDeltares, alt: 'logo Deltares', width: '114px' })),
+                    selectedLayer && isSyntraalLayer(selectedLayer) && 
+                      m('li.logo', m('img', { src: logoSyntraal, alt: 'logo Syntraal', width: '140px' })),
+                  ])
+                ),
+        
+                m('h3', 'De zorgduurzaamkaart'),
+                // layer title
+                selectedLayer && 
+                  isCareOrCureLayer(selectedLayer) &&
+                    selectedLayer && m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
+                selectedLayer && 
+                  isSportLayer(selectedLayer) &&
+                    selectedLayer && m('h4.title', `Selectie sport: ${layerTitles[selectedLayer] || selectedLayer}`),
+                selectedLayer && 
+                  isEnergyRelatedLayer(selectedLayer) &&
+                    selectedLayer && m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
+    
+                // info panel; for hospital or other layers
+                !charts_shown && selectedHospital && selectedHospital.properties && [
+                  [
+                    m('table.hospital-feature-props', [
+                      ...Object.keys(selectedHospital.properties)
+                        .filter(
+                          (key) =>
+                            !selectedHospital.properties ||
+                            (selectedHospital.properties.hasOwnProperty(key) && key != 'active' && key != 'Locatienummer')
+                        )
+                        .map((key) =>
+                          m('tr', [
+                            m('td.bold.toright', key),
+                            m('td', !selectedHospital.properties ? '' : selectedHospital.properties[key]),
+                          ])
+                      ),
+                    ]),
+                  ],
                 ],
-              ],
-              selectedItem && m(InfoPanel, { state, actions }), // InfoPanel shows attributes of selected item
+                !charts_shown && selectedItem && m(InfoPanel, { state, actions }), // InfoPanel shows attributes of selected item
 
-              selectedLayer == 'gl_wk_bu' && [
-                m('h5', 'Info aardgasvrije wijken:'),
-                m("a#aardgasvrijewijken[href='https://www.aardgasvrijewijken.nl/']", 'Programma Aardgasvrije Wijken'),
-              ],
+                !charts_shown && selectedLayer == 'gl_wk_bu' && [
+                  m('h5', 'Info aardgasvrije wijken:'),
+                  m("a#aardgasvrijewijken[href='https://www.aardgasvrijewijken.nl/']", 'Programma Aardgasvrije Wijken'),
+                ],
+                
+                // m('input[type=checkbox].legend-checkbox', {
+                //   checked: charts_shown,
+                //   onclick: () => toggleChartsShown(),
+                // }),
+                // m('b', 'Toon grafieken'),
 
-              // console.log('Before Chart'),
-              // m.route &&
-              //   console.log('m.route exists'),
-              // console.log(m.route.param('test')),
-              // console.log('m.route.param(): ', m.route.param()),
-
-              m(ChartJs, {
-                width: "175",
-                height: "140",
-                data: {
-                  type: 'bar',
-                  data: {
-                    labels: provincies,
-                    datasets: [
-                      {
-                        label: 'BVO oppervlakte 2020',
-                        data: sum_of_bvo_2020,
-                        backgroundColor: 'rgba(68, 114, 196, 0.5)',
-                        borderColor: 'rgba(68, 114, 196, 1)',
-                        borderWidth: 1,
+                charts_shown && m('.row', [
+                  m('.col s12', {style: 'background: rgba(255, 255, 255, 0.8)'}, [
+                    m(ChartJs, {
+                      onClick: (label) => {
+                        console.log(`label: ${label}`),  // vervang dit door een verandering van de state en dan een update
+                        setSelectedProvince(label);
                       },
-                      {
-                        label: 'BVO oppervlakte 2030',
-                        data: sum_of_bvo_2030,
-                        backgroundColor: 'rgba(237, 125, 49, 0.5)',
-                        borderColor: 'rgba(237, 125, 49, 1)',
-                        borderWidth: 1,
+                      width: "100px",  // changing this value won't change the width.
+                      height: "60px",  // relative to the width
+                      data: data_bvo,
+                    }), // m(ChartJs)
+                  ]),
+                  m('.col s12', [
+                    m(ChartJs, {
+                      onClick: (label) => {
+                        console.log(`label: ${label}`),  // vervang dit door een verandering van de state en dan een update
+                        setSelectedProvince(label);
                       },
-                    ],
-                  },
-                  options: {
-                    scales: {
-                      y: {
-                        beginAtZero: true,
-                      },
-                    },
-                  },
-                },
-              }),
+                      width: "100px",  // changing this value won't change the width.
+                      height: "60px",  // relative to the width
+                      data: data_elec,
+                    }), // m(ChartJs)
+                  ]),
+                  m('.col s12', [
+                    m(ChartJs, {
+                      width: "100px", 
+                      height: "60px", 
+                      data: data_gas,
+                    }), // m(ChartJs)
+                  ]),
+                  selected_province && m('.col s12', [
+                    m(ChartJs, {
+                      key: selected_province,
+                      width: "100px", 
+                      height: "60px", 
+                      data: energy_use_types_for_province(selected_province, 2030),
+                    }), // m(ChartJs)
+                  ]),
+                ]), // row for the charts
 
-            ],
-          ),
+                // routekaart information:
+                // !charts_shown && m('.bottom25', [
+                !charts_shown && m('.row s12', [
+                  selectedLayer && isCureLayer(selectedLayer) && [
+                    m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
+                    m('.text-routekaart',
+                      `${layerPercentages[selectedLayer][0]} % aangeleverd`
+                    ),
+                    m('.text-routekaart', 'Directe CO₂-emissie reductie 2030: 59 %'),
+                  ],
+                  selectedLayer && isCareLayer(selectedLayer) && [
+                    m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
+                    m('.text-routekaart',
+                      `Routekaarten voorlopig: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
+                    ),
+                    m('.text-routekaart',
+                      `Routekaarten definitief / vastgesteld RvB: ${layerPercentages[selectedLayer][1]} % van alle organisaties`
+                    ),
+                  ],
+                  selectedLayer && isCureLayer(selectedLayer!) && [
+                    m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_cure.xlsx']", 
+                    { style: 'font-weight: bold' },
+                    'Download overzicht ziekenhuizen (Excel)'),
+                  ],
+                  selectedLayer && isCareLayer(selectedLayer!) && [
+                    m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_care.xlsx']", 
+                    { style: 'font-weight: bold' },
+                    'Download overzicht langdurige zorg (Excel)'),
+                  ],
+                ]), // routekaart information
 
-          // routekaart information:
-          m('.bottom25', [
-            selectedLayer && isCureLayer(selectedLayer) && [
-              m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
-              m('.text-routekaart',
-                `${layerPercentages[selectedLayer][0]} % aangeleverd`
-              ),
-              m('.text-routekaart', 'Directe CO₂-emissie reductie 2030: 59 %'),
-            ],
-            selectedLayer && isCareLayer(selectedLayer) && [
-              m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
-              m('.text-routekaart',
-                `Routekaarten voorlopig: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
-              ),
-              m('.text-routekaart',
-                `Routekaarten definitief / vastgesteld RvB: ${layerPercentages[selectedLayer][1]} % van alle organisaties`
-              ),
-            ],
-            selectedLayer && isCureLayer(selectedLayer!) && [
-              m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_cure.xlsx']", 
-              { style: 'font-weight: bold' },
-              'Download overzicht ziekenhuizen (Excel)'),
-            ],
-            selectedLayer && isCareLayer(selectedLayer!) && [
-              // m('.header-routekaart', 'Data'),
-              m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_care.xlsx']", 
-              { style: 'font-weight: bold' },
-              'Download overzicht langdurige zorg (Excel)'),
-            ],
-          ]),
+              ], // elements of panel on the right
+            ), // panel on the right
+          ), // container
 
           // legend: five versions
-          // selectedLayer && !isCareOrCureLayer(selectedLayer!) && !isTEOLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
-          selectedLayer && isCareLayer(selectedLayer!) && m(Legend_care, { state, actions }),
-          selectedLayer && isCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
-          selectedLayer && isTEOLayer(selectedLayer!) && m(Legend_teo, { state, actions }),
-          selectedLayer && isTVWLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
-          selectedLayer && isVattenfallLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
-        ]),
-        selectedLayer && isWKOLayer(selectedLayer!) && m('.disclaimer',
-          'Data over WKO bronnen is afkomstig van de WKO-bodemenergietool (wkotool.nl). ' +
-          'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
-        ),
-      ];
-    },
-  };
-};
+          selectedLayer && !isCareOrCureLayer(selectedLayer!) && !isTEOLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
+          !charts_shown && selectedLayer && isCareLayer(selectedLayer!) && m(Legend_care, { state, actions }),
+          !charts_shown && selectedLayer && isCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
+          !charts_shown && selectedLayer && isTEOLayer(selectedLayer!) && m(Legend_teo, { state, actions }),
+          !charts_shown && selectedLayer && isTVWLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
+          !charts_shown && selectedLayer && isVattenfallLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
+
+          // disclaimer
+          selectedLayer && isWKOLayer(selectedLayer!) && m('.disclaimer',
+            'Data over WKO bronnen is afkomstig van de WKO-bodemenergietool (wkotool.nl). ' +
+            'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
+          ), // disclaimer
+        ]), // content
+      ]; // return ( function result of view() )
+    }, // view
+  }; // return ( function result of HomePage() )
+}; // HomePage
