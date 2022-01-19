@@ -108,6 +108,7 @@ export interface IAppStateModel {
 }
 
 export interface IAppStateActions {
+  handleMoveEnd: (ll: LatLng, zoom: number) => void;
   mapClick: () => void;
   refreshLayer: (layer?: string) => Promise<void>;
   selectFeature: (f: Feature<Point | LineString | Polygon>, layerName?: string, layer?: L.Layer) => void;
@@ -362,6 +363,15 @@ export const appStateMgmt = {
 
   actions: (update, states): IAppStateActions => {
     return {
+      handleMoveEnd: (lalo: LatLng, zoom: number) => {
+        console.log(`after move: lat=${lalo.lat}, long=${lalo.lng}, zoom=${zoom}`);
+        let np = ''
+        if (zoom >= 10) {
+          np = get_nearest_province(lalo);
+        }
+        console.log(`Nearest province: ${np}`);
+        update({ app: { selected_province: np } });
+      },
       mapClick: () => {
         console.log('mapclick action');
         const {
