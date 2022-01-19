@@ -375,7 +375,7 @@ export const appStateMgmt = {
         update({ app: { selected_province: np } });
       },
       mapClick: () => {
-        console.log('mapclick action');
+        // console.log('mapclick action');
         const {
           app: { selectedMarkersLayer, selectedLayer },
         } = states();
@@ -383,10 +383,10 @@ export const appStateMgmt = {
         var new_sl = selectedLayer;
         if (isCareOrCureLayer(new_sl!) || isSportLayer(new_sl!)) {
           // new_sl = undefined    // if setting it to undefined, the legend disappears
-          console.log('mapclick calling update()');
+          // console.log('mapclick calling update()');
           update({ app: { selectedItem: undefined, selectedLayer: new_sl, selectedHospital: undefined } });
         };
-        console.log('mapclick action finished');
+        // console.log('mapclick action finished');
       },
       selectFeature: async (f, selectedLayer?: string, layer?: L.Layer) => {
         console.log('Select feature');
