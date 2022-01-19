@@ -133,6 +133,7 @@ export const HomePage: MeiosisComponent = () => {
                 map.on('overlayadd', (e: any) => updateActiveLayers(e.layer.options.name, true));
                 map.on('overlayremove', (e: any) => updateActiveLayers(e.layer.options.name, false));
                 map.on('zoomend', () => setZoomLevel(map.getZoom()));
+                map.on('moveend', () => handleMoveEnd(map.getCenter(), map.getZoom()));
                 map.on('click', () => mapClick())
                 L.control.scale({ imperial: false, metric: true }).addTo(map);
 
