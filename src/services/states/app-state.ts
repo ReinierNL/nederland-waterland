@@ -103,9 +103,9 @@ export interface IAppStateModel {
     selectedLayer: string;             // Last item's layer name
     selectedHospital: Feature<Point>;  // (deprecated?)
     activeLayers: Set<string>;         // Layers that are loaded
-    tree_collapsed: boolean;           // is the layer tree collapsed
-    charts_shown: boolean;             // are the charts shown
-    selected_province: string;         // empty if zoomlevel is too low
+    treeCollapsed: boolean;           // is the layer tree collapsed
+    chartsShown: boolean;             // are the charts shown
+    selectedProvince: string;         // empty if zoomlevel is too low
     [key: string]: L.GeoJSON | any;
   }>;
 }
@@ -293,9 +293,9 @@ export const appStateMgmt = {
       ziekenhuizen,
 
       activeLayers: new Set(),
-      charts_shown: false,
+      chartsShown: false,
       selectedMarkersLayer: L.geoJSON(undefined),
-      selected_province: '',
+      selectedProvince: '',
     },
   } as IAppStateModel,
 
@@ -308,7 +308,7 @@ export const appStateMgmt = {
           np = get_nearest_province(lalo);
         }
         console.log(`Nearest province: ${np}`);
-        update({ app: { selected_province: np } });
+        update({ app: { selectedProvince: np } });
       },
       mapClick: () => {
         // console.log('mapclick action');
@@ -423,20 +423,20 @@ export const appStateMgmt = {
       toggleChartsShown: () => {
         console.log('toggleChartsShown');
         const { app } = states();
-        const { charts_shown } = app;
-        const new_value = charts_shown == undefined ? true : !charts_shown;
+        const { chartsShown } = app;
+        const new_value = chartsShown == undefined ? true : !chartsShown;
         console.log(`toggleChartsShown: new_value = ${new_value}`);
-        update({ app: { charts_shown: new_value } });
+        update({ app: { chartsShown: new_value } });
         return new_value
       },
 
       toggleTreeCollapsed: () => {
         // console.log('toggleTreeCollapsed');
         const { app } = states();
-        const { tree_collapsed } = app;
-        const new_value = tree_collapsed == undefined ? true : !tree_collapsed;
+        const { treeCollapsed } = app;
+        const new_value = treeCollapsed == undefined ? true : !treeCollapsed;
         console.log(`toggleTreeCollapsed: new_value = ${new_value}`);
-        update({ app: { tree_collapsed: new_value } });
+        update({ app: { treeCollapsed: new_value } });
         return new_value
       },
 
@@ -472,10 +472,10 @@ export const appStateMgmt = {
         };
       },
 
-      setSelectedProvince: (selected_province: string) => {
-        // if (['Limburg', 'Zeeland'].indexOf(selected_province) < 0) return;
-        console.log(`setSelectedProvince: ${selected_province}`);
-        update({ app: { selected_province }});
+      setSelectedProvince: (selectedProvince: string) => {
+        // if (['Limburg', 'Zeeland'].indexOf(selectedProvince) < 0) return;
+        console.log(`setSelectedProvince: ${selectedProvince}`);
+        update({ app: { selectedProvince }});
       },
     } as IAppStateActions;
   },

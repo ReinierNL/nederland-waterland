@@ -75,13 +75,13 @@ export const HomePage: MeiosisComponent = () => {
     view: ({ attrs: { state, actions } }) => {
       // console.log(state);
       const {
-        charts_shown,
+        chartsShown,
         selectedItem,
         selectedHospital,
         selectedLayer,
         selectedMarkersLayer,
-        selected_province,
-        tree_collapsed,
+        selectedProvince,
+        treeCollapsed,
         // layers and layer data objects (json):
         categorale_instellingen,
         effluent,
@@ -124,8 +124,8 @@ export const HomePage: MeiosisComponent = () => {
       const { handleMoveEnd, mapClick, setZoomLevel, toggleChartsShown, toggleTreeCollapsed, updateActiveLayers, 
         setSelectedProvince } = actions;
 
-      console.log(`selectedLayer: ${selectedLayer}; tree_collapsed: ${tree_collapsed}; charts shown: ${charts_shown}`);
-      //console.log(`Selected province: ${selected_province}`);
+      console.log(`selectedLayer: ${selectedLayer}; treeCollapsed: ${treeCollapsed}; charts shown: ${chartsShown}`);
+      //console.log(`Selected province: ${selectedProvince}`);
 
       return [
         m('.content', [
@@ -527,7 +527,7 @@ export const HomePage: MeiosisComponent = () => {
                 const treeWithlayers = (L.control.layers as any).tree(baseTree, overlayTree, {
                   collapsed: true,
                   // collapsed: false,
-                  // collapsed: tree_collapsed,
+                  // collapsed: treeCollapsed,
                 });
                 treeWithlayers.addTo(map);
 
@@ -571,27 +571,25 @@ export const HomePage: MeiosisComponent = () => {
                     selectedLayer && m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
     
                 // info panel; for hospital or other layers
-                !charts_shown && selectedHospital && selectedHospital.properties && [
-                  [
-                    m('table.hospital-feature-props', [
-                      ...Object.keys(selectedHospital.properties)
-                        .filter(
-                          (key) =>
-                            !selectedHospital.properties ||
-                            (selectedHospital.properties.hasOwnProperty(key) && key != 'active' && key != 'Locatienummer')
-                        )
-                        .map((key) =>
-                          m('tr', [
-                            m('td.bold.toright', key),
-                            m('td', !selectedHospital.properties ? '' : selectedHospital.properties[key]),
-                          ])
-                      ),
-                    ]),
-                  ],
+                !chartsShown && selectedHospital && selectedHospital.properties && [
+                  m('table.hospital-feature-props', [
+                    ...Object.keys(selectedHospital.properties)
+                      .filter(
+                        (key) =>
+                          !selectedHospital.properties ||
+                          (selectedHospital.properties.hasOwnProperty(key) && key != 'active' && key != 'Locatienummer')
+                      )
+                      .map((key) =>
+                        m('tr', [
+                          m('td.bold.toright', key),
+                          m('td', !selectedHospital.properties ? '' : selectedHospital.properties[key]),
+                        ])
+                    ),
+                  ]),
                 ],
-                !charts_shown && selectedItem && m(InfoPanel, { state, actions }), // InfoPanel shows attributes of selected item
+                !chartsShown && selectedItem && m(InfoPanel, { state, actions }), // InfoPanel shows attributes of selected item
 
-                !charts_shown && selectedLayer == 'gl_wk_bu' && [
+                !chartsShown && selectedLayer == 'gl_wk_bu' && [
                   m('h5', 'Info aardgasvrije wijken:'),
                   m("a#aardgasvrijewijken[href='https://www.aardgasvrijewijken.nl/']", 'Programma Aardgasvrije Wijken'),
                 ],
@@ -602,7 +600,7 @@ export const HomePage: MeiosisComponent = () => {
                 // }),
                 // m('b', 'Toon grafieken'),
 
-                charts_shown && m('.row', [
+                chartsShown && m('.row', [
                   m('.col s12', {style: 'background: rgba(255, 255, 255, 0.8)'}, [
                     m(ChartJs, {
                       onClick: (label) => {
@@ -632,33 +630,33 @@ export const HomePage: MeiosisComponent = () => {
                       data: data_gas,
                     }), // m(ChartJs)
                   ]),
-                  selected_province && m('.col s12', [
+                  selectedProvince && m('.col s12', [
                     m(ChartJs, {
-                      key: selected_province,
+                      key: selectedProvince,
                       width: "100px", 
                       height: "60px", 
-                      data: energy_use_types_for_province(selected_province, 2030),
+                      data: energy_use_types_for_province(selectedProvince, 2030),
                     }), // m(ChartJs)
                   ]),
                 ]), // row for the charts
 
                 // routekaart information:
-                // !charts_shown && m('.bottom25', [
-                !charts_shown && m('.row s12', [
+                // vertikale positie is nu dynamisch. dat is een beetje onrustig..
+                !chartsShown && m('.row s12', [
                   selectedLayer && isCureLayer(selectedLayer) && [
                     m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
                     m('.text-routekaart',
-                      `${layerPercentages[selectedLayer][0]} % aangeleverd`
+                      `${layerPercentages[selectedLayer][0]}% aangeleverd`
                     ),
-                    m('.text-routekaart', 'Directe CO₂-emissie reductie 2030: 59 %'),
+                    m('.text-routekaart', 'Directe CO₂-emissie reductie 2030: 59%'),
                   ],
                   selectedLayer && isCareLayer(selectedLayer) && [
                     m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
                     m('.text-routekaart',
-                      `Routekaarten voorlopig: ${layerPercentages[selectedLayer][0]} % van alle organisaties`
+                      `Routekaarten voorlopig: ${layerPercentages[selectedLayer][0]}% van alle organisaties`
                     ),
                     m('.text-routekaart',
-                      `Routekaarten definitief / vastgesteld RvB: ${layerPercentages[selectedLayer][1]} % van alle organisaties`
+                      `Routekaarten definitief / vastgesteld RvB: ${layerPercentages[selectedLayer][1]}% van alle organisaties`
                     ),
                   ],
                   selectedLayer && isCureLayer(selectedLayer!) && [
@@ -679,11 +677,11 @@ export const HomePage: MeiosisComponent = () => {
 
           // legend: five versions
           selectedLayer && !isCareOrCureLayer(selectedLayer!) && !isTEOLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
-          !charts_shown && selectedLayer && isCareLayer(selectedLayer!) && m(Legend_care, { state, actions }),
-          !charts_shown && selectedLayer && isCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
-          !charts_shown && selectedLayer && isTEOLayer(selectedLayer!) && m(Legend_teo, { state, actions }),
-          !charts_shown && selectedLayer && isTVWLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
-          !charts_shown && selectedLayer && isVattenfallLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
+          !chartsShown && selectedLayer && isCareLayer(selectedLayer!) && m(Legend_care, { state, actions }),
+          !chartsShown && selectedLayer && isCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
+          !chartsShown && selectedLayer && isTEOLayer(selectedLayer!) && m(Legend_teo, { state, actions }),
+          !chartsShown && selectedLayer && isTVWLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
+          !chartsShown && selectedLayer && isVattenfallLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
 
           // disclaimer
           selectedLayer && isWKOLayer(selectedLayer!) && m('.disclaimer',
