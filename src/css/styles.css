@@ -358,3 +358,8 @@ li.logo {
   margin-left: 5px;
   font-size: 14;
 }
+
+#charts {
+  overflow-y: auto;
+  height: 70vh;
+}
