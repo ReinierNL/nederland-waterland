@@ -417,6 +417,11 @@ export const appStateMgmt = {
         update({
           app: { selectedHospital: () => f, selectedLayer: layerName, selectedItem: undefined, ...result },
         });
+
+      setSelectedProvince: (selectedProvince: string) => {
+        // if (['Limburg', 'Zeeland'].indexOf(selectedProvince) < 0) return;
+        console.log(`setSelectedProvince: ${selectedProvince}`);
+        update({ app: { selectedProvince }});
       },
 
       setZoomLevel: (zoom: number) => update({ app: { zoom } }),
@@ -470,12 +475,6 @@ export const appStateMgmt = {
         } else {
           update({ app: { activeLayers, selectedLayer, selectedHospital: new_sh } });
         };
-      },
-
-      setSelectedProvince: (selectedProvince: string) => {
-        // if (['Limburg', 'Zeeland'].indexOf(selectedProvince) < 0) return;
-        console.log(`setSelectedProvince: ${selectedProvince}`);
-        update({ app: { selectedProvince }});
       },
     } as IAppStateActions;
   },
