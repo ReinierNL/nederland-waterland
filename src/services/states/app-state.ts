@@ -134,6 +134,7 @@ export interface IAppStateModel {
     zoom: -1;                          // the current zoom level
     selectedMarkersLayer: L.GeoJSON;   // Layer with selected markers 
     size: number;                      // Bounding box size  (deprecated?)
+    selectedCharts: string;            // comma separated chart names => make this a Set<string>?
     selectedItem: Feature<Point>;      // Last item that was clicked
     selectedLayer: string;             // Last item's layer name
     selectedHospital: Feature<Point>;  // (deprecated?)
@@ -146,6 +147,7 @@ export interface IAppStateModel {
 }
 
 export interface IAppStateActions {
+  handleChartSelect: (evt: Event) => void;
   handleMoveEnd: (ll: LatLng, zoom: number) => void;
   mapClick: () => void;
   refreshLayer: (layer?: string) => Promise<void>;
@@ -275,6 +277,7 @@ export const appStateMgmt = {
 
       activeLayers: new Set(),
       chartsShown: false,
+      selectedCharts: '',
       selectedMarkersLayer: L.geoJSON(undefined),
       selectedProvince: '',
     },
@@ -282,6 +285,18 @@ export const appStateMgmt = {
 
   actions: (update, states): IAppStateActions => {
     return {
+      handleChartSelect: (evt: Event) => {
+        // console.log(`handleChartSelect: sel.currentTarget.length = ${evt.currentTarget.length}`)
+        var selectedCharts = ''
+        for (let i = 0; i < evt.currentTarget.length; i++ ) {
+          let opt = evt.currentTarget[i]
+          // console.log(`i = ${i}; opt = ${opt.value}`)
+          if (opt.selected) { selectedCharts = selectedCharts + opt.value + ',' }
+        }
+        // console.log(`handleChartSelect: selectedCharts = ${selectedCharts}`)
+        update({ app: { selectedCharts } });
+      },
+
       handleMoveEnd: (lalo: LatLng, zoom: number) => {
         console.log(`after move: lat=${lalo.lat}, long=${lalo.lng}, zoom=${zoom}`);
         let np = ''
