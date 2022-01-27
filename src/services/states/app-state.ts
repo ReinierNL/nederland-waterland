@@ -300,12 +300,13 @@ export const appStateMgmt = {
       handleMoveEnd: (lalo: LatLng, zoom: number) => {
         console.log(`after move: lat=${lalo.lat}, long=${lalo.lng}, zoom=${zoom}`);
         let np = ''
-        if (zoom >= 10) {
+        // if (zoom >= 10) {
           np = get_nearest_province(lalo);
-        }
+        // }
         console.log(`Nearest province: ${np}`);
         update({ app: { selectedProvince: np } });
       },
+
       mapClick: () => {
         // console.log('mapclick action');
         const {
