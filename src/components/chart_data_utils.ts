@@ -84,19 +84,6 @@ export const data_gas = {
 } as ChartConfiguration<keyof ChartTypeRegistry, (number | ScatterDataPoint | BubbleDataPoint | null)[], unknown>
 ; // data_gas
 
-
-export const onChartClick = (onClick: (label: string) => void) => (event: ChartEvent, _elements: any, myChart: Chart) => {
-    const points = myChart.getElementsAtEventForMode(event as unknown as MouseEvent, 'nearest', { intersect: true }, true);
-
-    if (points.length && myChart.data.labels) {
-        const firstPoint = points[0];
-        const label = myChart.data.labels[firstPoint.index] as string;
-        // const value = myChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
-        // console.table({ points, label, value })
-        onClick(label);
-    }
-}
-
 const data_energy_use_types = {
   type: 'pie',
   data: {
@@ -135,3 +122,15 @@ export const energy_use_types_for_province = (province: string, year: number) =>
   chartdata.data.datasets[0].data = data_values
   return chartdata
 }
+
+export const onChartClick = (onClick: (label: string) => void) => (event: ChartEvent, _elements: any, myChart: Chart) => {
+  const points = myChart.getElementsAtEventForMode(event as unknown as MouseEvent, 'nearest', { intersect: true }, true);
+
+  if (points.length && myChart.data.labels) {
+      const firstPoint = points[0];
+      const label = myChart.data.labels[firstPoint.index] as string;
+      // const value = myChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+      // console.table({ points, label, value })
+      onClick(label);
+  }
+} // onChartClick
