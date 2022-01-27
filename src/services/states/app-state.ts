@@ -131,17 +131,17 @@ export interface IAppStateModel {
     wn_vf_vlielandLayer: L.GeoJSON;
     ziekenhuizen: FeatureCollection<Point>;
     // other state variables:
-    zoom: -1;                          // the current zoom level
-    selectedMarkersLayer: L.GeoJSON;   // Layer with selected markers 
-    size: number;                      // Bounding box size  (deprecated?)
+    activeLayers: Set<string>;         // Layers that are loaded
+    chartsShown: boolean;              // are the charts shown
     selectedCharts: string;            // comma separated chart names => make this a Set<string>?
+    selectedHospital: Feature<Point>;  // (deprecated?)
     selectedItem: Feature<Point>;      // Last item that was clicked
     selectedLayer: string;             // Last item's layer name
-    selectedHospital: Feature<Point>;  // (deprecated?)
-    activeLayers: Set<string>;         // Layers that are loaded
-    treeCollapsed: boolean;           // is the layer tree collapsed
-    chartsShown: boolean;             // are the charts shown
-    selectedProvince: string;         // empty if zoomlevel is too low
+    selectedMarkersLayer: L.GeoJSON;   // Layer with selected markers 
+    selectedProvince: string;          // empty if zoomlevel is too low
+    size: number;                      // Bounding box size  (deprecated?)
+    treeCollapsed: boolean;            // is the layer tree collapsed
+    zoom: -1;                          // the current zoom level
     [key: string]: L.GeoJSON | any;
   }>;
 }
