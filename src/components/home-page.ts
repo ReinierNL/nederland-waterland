@@ -668,24 +668,25 @@ export const HomePage: MeiosisComponent = () => {
                 ]), // row for the charts
 
                 // routekaart information:
-                // vertikale positie is nu dynamisch. dat is een beetje onrustig..
+                // the vertical position of this element group is dynamic (because the infopanels are dynamic in size). 
+                // this looks a bit 'wild'
                 !chartsShown && m('.row s12', [
-                  selectedLayer && isCureLayer(selectedLayer) && [
-                    m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
-                    m('.text-routekaart',
-                      `${layerPercentages[selectedLayer][0]}% aangeleverd`
-                    ),
-                    m('.text-routekaart', 'Directe CO₂-emissie reductie 2030: 59%'),
-                  ],
-                  selectedLayer && isCareLayer(selectedLayer) && [
-                    m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
-                    m('.text-routekaart',
-                      `Routekaarten voorlopig: ${layerPercentages[selectedLayer][0]}% van alle organisaties`
-                    ),
-                    m('.text-routekaart',
-                      `Routekaarten definitief / vastgesteld RvB: ${layerPercentages[selectedLayer][1]}% van alle organisaties`
-                    ),
-                  ],
+                  // selectedLayer && isCureLayer(selectedLayer) && [
+                  //   m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
+                  //   m('.text-routekaart',
+                  //     `${layerPercentages[selectedLayer][0]}% aangeleverd`
+                  //   ),
+                  //   m('.text-routekaart', 'Directe CO₂-emissie reductie 2030: 59%'),
+                  // ],
+                  // selectedLayer && isCareLayer(selectedLayer) && [
+                  //   m('.header-routekaart', `Portefeuilleroutekaart ${layerTitles[selectedLayer] || selectedLayer}`),
+                  //   m('.text-routekaart',
+                  //     `Routekaarten voorlopig: ${layerPercentages[selectedLayer][0]}% van alle organisaties`
+                  //   ),
+                  //   m('.text-routekaart',
+                  //     `Routekaarten definitief / vastgesteld RvB: ${layerPercentages[selectedLayer][1]}% van alle organisaties`
+                  //   ),
+                  // ],
                   selectedLayer && isCureLayer(selectedLayer!) && [
                     m("a#[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/routekaart_status_cure.xlsx']", 
                     { style: 'font-weight: bold' },
