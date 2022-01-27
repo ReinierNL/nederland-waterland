@@ -6,57 +6,79 @@ const { bvo, elec, gas, kWh_2020, kWh_2030, cons_per_bvo, cons_per_sector, bvo_p
 import { BubbleDataPoint,  Chart, ChartConfiguration, ChartEvent, ChartTypeRegistry, ScatterDataPoint } from 'chart.js';
 
 
-const rgb2020 = '68, 114, 196'
-const rgb2030 = '237, 125, 49'
+// some constants and fuctions to avoid DRY violations
+const rgb2020 = '68, 114, 196';
+const rgb2030 = '237, 125, 49';
+const rgbLightGreen = '140, 197, 64';
+const rgbLightRed = '241, 89, 42';
+const rgbLightBlue = '9, 179, 205';
+
+const optScalesY = (titleY: string) => {
+  let opt = {
+    scales: {
+      y: { 
+        beginAtZero: true,
+        title: { 
+          display: true, 
+          text: titleY 
+        }
+      }
+    }
+  }
+  return opt
+}; // optScalesY
 
 
 export const data_bvo = {
   type: 'bar',
   data: {
-    labels: provincies,
+    labels: bvo.labels,
     datasets: [
       {
-        label: 'BVO oppervlakte 2020',
-        data: sum_of_bvo_2020,
+        label: '2020',
+        data: bvo.values2020.map((x: number) => x / 1e6),
         backgroundColor: `rgba(${rgb2020}, 0.5)`,
         borderColor: `rgba(${rgb2020}, 1)`,
         borderWidth: 2,
       },
       {
-        label: 'BVO oppervlakte 2030',
-        data: sum_of_bvo_2030,
+        label: '2030',
+        data: bvo.values2030.map((x: number) => x / 1e6),
         backgroundColor: `rgba(${rgb2030}, 0.5)`,
         borderColor: `rgba(${rgb2030}, 1)`,
         borderWidth: 2,
       },
     ],
   }, // data
-  options: oBeginAtZero,
-}; // data_bvo
+  //options: oBeginAtZero,
+  options: optScalesY('BVO oppervlakte / km2'),
+} as ChartConfiguration<keyof ChartTypeRegistry, (number | ScatterDataPoint | BubbleDataPoint | null)[], unknown>
+; // data_bvo
 
 export const data_elec = {
   type: 'bar',
   data: {
-    labels: provincies,
+    labels: elec.labels,
     datasets: [
       {
-        label: 'Electriciteitsverbruik 2020',
-        data: elec_2020,
+        label: '2020',
+        data: elec.values2020.map((x: number) => x / 1e6),
         backgroundColor: `rgba(${rgb2020}, 0.5)`,
         borderColor: `rgba(${rgb2020}, 1)`,
         borderWidth: 2,
       },
       {
-        label: 'Electriciteitsverbruik 2030',
-        data: elec_2030,
+        label: '2030',
+        data: elec.values2030.map((x: number) => x / 1e6),
         backgroundColor: `rgba(${rgb2030}, 0.5)`,
         borderColor: `rgba(${rgb2030}, 1)`,
         borderWidth: 2,
       },
     ],
   }, // data
-  options: oBeginAtZero,
-}; // data_elec
+  options: optScalesY('Electriciteitsverbruik / GWh'),
+} as ChartConfiguration<keyof ChartTypeRegistry>
+; // data_elec
   
 
 export const data_gas = {
@@ -65,22 +87,22 @@ export const data_gas = {
     labels: gas['labels'],
     datasets: [
       {
-        label: 'Gasverbruik 2020',
-        data: gas['values2020'],
+        label: '2020',
+        data: gas.values2020.map((x: number) => x / 1e6),
         backgroundColor: `rgba(${rgb2020}, 0.5)`,
         borderColor: `rgba(${rgb2020}, 1)`,
         borderWidth: 2,
       },
       {
-        label: 'Gasverbruik 2030',
-        data: gas['values2030'],
+        label: '2030',
+        data: gas.values2030.map((x: number) => x / 1e6),
         backgroundColor: `rgba(${rgb2030}, 0.5)`,
         borderColor: `rgba(${rgb2030}, 1)`,
         borderWidth: 2,
       },
     ],
   },
-  options: oBeginAtZero,
+  options: optScalesY('Gasverbruik / M m3'),
 } as ChartConfiguration<keyof ChartTypeRegistry, (number | ScatterDataPoint | BubbleDataPoint | null)[], unknown>
 ; // data_gas
 
@@ -91,23 +113,24 @@ const data_energy_use_types = {
     datasets: [
       {
         data: [ kWh_2020['gas'][1], kWh_2020['elec'][1], kWh_2020['heat'][1] ],
-        backgroundColor: ['green', 'blue', 'red'],
+        backgroundColor: [`rgba(200, 200, 200, 0.5)` ],
+        //backgroundColor: [`rgba(${rgbLightGreen}, 0.5), rgba(${rgbLightBlue}, 0.5), rgba(${rgbLightRed}, 0.5)` ],
+        //borderColor: [`rgba(${rgbLightGreen}, 1), rgba(${rgbLightBlue}, 1), rgba(${rgbLightRed}, 1)` ],
         borderColor: ['green', 'blue', 'red'],
         borderWidth: 2,
       },
     ],
   }, // data
   options: {
-    //   onChartClick: onChartClick('chartName'),
     plugins: {
-        title: {
-            display: true,
-            text: 'Energieverdeling in Flevoland 2020',
-            padding: {
-                top: 10,
-                bottom: 10,
-            }
+      title: {
+        display: true,
+        text: 'Energieverdeling in Flevoland 2020',
+        padding: {
+          top: 10,
+          bottom: 10,
         }
+      }
     },
   },
 } // data_energy_use_types
@@ -121,7 +144,8 @@ export const energy_use_types_for_province = (province: string, year: number) =>
   var data_values = [ kWh_data['gas'][i], kWh_data['elec'][i], kWh_data['heat'][i] ]
   chartdata.data.datasets[0].data = data_values
   return chartdata
-}
+} // energy_use_types_for_province
+
 
 export const onChartClick = (onClick: (label: string) => void) => (event: ChartEvent, _elements: any, myChart: Chart) => {
   const points = myChart.getElementsAtEventForMode(event as unknown as MouseEvent, 'nearest', { intersect: true }, true);
