@@ -540,10 +540,11 @@ export const HomePage: MeiosisComponent = () => {
             m('.panel',
               { style: 'position: absolute; top: 0px; left: 70vw; width: 29vw; height: 97vh; padding: 10px;' },
               [
+                m('h3', 'De zorgduurzaamkaart'),
                 // the logos
                 m('nav',
-                  { style: 'width:100%;height:130px;' },
-                  m('ul.list-inline', [
+                  { style: 'width:100%;height:130px' },
+                  m('ul.list-inline', { style: 'right:15px' }, [
                     m('li',
                       m('img', {
                         src: logoEVZ,
@@ -552,15 +553,13 @@ export const HomePage: MeiosisComponent = () => {
                       })
                     ),
                     // ((selectedLayer == undefined) || (!isDeltaresLayer(selectedLayer) && !isSyntraalLayer(selectedLayer))) &&
-                      m('li.logo', m('img', { src: logoTNO, alt: 'logo TNO', width: '82px' })),
+                    m('li.logo', m('img', { src: logoTNO, alt: 'logo TNO', width: '82px' })),
                     selectedLayer && isDeltaresLayer(selectedLayer) && 
-                      m('li.logo', m('img', { src: logoDeltares, alt: 'logo Deltares', width: '114px' })),
+                    m('li.logo', m('img', { src: logoDeltares, alt: 'logo Deltares', width: '114px' })),
                     selectedLayer && isSyntraalLayer(selectedLayer) && 
-                      m('li.logo', m('img', { src: logoSyntraal, alt: 'logo Syntraal', width: '140px' })),
+                    m('li.logo', m('img', { src: logoSyntraal, alt: 'logo Syntraal', width: '140px' })),
                   ])
                 ),
-        
-                m('h3', 'De zorgduurzaamkaart'),
                 // layer title
                 selectedLayer && 
                   isCareOrCureLayer(selectedLayer) &&
