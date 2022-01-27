@@ -7,10 +7,11 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster.js';
+import { Feature, Point } from 'geojson';
+
 import '../css/markercluster.overrule.css';   // overrules the default colors of MarkerCluster
 import { MeiosisComponent } from '../services/meiosis';
 import { InfoPanel } from './info-panel';
-import { Feature, Point } from 'geojson';
 import { Legend_care } from './legend_care';
 import { Legend_discr } from './legend_discr';
 import { Legend_teo } from './legend_teo';
