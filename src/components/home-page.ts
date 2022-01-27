@@ -77,6 +77,7 @@ export const HomePage: MeiosisComponent = () => {
       // console.log(state);
       const {
         chartsShown,
+        selectedCharts,
         selectedItem,
         selectedHospital,
         selectedLayer,
@@ -122,8 +123,8 @@ export const HomePage: MeiosisComponent = () => {
         ziekenhuizen,
       } = state.app;
 
-      const { handleMoveEnd, mapClick, setZoomLevel, toggleChartsShown, toggleTreeCollapsed, updateActiveLayers, 
-        setSelectedProvince } = actions;
+      const { handleChartSelect, handleMoveEnd, mapClick, setZoomLevel, toggleChartsShown, toggleTreeCollapsed, 
+        updateActiveLayers, setSelectedProvince } = actions;
 
       console.log(`selectedLayer: ${selectedLayer}; treeCollapsed: ${treeCollapsed}; charts shown: ${chartsShown}`);
       //console.log(`Selected province: ${selectedProvince}`);
@@ -571,6 +572,14 @@ export const HomePage: MeiosisComponent = () => {
                   isEnergyRelatedLayer(selectedLayer) &&
                     selectedLayer && m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
     
+                // checkbox for showing charts or not
+                m('input[type=checkbox]', {
+                  checked: chartsShown,
+                  onclick: () => toggleChartsShown(),
+                }),
+                m('b', 'Toon grafieken'),
+                m('p'),
+
                 // info panel; for hospital or other layers
                 !chartsShown && selectedHospital && selectedHospital.properties && [
                   m('table.hospital-feature-props', [
@@ -595,14 +604,24 @@ export const HomePage: MeiosisComponent = () => {
                   m("a#aardgasvrijewijken[href='https://www.aardgasvrijewijken.nl/']", 'Programma Aardgasvrije Wijken'),
                 ],
                 
-                m('input[type=checkbox].legend-checkbox', {
-                  checked: chartsShown,
-                  onclick: () => toggleChartsShown(),
-                }),
-                m('b', 'Toon grafieken'),
-
-                chartsShown && m('.row', [
-                  m('.col s12', {style: 'background: rgba(255, 255, 255, 0.8)'}, [
+                // the Charts
+                // first: choose whether and which charts are shown
+                // m('input[type=checkbox]', {
+                //   checked: chartsShown,
+                //   onclick: () => toggleChartsShown(),
+                // }),
+                // m('b', 'Toon grafieken'),
+                // m('p'),
+                chartsShown && m("select", { "name": "chartselector", "id": "chartselector", 
+                              "multiple": true, "onchange": handleChartSelect }, [
+                  m("option", {"value": "bvo"}, "Bruto vloeroppervlakte" ),
+                  m("option", {"value": "elec"},  "Electriciteitsverbruik" ),
+                  m("option", {"value": "gas"},  "Gasverbruik" ),
+                  m("option", {"value": "verdeling"},  "verdeling" ),
+                ]), 
+                // show the selected charts:
+                chartsShown && m('#charts.row.graphs', [
+                  selectedCharts!.includes('bvo') && m('.col s12', {style: 'background: rgba(255, 255, 255, 0.8)'}, [
                     m(ChartJs, {
                       onClick: (label) => {
                         console.log(`label: ${label}`),  // vervang dit door een verandering van de state en dan een update
@@ -614,7 +633,7 @@ export const HomePage: MeiosisComponent = () => {
                       data: data_bvo,
                     }), // m(ChartJs)
                   ]),
-                  m('.col s12', [
+                  selectedCharts!.includes('elec') && m('.col s12', [
                     m(ChartJs, {
                       onClick: (label) => {
                         console.log(`label: ${label}`),  // vervang dit door een verandering van de state en dan een update
@@ -626,21 +645,25 @@ export const HomePage: MeiosisComponent = () => {
                       data: data_elec,
                     }), // m(ChartJs)
                   ]),
-                  m('.col s12', [
+                  selectedCharts!.includes('gas') && m('.col s12', [
                     m(ChartJs, {
+                      onClick: (label) => {
+                        console.log(`label: ${label}`),  // vervang dit door een verandering van de state en dan een update
+                        setSelectedProvince(label);
+                      },
                       width: "100px", 
                       height: "60px", 
                       maxHeight: "220px",
                       data: data_gas,
                     }), // m(ChartJs)
                   ]),
-                  selectedProvince && m('.col s12', [
+                  selectedCharts!.includes('verdeling') && selectedProvince && m('.col s12', [
                     m(ChartJs, {
                       key: selectedProvince,
                       width: "100px", 
                       height: "60px", 
-                      data: energy_use_types_for_province(selectedProvince, 2030),
                       maxHeight: "180px",
+                      data: energy_use_types_for_province(selectedProvince, 2020),
                     }), // m(ChartJs)
                   ]),
                 ]), // row for the charts
