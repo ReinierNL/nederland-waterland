@@ -321,6 +321,16 @@ export const appStateMgmt = {
         };
         // console.log('mapclick action finished');
       },
+
+      refreshLayer: async (layer?: string) => {
+        // console.log('refreshLayer. layer: ' + layer)
+        const { app } = states();
+        const { selectedHospital } = app;
+        if (!selectedHospital || !layer) return;
+        const result = await loadGeoJSON(layer, selectedHospital, app);
+        update({ app: { ...result } });
+      },
+
       selectFeature: async (f, selectedLayer?: string, layer?: L.Layer) => {
         console.log('Select feature');
         console.log('Selected layer: ' + selectedLayer);
@@ -408,14 +418,7 @@ export const appStateMgmt = {
           app: { selectedHospital: () => f, selectedLayer: layerName, selectedItem: undefined, ...result },
         });
       },
-      refreshLayer: async (layer?: string) => {
-        // console.log('refreshLayer. layer: ' + layer)
-        const { app } = states();
-        const { selectedHospital } = app;
-        if (!selectedHospital || !layer) return;
-        const result = await loadGeoJSON(layer, selectedHospital, app);
-        update({ app: { ...result } });
-      },
+
       setZoomLevel: (zoom: number) => update({ app: { zoom } }),
       toggleChartsShown: () => {
         console.log('toggleChartsShown');
