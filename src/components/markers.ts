@@ -76,6 +76,11 @@ export const pointToGreenCircleMarkerLayer = (_feature: Feature<Point, any>, lat
 }; // pointToGreenCircleMarkerLayer
 
 export const pointToLayerCare = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+  let opacity = 1
+  // if (feature.properties && !feature.properties['IsMainBranch']) {
+  //   return null as unknown as L.Marker 
+  //   //opacity = 0
+  // }
   var layerIcon = careIconRed;
   var ambitie = null
   var status = null
@@ -112,10 +117,12 @@ export const pointToLayerCare = (feature: Feature<Point, any>, latlng: L.LatLng)
               ? careIconGreen1CC
               : careIconRed;
   }
-  return new L.Marker(latlng, {
+  let newMarker = new L.Marker(latlng, {
     icon: layerIcon,
     title: feature.properties.Naam,
-  });
+  }); 
+  newMarker.options.opacity = opacity
+  return newMarker;
 }; // pointToLayerCare
 
 export const pointToLayerGreenCircleMarker = (
