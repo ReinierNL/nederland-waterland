@@ -64,6 +64,7 @@ Chart.register(
 export const ChartJs: FactoryComponent<{
   width?: number|string;
   height?: number|string;
+  maxHeight?: number|string;
   onClick?: (label: string) => void;
   data: ChartConfiguration<keyof ChartTypeRegistry, (number | ScatterDataPoint | BubbleDataPoint | null)[], unknown>;
 }> = () => {
@@ -71,10 +72,9 @@ export const ChartJs: FactoryComponent<{
   let chart: Chart;
 
   return {
-    view: ({ attrs: { width = 300, height = 200 } }) => {
-      // return m(`canvas.pie-chart[width="${width}"][height="${height}"]`);
-      // return m(`canvas.bar-chart[width=${width}][height=${height}]`);
-      return m(`canvas.bar-chart`, { style: `width: ${width}; height: ${height}` });
+    view: ({ attrs: { width = 300, height = 200, maxHeight = 500 } }) => {
+
+      return m(`canvas.bar-chart`, { style: `width: ${width}; height: ${height}; max-height: ${maxHeight}` });
     },
     oncreate: ({ dom, attrs: { data, onClick } }) => {
       canvas = dom as HTMLCanvasElement;

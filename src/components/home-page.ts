@@ -609,6 +609,7 @@ export const HomePage: MeiosisComponent = () => {
                       },
                       width: "100px",  // changing this value won't change the width.
                       height: "60px",  // relative to the width
+                      maxHeight: "220px",
                       data: data_bvo,
                     }), // m(ChartJs)
                   ]),
@@ -620,6 +621,7 @@ export const HomePage: MeiosisComponent = () => {
                       },
                       width: "100px",  // changing this value won't change the width.
                       height: "60px",  // relative to the width
+                      maxHeight: "220px",
                       data: data_elec,
                     }), // m(ChartJs)
                   ]),
@@ -627,6 +629,7 @@ export const HomePage: MeiosisComponent = () => {
                     m(ChartJs, {
                       width: "100px", 
                       height: "60px", 
+                      maxHeight: "220px",
                       data: data_gas,
                     }), // m(ChartJs)
                   ]),
@@ -636,6 +639,7 @@ export const HomePage: MeiosisComponent = () => {
                       width: "100px", 
                       height: "60px", 
                       data: energy_use_types_for_province(selectedProvince, 2030),
+                      maxHeight: "180px",
                     }), // m(ChartJs)
                   ]),
                 ]), // row for the charts
