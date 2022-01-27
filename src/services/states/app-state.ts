@@ -334,6 +334,12 @@ export const appStateMgmt = {
       selectFeature: async (f, selectedLayer?: string, layer?: L.Layer) => {
         console.log('Select feature');
         console.log('Selected layer: ' + selectedLayer);
+        // console.log(`Selected feature: ${f}`);
+        // console.log(`Selected feature properties: ${f.properties}`);
+        // if (!f) {
+        //   console.log('Empty feature')
+        //   return
+        // }
         const {
           app: { selectedMarkersLayer, ggz, ghz, vvt, selectedHospital: old_sh },
         } = states();
@@ -370,7 +376,8 @@ export const appStateMgmt = {
           }
         }
         update({ app: { selectedItem: () => f, selectedLayer, selectedHospital: new_sh } });
-      },
+      }, // selectFeature
+
       selectHospital: async (f, layerName: string) => {
         console.log('Select hospital (cure location); layerName = ' + layerName);
         const { app } = states();
@@ -417,6 +424,7 @@ export const appStateMgmt = {
         update({
           app: { selectedHospital: () => f, selectedLayer: layerName, selectedItem: undefined, ...result },
         });
+      }, // selectHospital
 
       setSelectedProvince: (selectedProvince: string) => {
         // if (['Limburg', 'Zeeland'].indexOf(selectedProvince) < 0) return;
@@ -425,6 +433,7 @@ export const appStateMgmt = {
       },
 
       setZoomLevel: (zoom: number) => update({ app: { zoom } }),
+
       toggleChartsShown: () => {
         console.log('toggleChartsShown');
         const { app } = states();
@@ -475,7 +484,7 @@ export const appStateMgmt = {
         } else {
           update({ app: { activeLayers, selectedLayer, selectedHospital: new_sh } });
         };
-      },
+      }, // updateActiveLayers
     } as IAppStateActions;
   },
 } as IAppState;
