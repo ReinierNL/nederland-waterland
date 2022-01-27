@@ -5,14 +5,6 @@ const { bvo, elec, gas, kWh_2020, kWh_2030, cons_per_bvo, cons_per_sector, bvo_p
 
 import { BubbleDataPoint,  Chart, ChartConfiguration, ChartEvent, ChartTypeRegistry, ScatterDataPoint } from 'chart.js';
 
-// options (DRY)
-const oBeginAtZero = {
-  scales: {
-    y: {
-      beginAtZero: true,
-    },
-  },
-} // oBeginatZero
 
 const rgb2020 = '68, 114, 196'
 const rgb2030 = '237, 125, 49'
