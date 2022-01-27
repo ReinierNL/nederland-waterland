@@ -279,7 +279,7 @@ export const appStateMgmt = {
       chartsShown: false,
       selectedCharts: '',
       selectedMarkersLayer: L.geoJSON(undefined),
-      selectedProvince: '',
+      selectedProvince: 'Utrecht',
     },
   } as IAppStateModel,
 
