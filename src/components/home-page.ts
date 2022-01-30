@@ -605,12 +605,6 @@ export const HomePage: MeiosisComponent = () => {
                 
                 // the Charts
                 // first: choose whether and which charts are shown
-                // m('input[type=checkbox]', {
-                //   checked: chartsShown,
-                //   onclick: () => toggleChartsShown(),
-                // }),
-                // m('b', 'Toon grafieken'),
-                // m('p'),
                 chartsShown && m("select", { "name": "chartselector", "id": "chartselector", 
                               "multiple": true, "onchange": handleChartSelect }, [
                   m("option", {"value": "bvo"}, "Bruto vloeroppervlakte" ),
