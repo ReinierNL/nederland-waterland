@@ -1,3 +1,4 @@
+import structuredClone from 'structured-clone';
 import chartdata from '../data/chartdata.json';
 const { bvo, elec, gas, kWh_2020, kWh_2030, cons_per_bvo, cons_per_sector, bvo_per_year_category } = chartdata
 
@@ -51,6 +52,16 @@ export const onChartClick = (onClick: (label: string) => void) => (event: ChartE
       onClick(label);
   }
 } // onChartClick
+
+const render_first_sector_label = {
+  render: (args: any) => {
+    if (args.index < 1) {
+      return `${args.dataset.label}: ${args.percentage} %`
+    } else {
+      return ''
+    }
+  }
+}; // render_first_sector_label
 
 // charts. In the same order as in Joachim's spreadsheet
 
@@ -287,15 +298,7 @@ const data_energy_use_for_sectors = {
   }, // data
   options: {
     plugins: {
-      labels: {
-        render: (args: any) => {
-          if (args.index < 1) {
-            return `${args.dataset.label}: ${args.percentage} %`
-          } else {
-            return ''
-          }
-        }
-      },
+      labels: render_first_sector_label,
       title: {
         display: true,
         text: 'Energieverdeling per sector',
@@ -311,7 +314,9 @@ const data_energy_use_for_sectors = {
 
 export const energy_use_types_per_sector = (province: string, energykind: string) => {
 // Chart 7 (a and b)
-  var chartdata = data_energy_use_for_sectors;
+  console.log(`energy_use_types_per_sector: energykind=${energykind}`)
+  var chartdata = structuredClone(data_energy_use_for_sectors);
+  chartdata.options.plugins.labels = render_first_sector_label;
   chartdata.options.plugins.title.text = energykind === 'gas' ? `Gasverbruik ${province}` : `Electriciteitsverbruik ${province}` ;
   var i = cons_per_sector['labels'].indexOf(province);
   const datavalues = energykind === 'gas' ? [cons_per_sector.values1, cons_per_sector.values2, cons_per_sector.values3] 
@@ -397,7 +402,7 @@ export const data_build_years_for_chart8 = {
 
 export const data_build_years = () => {
 // Chart 8
-  var chartdata = data_build_years_for_chart8;
+  var chartdata = structuredClone(data_build_years_for_chart8);
   if (chartdata && chartdata.data && chartdata.data.labels) {
     for (var iProvince = 0; iProvince < chartdata.data.labels.length; iProvince++) {
       let sum = 0;
