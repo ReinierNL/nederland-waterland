@@ -36,12 +36,13 @@ export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
 
 export const HomePage: MeiosisComponent = () => {
   let map: L.Map;
+
   let categorale_instellingenLayer_rk: L.GeoJSON;
   let polikliniekenLayer_rk: L.GeoJSON;
   let ziekenhuizenLayer_rk: L.GeoJSON;
-  let vvtLayer_rk: L.GeoJSON;
-  let ggzLayer_rk: L.GeoJSON;
-  let ghzLayer_rk: L.GeoJSON;
+  // let vvtLayer_rk: L.GeoJSON; // now dynamic: vvtLayer
+  // let ggzLayer_rk: L.GeoJSON; // now dynamic: ggzLayer
+  // let ghzLayer_rk: L.GeoJSON; // now dynamic: ghzLayer
   //let wateren_potentie_gt1haLayer: L.GeoJSON; // dynamic
   let rwzisLayer: L.GeoJSON;
   let effluentLayer: L.GeoJSON;
@@ -73,19 +74,20 @@ export const HomePage: MeiosisComponent = () => {
     view: ({ attrs: { state, actions } }) => {
       // console.log(state);
       const {
+        activeLayers,
         chartsShown,
-        selectedCharts,
         selectedItem,
         selectedHospital,
         selectedLayer,
         selectedMarkersLayer,
-        selectedProvince,
-        treeCollapsed,
+        showMainBranchOnly,
         // layers and layer data objects (json):
         categorale_instellingen,
         effluent,
         ggz,
+        ggzLayer,
         ghz,
+        ghzLayer,
         gl_wk_bu,
         poliklinieken,
         rwzis,
@@ -94,6 +96,7 @@ export const HomePage: MeiosisComponent = () => {
         swimmings,
         tvwLayer,
         vvt,
+        vvtLayer,
         warmtenetten_nbr_lokaal,
         warmtenetten_nbr_infra,
         wateren_potentie_gt1haLayer,
@@ -120,8 +123,8 @@ export const HomePage: MeiosisComponent = () => {
         ziekenhuizen,
       } = state.app;
 
-      const { handleChartSelect, handleMoveEnd, mapClick, setZoomLevel, toggleChartsShown, toggleTreeCollapsed, 
-        updateActiveLayers, setSelectedProvince } = actions;
+      const { handleChartSelect, handleMoveEnd, mapClick, setZoomLevel, toggleChartsShown, toggleMainBranchOnly,
+        updateActiveLayers } = actions;
 
       console.log(`selectedLayer: ${selectedLayer}; activeLayers: ${activeLayersAsString(activeLayers!)}; charts shown: ${chartsShown}`);
 
@@ -185,27 +188,27 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'effluent',
                 } as NamedGeoJSONOptions);
 
-                ggzLayer_rk = (L as any).markerClusterGroup({ name: 'ggz' });
-                L.geoJSON(ggz, {
-                  pointToLayer: pointToLayerCare,
-                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectFeature(feature as Feature<Point>, 'ggz');
-                    });
-                  },
-                  name: 'ggz',
-                } as NamedGeoJSONOptions).eachLayer((l) => ggzLayer_rk.addLayer(l));
+                // ggzLayer_rk = (L as any).markerClusterGroup({ name: 'ggz' });
+                // L.geoJSON(ggz, {
+                //   pointToLayer: pointToLayerCare,
+                //   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                //     layer.on('click', () => {
+                //       actions.selectFeature(feature as Feature<Point>, 'ggz');
+                //     });
+                //   },
+                //   name: 'ggz',
+                // } as NamedGeoJSONOptions).eachLayer((l) => ggzLayer_rk.addLayer(l));
 
-                ghzLayer_rk = (L as any).markerClusterGroup({ name: 'ghz' });
-                L.geoJSON(ghz, {
-                  pointToLayer: pointToLayerCare,
-                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectFeature(feature as Feature<Point>, 'ghz');
-                    });
-                  },
-                  name: 'ghz',
-                } as NamedGeoJSONOptions).eachLayer((l) => ghzLayer_rk.addLayer(l));
+                // ghzLayer_rk = (L as any).markerClusterGroup({ name: 'ghz' });
+                // L.geoJSON(ghz, {
+                //   pointToLayer: pointToLayerCare,
+                //   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                //     layer.on('click', () => {
+                //       actions.selectFeature(feature as Feature<Point>, 'ghz');
+                //     });
+                //   },
+                //   name: 'ghz',
+                // } as NamedGeoJSONOptions).eachLayer((l) => ghzLayer_rk.addLayer(l));
 
                 gl_wk_buLayer = L.geoJSON(gl_wk_bu, {
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
@@ -258,16 +261,16 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'swimming',
                 } as NamedGeoJSONOptions);
 
-                vvtLayer_rk = (L as any).markerClusterGroup({ name: 'vvt' });
-                L.geoJSON(vvt, {
-                  pointToLayer: pointToLayerCare,
-                  onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                    layer.on('click', () => {
-                      actions.selectFeature(feature as Feature<Point>, 'vvt');
-                    });
-                  },
-                  name: 'vvt',
-                } as NamedGeoJSONOptions).eachLayer((l) => vvtLayer_rk.addLayer(l));
+                // vvtLayer_rk = (L as any).markerClusterGroup({ name: 'vvt' });
+                // L.geoJSON(vvt, {
+                //   pointToLayer: pointToLayerCare,
+                //   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+                //     layer.on('click', () => {
+                //       actions.selectFeature(feature as Feature<Point>, 'vvt');
+                //     });
+                //   },
+                //   name: 'vvt',
+                // } as NamedGeoJSONOptions).eachLayer((l) => vvtLayer_rk.addLayer(l));
 
                 warmtenetten_nbr_lokaalLayer = L.geoJSON(warmtenetten_nbr_lokaal, {
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
@@ -381,7 +384,7 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'ziekenhuizen',
                 } as NamedGeoJSONOptions).addTo(map);
-                updateActiveLayers('ziekenhuizen', true); // cannot assign: it's a constant
+                updateActiveLayers('ziekenhuizen', true); // cannot assign to activeLayers: it's a constant
 
                 selectedMarkersLayer?.addTo(map);
 
@@ -403,9 +406,9 @@ export const HomePage: MeiosisComponent = () => {
                           { label: 'Ziekenhuizen', layer: ziekenhuizenLayer_rk },
                           { label: 'Buitenpoliklinieken', layer: polikliniekenLayer_rk },
                           { label: 'Categorale instellingen', layer: categorale_instellingenLayer_rk },
-                          { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer_rk },
-                          { label: 'Geesteljke gezondheidszorg', layer: ggzLayer_rk },
-                          { label: 'Gehandicaptenzorg', layer: ghzLayer_rk },
+                          { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer },
+                          { label: 'Geesteljke gezondheidszorg', layer: ggzLayer },
+                          { label: 'Gehandicaptenzorg', layer: ghzLayer },
                         ]
                       },
                       { 
@@ -567,6 +570,14 @@ export const HomePage: MeiosisComponent = () => {
                   isEnergyRelatedLayer(selectedLayer) &&
                     selectedLayer && m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
     
+                // checkbox for showing IsMainBranch only
+                m('input[type=checkbox]', {
+                  checked: showMainBranchOnly,
+                  onclick: () => toggleMainBranchOnly(),
+                }),
+                m('b', 'Toon alleen hoofdvestigingen (care)'),
+                m('p'),
+
                 // checkbox for showing charts or not
                 m('input[type=checkbox]', {
                   checked: chartsShown,

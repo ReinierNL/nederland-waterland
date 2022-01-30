@@ -1,14 +1,46 @@
 import m from 'mithril';
 import { FeatureCollection, Feature, GeoJsonObject, LineString, Point } from 'geojson';
-import L, { LeafletEvent } from 'leaflet';
+import L, { GeoJSONOptions, LeafletEvent, MarkerClusterGroup, MarkerClusterGroupOptions } from 'leaflet';
 
 import { actions } from '../services/meiosis';
 import { NamedGeoJSONOptions } from '../components';
 import { toColorFactoryDiscrete, toColorFactoryInterval, toFilterFactory } from '../models';
+// import { IAppStateModel } from '../services/states';
+import { pointToLayerCare } from '../components/markers'
+import { showMainBranchFilter } from './feature-style';
+
+
 // import { pointToTitledLayer } from '../components/markers'
 // this import caused an
 // Uncaught ReferenceError: Cannot access 'pointToTitledLayer' before initialization
 // the pointToTitledLayer function has been moved to this source file
+
+
+export interface NamedMarkerClusterGroupOptions extends MarkerClusterGroupOptions {
+  name: string;
+}
+
+export const createMCG = (name: string, flag: number) => {
+  // console.log(`createMCG. Flag=${flag}`);
+  const mcg = new MarkerClusterGroup({name: name } as NamedMarkerClusterGroupOptions);
+  return mcg as MarkerClusterGroup
+};
+
+export const loadMCG = (mcg: MarkerClusterGroup, vvt: FeatureCollection<Point>, keepMainBranchesOnly: boolean) => {
+  // console.log(`loadMCG. mcg.options.name=${mcg.options.name}; kmbo=${keepMainBranchesOnly}`);
+  mcg.clearLayers();
+  const gj = L.geoJSON(vvt, {
+    filter: showMainBranchFilter(keepMainBranchesOnly),
+    pointToLayer: pointToLayerCare,
+    onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+      layer.on('click', () => {
+        actions.selectFeature(feature as Feature<Point>, mcg.options.name)
+      })
+    }
+  } as GeoJSONOptions);
+  gj.eachLayer((l) => mcg.addLayer(l))
+  return mcg as MarkerClusterGroup
+}; // createMCG
 
 
 export const createLayerTVW = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
@@ -85,6 +117,32 @@ export const createLeafletLayer = (name: string, legendPropName: string, initial
   } as NamedGeoJSONOptions);
 }; // createLeafletLayer
 
+export const loadCareLayer = async (layer: string, app: { [key: string]: MarkerClusterGroup|FeatureCollection }) => {
+  console.log(`loadCareLayer: ${layer}`);
+	const layerName = layer + 'Layer_rk';
+	const features = app[layer] ? (app[layer] as FeatureCollection) : undefined;
+  var mcg = app[layerName] ? (app[layerName] as MarkerClusterGroup) : undefined;
+	//const geojson = app[layerName] ? (app[layerName] as L.GeoJSON) : undefined;
+	if (mcg && features) {
+    console.log(`mcg exists and features exists`);
+    // geojson.clearLayers();
+    // geojson.addData(features);
+    // mcg = (L as any).markerClusterGroup({ name: layer });
+    mcg?.clearLayers()
+    L.geoJSON(features, {
+      pointToLayer: pointToLayerCare,
+      onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+        layer.on('click', () => {
+          actions.selectFeature(feature as Feature<Point>, 'vvt');
+        });
+      },
+      name: 'vvt',
+    } as NamedGeoJSONOptions).eachLayer((l) => mcg.addLayer(l));
+    return mcg as MarkerClusterGroup;
+  }
+  return {}
+}; // loadCareLayer
+
 
 export const loadGeoJSON = async (layer: string, selectedHospital: Feature, app: { [key: string]: L.GeoJSON }) => {
 	const layerName = layer + 'Layer';
@@ -95,11 +153,11 @@ export const loadGeoJSON = async (layer: string, selectedHospital: Feature, app:
 		const the_url = `${process.env.GIS_SERVER || 'https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/geojson-server/api/'}${layer}/id/${id}`;
 		console.log(`URL: ${the_url}`);
 		const record = await m.request<{ id: number; data: FeatureCollection }>({
-		method: 'GET',
-		// url: `${process.env.GIS_SERVER || 'http://localhost:3366/api/'}${layer}/id/${id}`,
-		// url: `${process.env.GIS_SERVER || 'http://163.158.64.118:3366/api/'}${layer}/id/${id}`,
-		// url: `${process.env.GIS_SERVER || 'https://assistance.hex.tno.nl/geojson-server/api/'}${layer}/id/${id}`,
-		url: `${process.env.GIS_SERVER || 'https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/geojson-server/api/'}${layer}/id/${id}`,
+      method: 'GET',
+      // url: `${process.env.GIS_SERVER || 'http://localhost:3366/api/'}${layer}/id/${id}`,
+      // url: `${process.env.GIS_SERVER || 'http://163.158.64.118:3366/api/'}${layer}/id/${id}`,
+      // url: `${process.env.GIS_SERVER || 'https://assistance.hex.tno.nl/geojson-server/api/'}${layer}/id/${id}`,
+      url: `${process.env.GIS_SERVER || 'https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/geojson-server/api/'}${layer}/id/${id}`,
 		});
 		if (record && record.data) {
       geojson.clearLayers();

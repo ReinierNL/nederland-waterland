@@ -2,18 +2,20 @@ import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
 import { FeatureCollection, Feature, Point, LineString, Polygon } from 'geojson';
 import { actions } from '..';
-import L, { LatLng } from 'leaflet';
+import L, { LatLng, MarkerClusterGroup } from 'leaflet';
 
 // under the ./src folder
 import { NamedGeoJSONOptions } from '../../components';
-import { isCareOrCureLayer, isCureLayer, isSportLayer, isVattenfallLayer } from '../../components/utils_rs';
+import { activeLayersAsString, isCareOrCureLayer, isCureLayer, isSportLayer, isVattenfallLayer } from '../../components/utils_rs';
 import { highlightMarker, 
        // pointToGrayCircleMarkerLayer,
        //  pointToGreenCircleMarkerLayer, 
        //  pointToYellowCircleMarkerLayer 
        } from '../../components/markers'
 import { get_nearest_province } from '../../services/provinces';
-import { createLayerTVW, createLayerVF, createLeafletLayer, loadGeoJSON, loadGeoJSON_VF } from '../../models/layer_generators';
+import { //NamedMarkerClusterGroup, 
+  createMCG, loadMCG, createLayerTVW, createLayerVF, createLeafletLayer, 
+  loadCareLayer, loadGeoJSON, loadGeoJSON_VF } from '../../models/layer_generators';
 
 // layer data:
 import categorale_instellingen from '../../data/categorale instellingen.json';
@@ -97,7 +99,9 @@ export interface IAppStateModel {
     categorale_instellingen: FeatureCollection<Point>;
     effluent: FeatureCollection;
     ggz: FeatureCollection<Point>;
+    ggzLayer: MarkerClusterGroup;
     ghz: FeatureCollection<Point>;
+    ghzLayer: MarkerClusterGroup;
     gl_wk_bu: FeatureCollection;
     poliklinieken: FeatureCollection<Point>;
     rioolleidingenLayer: L.GeoJSON;
@@ -106,6 +110,7 @@ export interface IAppStateModel {
     swimmings: FeatureCollection;
     tvw: L.GeoJSON;
     vvt: FeatureCollection<Point>;
+    vvtLayer: MarkerClusterGroup;
     warmtenetten_nbr_infra: FeatureCollection;
     warmtenetten_nbr_lokaal: FeatureCollection;
     wateren_potentie_gt1haLayer: L.GeoJSON;
@@ -139,6 +144,7 @@ export interface IAppStateModel {
     selectedLayer: string;             // Last item's layer name
     selectedMarkersLayer: L.GeoJSON;   // Layer with selected markers 
     selectedProvince: string;          // Currently selected province (for charts)
+    showMainBranchOnly: boolean;       // for the Care layers
     size: number;                      // Bounding box size  (deprecated?)
     treeCollapsed: boolean;            // is the layer tree collapsed
     zoom: -1;                          // the current zoom level
@@ -155,6 +161,7 @@ export interface IAppStateActions {
   selectHospital: (f: Feature<Point>, layerName?: string) => Promise<void>;
   setZoomLevel: (zoom: number) => void;
   toggleChartsShown: () => boolean;
+  toggleMainBranchOnly: () => boolean;
   toggleTreeCollapsed: () => boolean;
   updateActiveLayers: (layer: string, add: boolean) => Promise<void>;
   setSelectedProvince: (provinceName: string) => void;
@@ -182,7 +189,9 @@ export const appStateMgmt = {
       categorale_instellingen,
       effluent,
       ggz,
+      ggzLayer: createMCG('ggz', 3),
       ghz,
+      ghzLayer: createMCG('ghz', 2),
       gl_wk_bu,
       poliklinieken,
       rwzis,
@@ -198,6 +207,7 @@ export const appStateMgmt = {
       swimmings,
       tvwLayer: createLayerTVW('tvw', 'TVW_status', tvw),
       vvt,
+      vvtLayer: createMCG('vvt', 1),
       warmtenetten_nbr_lokaal,
       warmtenetten_nbr_infra,
       wko_gwi,
@@ -279,7 +289,8 @@ export const appStateMgmt = {
       chartsShown: false,
       selectedCharts: '',
       selectedMarkersLayer: L.geoJSON(undefined),
-      selectedProvince: 'Utrecht',
+      selectedProvince: 'Gelderland',
+      showMainBranchOnly: true,
     },
   } as IAppStateModel,
 
@@ -298,7 +309,7 @@ export const appStateMgmt = {
       },
 
       handleMoveEnd: (lalo: LatLng, zoom: number) => {
-        console.log(`after move: lat=${lalo.lat}, long=${lalo.lng}, zoom=${zoom}`);
+        //console.log(`after move: lat=${lalo.lat}, long=${lalo.lng}, zoom=${zoom}`);
         let np = ''
         // if (zoom >= 10) {
           np = get_nearest_province(lalo);
@@ -308,7 +319,6 @@ export const appStateMgmt = {
       },
 
       mapClick: () => {
-        // console.log('mapclick action');
         const {
           app: { selectedMarkersLayer, selectedLayer },
         } = states();
@@ -319,7 +329,6 @@ export const appStateMgmt = {
           // console.log('mapclick calling update()');
           update({ app: { selectedItem: undefined, selectedLayer: new_sl, selectedHospital: undefined } });
         };
-        // console.log('mapclick action finished');
       },
 
       refreshLayer: async (layer?: string) => {
@@ -382,10 +391,7 @@ export const appStateMgmt = {
         console.log('Select hospital (cure location); layerName = ' + layerName);
         const { app } = states();
         const { activeLayers, selectedHospital, selectedMarkersLayer, categorale_instellingen, poliklinieken, ziekenhuizen } = app;
-        var sActiveLayers = ''
-        activeLayers?.forEach((layer) => {
-          sActiveLayers = sActiveLayers + `${layer}`  + ', '
-        });  // trailing comma and space are not removed (not necessary)
+        var sActiveLayers = activeLayersAsString(activeLayers!);  // trailing comma and space are not removed (not necessary)
         if (selectedHospital && selectedHospital.properties?.Locatienummer === f.properties?.Locatienummer) return;
         const updating = [] as Array<Promise<{ [key: string]: L.GeoJSON }>>;
         activeLayers?.forEach((layer) => {
@@ -444,6 +450,30 @@ export const appStateMgmt = {
         return new_value
       },
 
+      toggleMainBranchOnly: () => {
+        console.log('toggleMainBranchOnly');
+        const { app } = states();
+        const { activeLayers, ggzLayer, ghzLayer, showMainBranchOnly, vvtLayer } = app;
+        const new_value = showMainBranchOnly == undefined ? true : !showMainBranchOnly;
+        console.log(`toggleMainBranchOnly: new_value = ${new_value}`);
+        const sActiveLayers = activeLayersAsString(activeLayers!);
+        var new_ggzLayer = ggzLayer;
+        if (sActiveLayers.includes('ggz')) {
+          new_ggzLayer = loadMCG(ggzLayer, ggz, new_value)
+        }
+        var new_ghzLayer = ghzLayer;
+        if (sActiveLayers.includes('ghz')) {
+          new_ghzLayer = loadMCG(ghzLayer, ghz, new_value)
+        }
+        var new_vvtLayer = vvtLayer;
+        if (sActiveLayers.includes('vvt')) {
+          new_vvtLayer = loadMCG(vvtLayer, vvt, new_value)
+        }
+        update({ app: { ggzLayer: new_ggzLayer, ghzLayer: new_ghzLayer,
+                        showMainBranchOnly: new_value, vvtLayer: new_vvtLayer } });
+        return new_value
+      },
+
       toggleTreeCollapsed: () => {
         // console.log('toggleTreeCollapsed');
         const { app } = states();
@@ -457,14 +487,36 @@ export const appStateMgmt = {
       updateActiveLayers: async (selectedLayer: string, add: boolean) => {
         // console.log(`updateActiveLayers; selectedLayer=${selectedLayer}`)
         const { app } = states();
-        const { activeLayers, 
+        const { ggzLayer,
+                ghzLayer,
+                vvtLayer,
+                activeLayers, 
                 selectedHospital: old_sh,
                 selectedLayer: old_sl, 
-                selectedMarkersLayer } = app;
-        // console.log(`selectedLayer=${selectedLayer}; old_sl=${old_sl}`)
+                selectedMarkersLayer,
+                showMainBranchOnly } = app;
+        // console.log(`old_sl=${old_sl}; activeLayers=${activeLayersAsString(activeLayers!)}`)
+        var new_sl = selectedLayer;  // can be overruled later on
+
+        // care layers: update if the showMainBranchOnly state has changed 
+        // (it is not checked whether there was a chage; the layer is just reloaded)
+        var new_ggzLayer = ggzLayer
+        if (selectedLayer === 'ggz') {
+          new_ggzLayer = loadMCG(ggzLayer, ggz, showMainBranchOnly)
+        };
+        var new_ghzLayer = ghzLayer
+        if (selectedLayer === 'ghz') {
+          new_ghzLayer = loadMCG(ghzLayer, ghz, showMainBranchOnly)
+        };
+        var new_vvtLayer = vvtLayer
+        if (selectedLayer === 'vvt') {
+          new_vvtLayer = loadMCG(vvtLayer, vvt, showMainBranchOnly)
+        };
+
         if ( isVattenfallLayer(selectedLayer) && add ) {
+          // await loadGeoJSON_VF(selectedLayer, app);
           const result = await loadGeoJSON_VF(selectedLayer, app);
-          return result
+          // return result
         } else {
           // console.log('NOT calling loadGeoJSON_VF');
         };
@@ -474,16 +526,19 @@ export const appStateMgmt = {
         } else {
           activeLayers!.delete(selectedLayer);
           if (old_sl === selectedLayer) selectedMarkersLayer?.clearLayers();
-          selectedLayer = ''
-        }
+          if (old_sl != selectedLayer) { new_sl = old_sl }
+        };
+        // console.log(`new_sl=${new_sl}; activeLayers=${activeLayersAsString(activeLayers!)}`)
+
         if (!isCureLayer(selectedLayer)) new_sh = undefined;
         // console.log(activeLayers);
         if (add && new_sh && new_sh.properties && new_sh.properties.Locatienummer) {
           const result = await loadGeoJSON(selectedLayer, new_sh, app);
-          update({ app: { activeLayers, selectedLayer, selectedHospital: new_sh, ...result } });
+          update({ app: { activeLayers, selectedLayer: new_sl, selectedHospital: new_sh, ...result } });
         } else {
-          update({ app: { activeLayers, selectedLayer, selectedHospital: new_sh } });
+          update({ app: { activeLayers, selectedLayer: new_sl, selectedHospital: new_sh } });
         };
+        return
       }, // updateActiveLayers
     } as IAppStateActions;
   },

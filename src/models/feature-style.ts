@@ -167,6 +167,10 @@ export const propertyStyles = {
         title: () => 'Organisatie',
         value: (s: string) => s,
       },
+      "IsMainBranch": {
+        title: () => 'Hoofdvestiging',
+        value: (b: boolean) => `${b}`,
+      },
       "Soort zorg": {
         title: () => 'Soort zorg',
         value: (s: string) => s,
