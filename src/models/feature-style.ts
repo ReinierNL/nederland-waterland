@@ -55,6 +55,15 @@ export const toFilterFactory = (layerName: string, legendPropName: string): ((f?
   };
 };
 
+export const showMainBranchFilter = (showMainBranchOnly: boolean): ((f?: Feature) => boolean) => {
+  return (f?: Feature) => {
+    if (!showMainBranchOnly) return true;
+    const value = f && f.properties ? f.properties['IsMainBranch'] : false;
+    return value
+  };
+};
+
+
 // feature style for all Warmtenetten Vattenfall layers:
 
 const wn_legend = {
