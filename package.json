@@ -34,6 +34,7 @@
     "@turf/helpers": "6.1.4",
     "@turf/meta": "6.0.2",
     "chart.js": "^3.6.0",
+    "chart.js-plugin-labels-dv": "^3.0.5",
     "leaflet": "^1.7.1",
     "leaflet.control.layers.tree": "1.0.2",
     "leaflet.markercluster": "^1.5.0",
