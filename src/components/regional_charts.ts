@@ -68,7 +68,7 @@ export const RegionalCharts: MeiosisComponent = () => {
             }), // m(ChartJs)
           ]), // verdeling (4)
 
-          selectedCharts!.includes('gas_per_m2') && selectedProvince && m('.col s12', [
+          selectedCharts!.includes('gas_per_m2,') && selectedProvince && m('.col s12', [
             m(ChartJs, {
               onClick: (label) => {
                 console.log(`label: ${label}`),  
@@ -81,7 +81,7 @@ export const RegionalCharts: MeiosisComponent = () => {
             }), // m(ChartJs)
           ]), // gas_per_m2 (6a)
 
-          selectedCharts!.includes('elec_per_m2') && selectedProvince && m('.col s12', [
+          selectedCharts!.includes('elec_per_m2,') && selectedProvince && m('.col s12', [
             m(ChartJs, {
               onClick: (label) => {
                 console.log(`label: ${label}`),  
@@ -94,7 +94,7 @@ export const RegionalCharts: MeiosisComponent = () => {
             }), // m(ChartJs)
           ]), // gas_per_m2 (6b)
 
-          selectedCharts!.includes('total_per_m2') && selectedProvince && m('.col s12', [
+          selectedCharts!.includes('total_per_m2,') && selectedProvince && m('.col s12', [
             m(ChartJs, {
               onClick: (label) => {
                 console.log(`label: ${label}`),  
