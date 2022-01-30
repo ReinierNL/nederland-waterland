@@ -20,8 +20,9 @@ import logoDeltares from 'url:../assets/Deltares.png';
 import logoSyntraal from 'url:../assets/Syntraal.png';
 import logoTNO from 'url:../assets/TNO.png';
 import logoEVZ from 'url:../assets/evz.png';
-import { isCareLayer, isCareOrCureLayer, isCureLayer, isDeltaresLayer, isEnergyRelatedLayer, 
-  isSportLayer, isSyntraalLayer, isTEOLayer, isTVWLayer, isVattenfallLayer, isWKOLayer } from './utils_rs';
+import { activeLayersAsString, isCareLayer, isCareOrCureLayer, isCureLayer, isDeltaresLayer, 
+  isEnergyRelatedLayer, isSportLayer, isSyntraalLayer, isTEOLayer, isTVWLayer, isVattenfallLayer, 
+  isWKOLayer } from './utils_rs';
 import layerTitles from '../assets/layerTitles.json';
 // import layerPercentages from '../assets/layer_percentages.json';
 import { pointToLayerCare, pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
@@ -122,8 +123,7 @@ export const HomePage: MeiosisComponent = () => {
       const { handleChartSelect, handleMoveEnd, mapClick, setZoomLevel, toggleChartsShown, toggleTreeCollapsed, 
         updateActiveLayers, setSelectedProvince } = actions;
 
-      console.log(`selectedLayer: ${selectedLayer}; treeCollapsed: ${treeCollapsed}; charts shown: ${chartsShown}`);
-      //console.log(`Selected province: ${selectedProvince}`);
+      console.log(`selectedLayer: ${selectedLayer}; activeLayers: ${activeLayersAsString(activeLayers!)}; charts shown: ${chartsShown}`);
 
       return [
         m('.content', [

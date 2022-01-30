@@ -48,3 +48,12 @@ export const isWKOLayer = (layername: string): boolean => {
   return layername.substring(0, 4) == 'wko_'
 }
 
+export const activeLayersAsString = (activeLayers: Set<string>): string => {
+  var s = '';
+  activeLayers.forEach(
+    function(item){
+      s = s + item + ','
+    }
+  );
+  return s
+}
