@@ -1,5 +1,3 @@
-
-
 import chartdata from '../data/chartdata.json';
 const { bvo, elec, gas, kWh_2020, kWh_2030, cons_per_bvo, cons_per_sector, bvo_per_year_category } = chartdata
 
@@ -35,7 +33,7 @@ const optScalesY = (titleY: string) => {
     },
     plugins: {
       labels: {    
-        render: (args) => { return '' }   // show no labels
+        render: () => { return '' }   // show no labels
       }
     }
   }
@@ -290,7 +288,7 @@ const data_energy_use_for_sectors = {
   options: {
     plugins: {
       labels: {
-        render: (args) => {
+        render: (args: any) => {
           if (args.index < 1) {
             return `${args.dataset.label}: ${args.percentage} %`
           } else {
@@ -389,7 +387,7 @@ export const data_build_years_for_chart8 = {
     },
     plugins: {
       labels: {    
-        render: (args) => { return '' }   // show no labels
+        render: () => { return '' }   // show no labels
       }
     }
   }
@@ -400,14 +398,16 @@ export const data_build_years_for_chart8 = {
 export const data_build_years = () => {
 // Chart 8
   var chartdata = data_build_years_for_chart8;
-  for (var iProvince = 0; iProvince < chartdata.data.labels.length; iProvince++) {
-    let sum = 0
-    for (var iDataset = 0; iDataset < chartdata.data.datasets.length; iDataset++) {
-      sum += chartdata.data.datasets[iDataset].data[iProvince]
+  if (chartdata && chartdata.data && chartdata.data.labels) {
+    for (var iProvince = 0; iProvince < chartdata.data.labels.length; iProvince++) {
+      let sum = 0;
+      for (var iDataset = 0; iDataset < chartdata.data.datasets.length; iDataset++) {
+        sum += chartdata.data.datasets[iDataset].data[iProvince] as number
+      }
+      for (var iDataset = 0; iDataset < chartdata.data.datasets.length; iDataset++) {
+        chartdata.data.datasets[iDataset].data[iProvince] *= 1/sum
+      }
     }
-    for (var iDataset = 0; iDataset < chartdata.data.datasets.length; iDataset++) {
-      chartdata.data.datasets[iDataset].data[iProvince] *= 1/sum
-    }
-  }
+  };
   return chartdata as ChartConfiguration<keyof ChartTypeRegistry, (number | ScatterDataPoint | BubbleDataPoint | null)[], unknown>
 }; // data_build_years (8)
