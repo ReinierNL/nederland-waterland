@@ -138,7 +138,7 @@ export interface IAppStateModel {
     selectedItem: Feature<Point>;      // Last item that was clicked
     selectedLayer: string;             // Last item's layer name
     selectedMarkersLayer: L.GeoJSON;   // Layer with selected markers 
-    selectedProvince: string;          // empty if zoomlevel is too low
+    selectedProvince: string;          // Currently selected province (for charts)
     size: number;                      // Bounding box size  (deprecated?)
     treeCollapsed: boolean;            // is the layer tree collapsed
     zoom: -1;                          // the current zoom level
