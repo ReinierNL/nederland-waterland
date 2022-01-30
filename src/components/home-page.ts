@@ -26,11 +26,7 @@ import layerTitles from '../assets/layerTitles.json';
 // import layerPercentages from '../assets/layer_percentages.json';
 import { pointToLayerCare, pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
   pointToLayerSewage, pointToLayerSkating, pointToLayerSwimming, pointToLayerZHrk } from './markers'
-import { ChartJs } from './chart-js';
-//import { Chart } from 'chart.js';
-
-// import { provincies, sum_of_bvo_2020, sum_of_bvo_2030 } from '../data/data_evz.json';
-import { data_bvo, data_elec, data_gas, energy_use_types_for_province } from './chart_data_utils';
+import { RegionalCharts } from './regional_charts';
 
 
 export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
@@ -610,56 +606,16 @@ export const HomePage: MeiosisComponent = () => {
                   m("option", {"value": "bvo"}, "Bruto vloeroppervlakte" ),
                   m("option", {"value": "elec"},  "Electriciteitsverbruik" ),
                   m("option", {"value": "gas"},  "Gasverbruik" ),
-                  m("option", {"value": "verdeling"},  "verdeling" ),
+                  m("option", {"value": "verdeling"}, "verdeling" ),
+                  m("option", {"value": "gas_per_m2"}, "Gasverbruik per m2" ),
+                  m("option", {"value": "elec_per_m2"}, "Electriciteitsverbruik per m2" ),
+                  m("option", {"value": "total_per_m2"}, "Totaal verbruik per m2" ),
+                  m("option", {"value": "gas_per_sector"}, "Gasverbruik t.o.v. sector" ),
+                  m("option", {"value": "elec_per_sector"}, "Electriciteitsverbruik t.o.v. sector" ),
+                  m("option", {"value": "build_years"}, "Bouwjaarklasse" ),
                 ]), 
                 // show the selected charts:
-                chartsShown && m('#charts.row.graphs', [
-                  selectedCharts!.includes('bvo') && m('.col s12', {style: 'background: rgba(255, 255, 255, 0.8)'}, [
-                    m(ChartJs, {
-                      onClick: (label) => {
-                        console.log(`label: ${label}`),  // vervang dit door een verandering van de state en dan een update
-                        setSelectedProvince(label);
-                      },
-                      width: "100px",  // changing this value won't change the width.
-                      height: "60px",  // relative to the width
-                      maxHeight: "220px",
-                      data: data_bvo,
-                    }), // m(ChartJs)
-                  ]),
-                  selectedCharts!.includes('elec') && m('.col s12', [
-                    m(ChartJs, {
-                      onClick: (label) => {
-                        console.log(`label: ${label}`),  // vervang dit door een verandering van de state en dan een update
-                        setSelectedProvince(label);
-                      },
-                      width: "100px",  // changing this value won't change the width.
-                      height: "60px",  // relative to the width
-                      maxHeight: "220px",
-                      data: data_elec,
-                    }), // m(ChartJs)
-                  ]),
-                  selectedCharts!.includes('gas') && m('.col s12', [
-                    m(ChartJs, {
-                      onClick: (label) => {
-                        console.log(`label: ${label}`),  // vervang dit door een verandering van de state en dan een update
-                        setSelectedProvince(label);
-                      },
-                      width: "100px", 
-                      height: "60px", 
-                      maxHeight: "220px",
-                      data: data_gas,
-                    }), // m(ChartJs)
-                  ]),
-                  selectedCharts!.includes('verdeling') && selectedProvince && m('.col s12', [
-                    m(ChartJs, {
-                      key: selectedProvince,
-                      width: "100px", 
-                      height: "60px", 
-                      maxHeight: "180px",
-                      data: energy_use_types_for_province(selectedProvince, 2020),
-                    }), // m(ChartJs)
-                  ]),
-                ]), // row for the charts
+                chartsShown && m(RegionalCharts, { state, actions }),
 
                 // routekaart information:
                 // the vertical position of this element group is dynamic (because the infopanels are dynamic in size). 
@@ -692,7 +648,6 @@ export const HomePage: MeiosisComponent = () => {
                     'Download overzicht langdurige zorg (Excel)'),
                   ],
                 ]), // routekaart information
-
               ], // elements of panel on the right
             ), // panel on the right
           ), // container
