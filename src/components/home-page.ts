@@ -38,21 +38,20 @@ export const HomePage: MeiosisComponent = () => {
   let map: L.Map;
 
   let categorale_instellingenLayer_rk: L.GeoJSON;
-  let polikliniekenLayer_rk: L.GeoJSON;
-  let ziekenhuizenLayer_rk: L.GeoJSON;
-  // let vvtLayer_rk: L.GeoJSON; // now dynamic: vvtLayer
+  let effluentLayer: L.GeoJSON;
   // let ggzLayer_rk: L.GeoJSON; // now dynamic: ggzLayer
   // let ghzLayer_rk: L.GeoJSON; // now dynamic: ghzLayer
-  //let wateren_potentie_gt1haLayer: L.GeoJSON; // dynamic
-  let rwzisLayer: L.GeoJSON;
-  let effluentLayer: L.GeoJSON;
-  //let rioolleidingenLayer: L.GeoJSON; // dynamic
   let gl_wk_buLayer: L.GeoJSON;
+  let polikliniekenLayer_rk: L.GeoJSON;
+  //let rioolleidingenLayer: L.GeoJSON; // dynamic
+  let rwzisLayer: L.GeoJSON;
   let skatingsLayer: L.GeoJSON;
   let swimmingsLayer: L.GeoJSON;
   // let tvwLayer: L.GeoJSON;  // dynamic
+  // let vvtLayer_rk: L.GeoJSON; // now dynamic: vvtLayer
   let warmtenetten_nbr_lokaalLayer: L.GeoJSON;
   let warmtenetten_nbr_infraLayer: L.GeoJSON;
+  //let wateren_potentie_gt1haLayer: L.GeoJSON; // dynamic
   let wko_gwiLayer: L.GeoJSON;
   let wko_gwioLayer: L.GeoJSON;
   // let wko_gwoLayer: L.GeoJSON;  // dynamic
@@ -65,6 +64,8 @@ export const HomePage: MeiosisComponent = () => {
   //let wko_specprovbeleidLayer: L.GeoJSON; // dynamic
   let wko_verbodLayer: L.GeoJSON;
   //let wn_vf_xxxLayer: L.GeoJSON; // dynamic (9 layers)
+  let ziekenhuizenLayer_rk: L.GeoJSON;
+
   
   return {
     oninit: () => {
