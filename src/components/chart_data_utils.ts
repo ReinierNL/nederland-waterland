@@ -1,8 +1,9 @@
+import { BubbleDataPoint, Chart, ChartConfiguration, ChartEvent, ChartTypeRegistry, ScatterDataPoint } from 'chart.js';
+
 import structuredClone from 'structured-clone';
 import chartdata from '../data/chartdata.json';
 const { bvo, elec, gas, kWh_2020, kWh_2030, cons_per_bvo, cons_per_sector, bvo_per_year_category } = chartdata
 
-import { BubbleDataPoint, Chart, ChartConfiguration, ChartEvent, ChartTypeRegistry, ScatterDataPoint } from 'chart.js';
 import 'chart.js-plugin-labels-dv';
 
 
