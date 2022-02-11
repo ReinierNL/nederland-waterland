@@ -85,9 +85,7 @@ export const HomePage: MeiosisComponent = () => {
         // layers and layer data objects (json):
         categorale_instellingen,
         effluent,
-        ggz,
         ggzLayer,
-        ghz,
         ghzLayer,
         gl_wk_bu,
         poliklinieken,
@@ -96,7 +94,6 @@ export const HomePage: MeiosisComponent = () => {
         skatings,
         swimmings,
         tvwLayer,
-        vvt,
         vvtLayer,
         warmtenetten_nbr_lokaal,
         warmtenetten_nbr_infra,
