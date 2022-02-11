@@ -27,6 +27,7 @@ import layerTitles from '../assets/layerTitles.json';
 // import layerPercentages from '../assets/layer_percentages.json';
 import { pointToLayerCare, pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
   pointToLayerSewage, pointToLayerSkating, pointToLayerSwimming, pointToLayerZHrk } from './markers'
+import { ChartJs } from './chart-js';
 import { RegionalCharts } from './regional_charts';
 
 
