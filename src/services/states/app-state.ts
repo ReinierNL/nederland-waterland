@@ -1,3 +1,4 @@
+console.log('app-state.ts')
 import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
 import { FeatureCollection, Feature, Point, LineString, Polygon } from 'geojson';

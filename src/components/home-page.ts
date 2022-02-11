@@ -1,3 +1,4 @@
+console.log('home-page.ts')
 import m from 'mithril';
 import L, { GeoJSONOptions } from 'leaflet';
 import 'leaflet.markercluster';
