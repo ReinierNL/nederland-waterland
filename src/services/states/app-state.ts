@@ -1,4 +1,7 @@
 console.log('app-state.ts')
+import { Chart } from 'chart.js';
+console.log('imported Chart')
+
 import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
 import { FeatureCollection, Feature, Point, LineString, Polygon } from 'geojson';
