@@ -1,6 +1,64 @@
 console.log('app-state.ts')
-import { Chart } from 'chart.js';
-console.log('imported Chart')
+import {
+  Chart,
+  ArcElement,
+  LineElement,
+  BarElement,
+  PointElement,
+  BarController,
+  BubbleController,
+  DoughnutController,
+  LineController,
+  PieController,
+  PolarAreaController,
+  RadarController,
+  ScatterController,
+  CategoryScale,
+  LinearScale,
+  LogarithmicScale,
+  RadialLinearScale,
+  TimeScale,
+  TimeSeriesScale,
+  Decimation,
+  Filler,
+  Legend,
+  Title,
+  Tooltip,
+  SubTitle,
+  ChartConfiguration,
+  ChartTypeRegistry,
+  ScatterDataPoint,
+  BubbleDataPoint,
+} from 'chart.js';
+console.log('imported Chart and chart elements')
+Chart.register(
+  ArcElement,
+  LineElement,
+  BarElement,
+  PointElement,
+  BarController,
+  BubbleController,
+  DoughnutController,
+  LineController,
+  PieController,
+  PolarAreaController,
+  RadarController,
+  ScatterController,
+  CategoryScale,
+  LinearScale,
+  LogarithmicScale,
+  RadialLinearScale,
+  TimeScale,
+  TimeSeriesScale,
+  Decimation,
+  Filler,
+  Legend,
+  Title,
+  Tooltip,
+  SubTitle
+);
+console.log('registered Chart elements')
+
 
 import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
