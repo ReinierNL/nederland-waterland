@@ -432,7 +432,7 @@ export const HomePage: MeiosisComponent = () => {
                       },
                       {
                         label: 'Aquathermie - oppervlaktewater (TEO)',
-                        collapsed: true,
+                        collapsed: false,  // temp
                         children: [
                           { label: 'TEO potentie *', layer: wateren_potentie_gt1haLayer }
                         ],
@@ -610,10 +610,11 @@ export const HomePage: MeiosisComponent = () => {
                 ],
                 
                 // the Charts
-                // first: choose whether and which charts are shown
+                // first: choose which charts are shown (whether they are shown is chosen a bit more to the top)
                 chartsShown && m("select", { "name": "chartselector", "id": "chartselector", 
                               "multiple": true, "onchange": handleChartSelect }, [
                   m("option", {"value": "bvo"}, "Bruto vloeroppervlakte" ),
+                // m("option", {"value": "elec_per_sector"}, "Electriciteitsverbruik t.o.v. sector" ),
                   m("option", {"value": "elec"},  "Electriciteitsverbruik" ),
                   m("option", {"value": "gas"},  "Gasverbruik" ),
                   m("option", {"value": "verdeling"}, "verdeling" ),
