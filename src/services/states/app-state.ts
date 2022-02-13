@@ -18,16 +18,15 @@ import { highlightMarker,
        //  pointToYellowCircleMarkerLayer 
        } from '../../components/markers'
 import { get_nearest_province } from '../../services/provinces';
-import { //NamedMarkerClusterGroup, 
-  createMCG, loadMCG, createLayerTVW, createLayerVF, createLeafletLayer, 
-  loadCareLayer, loadGeoJSON, loadGeoJSON_VF } from '../../models/layer_generators';
+import { createMCG, loadMCG, createLayerTVW, createLayerVF, createLeafletLayer, 
+         loadGeoJSON, loadGeoJSON_VF } from '../../models/layer_generators';
 
 // layer data:
 import categorale_instellingen from '../../data/categorale instellingen.json';
 import effluent from '../../data/Syntraal_effluent.json';
 import ggz from '../../data/ggz.json';
 import ghz from '../../data/ghz.json';
-// import rioolleidingen:  loaded dynamically. see rioolleidingenLayer
+// import rioolleidingen: loaded dynamically. see rioolleidingenLayer
 import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
 import poliklinieken from '../../data/poliklinieken.json';
 import skatings from '../../data/ijsbanen.json';
@@ -35,15 +34,16 @@ import rwzis from '../../data/Syntraal_rwzis.json';
 import swimmings from '../../data/zwembaden.json';
 import tvw from '../../data/tvw_shapes.json';
 import vvt from '../../data/vvt.json';
+// wateren_potentie_gt1haLayer: loaded dynamically. see wateren_potentie_gt1haLayer
 import warmtenetten_nbr_lokaal from '../../data/lokale_warmtenetten_20200519.json';
 import warmtenetten_nbr_infra from '../../data/infrastructuur_warmte.json';
 // // wko point layers
 import wko_gwi from '../../data/WKO_GWI.json';
 import wko_gwio from '../../data/WKO_GWIO.json';
-// import wko_gwo:  loaded dynamically. see wko_gwoLayer
-// import wko_gbes:  loaded dynamically. see wko_gbesLayer
+// import wko_gwo: loaded dynamically. see wko_gwoLayer
+// import wko_gbes: loaded dynamically. see wko_gbesLayer
 import wko_obes from '../../data/WKO_OBES.json';
-// import wko_installaties:  loaded dynamically. see wko_installatiesLayer
+// import wko_installaties: loaded dynamically. see wko_installatiesLayer
 // // wko restriction layers
 import wko_diepte from '../../data/WKO Restrictie Diepte.json';
 // import wko_natuur: loaded dynamically. see wko_natuurLayer
