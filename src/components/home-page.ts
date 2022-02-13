@@ -664,12 +664,11 @@ export const HomePage: MeiosisComponent = () => {
           ), // container
 
           // legend: five versions
-          selectedLayer && !isCareOrCureLayer(selectedLayer!) && !isTEOLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
-          !chartsShown && selectedLayer && isCareLayer(selectedLayer!) && m(Legend_care, { state, actions }),
-          !chartsShown && selectedLayer && isCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
-          !chartsShown && selectedLayer && isTEOLayer(selectedLayer!) && m(Legend_teo, { state, actions }),
-          !chartsShown && selectedLayer && isTVWLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
-          !chartsShown && selectedLayer && isVattenfallLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
+          !chartsShown && !teoActive && selectedLayer && isCareLayer(selectedLayer!) && m(Legend_care, { state, actions }),
+          !chartsShown && !teoActive && selectedLayer && isCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
+          !chartsShown && !teoActive && selectedLayer && isTVWLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
+          !chartsShown && !teoActive && selectedLayer && isVattenfallLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
+          !chartsShown && teoActive && m(Legend_teo, { state, actions }),
 
           // disclaimer
           selectedLayer && isWKOLayer(selectedLayer!) && m('.disclaimer',
