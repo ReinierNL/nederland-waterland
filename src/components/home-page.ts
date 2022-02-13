@@ -17,18 +17,16 @@ import { Legend_care } from './legend_care';
 import { Legend_discr } from './legend_discr';
 import { Legend_teo } from './legend_teo';
 import { Legend_zh } from './legend_zh';
+import layerTitles from '../assets/layerTitles.json';
 import logoDeltares from 'url:../assets/Deltares.png';
+import logoEVZ from 'url:../assets/evz.png';
 import logoSyntraal from 'url:../assets/Syntraal.png';
 import logoTNO from 'url:../assets/TNO.png';
-import logoEVZ from 'url:../assets/evz.png';
 import { activeLayersAsString, isCareLayer, isCareOrCureLayer, isCureLayer, isDeltaresLayer, 
-  isEnergyRelatedLayer, isSportLayer, isSyntraalLayer, isTEOLayer, isTVWLayer, isVattenfallLayer, 
-  isWKOLayer } from './utils_rs';
-import layerTitles from '../assets/layerTitles.json';
-// import layerPercentages from '../assets/layer_percentages.json';
-import { pointToLayerCare, pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
-  pointToLayerSewage, pointToLayerSkating, pointToLayerSwimming, pointToLayerZHrk } from './markers'
-import { ChartJs } from './chart-js';
+         isEnergyRelatedLayer, isSportLayer, isTVWLayer, isVattenfallLayer, 
+         isWKOLayer } from './utils_rs';
+import { pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
+         pointToLayerSewage, pointToLayerSkating, pointToLayerSwimming, pointToLayerZHrk } from './markers'
 import { RegionalCharts } from './regional_charts';
 
 
