@@ -7,15 +7,16 @@ export const Legend_teo: MeiosisComponent = () => {
     view: ({
       attrs: {
         state: {
-          app: { selectedLayer },
+          app: { wateren_potentie_gt1haLayer },
         },
         actions: { refreshLayer },
       },
     }) => {
-      const propertyStyle = selectedLayer && propertyStyles[selectedLayer];
       // console.log('getting legend (TEO)');
       // selectedLayer && console.log('selectedLayer: ', selectedLayer);
+      const layerName = wateren_potentie_gt1haLayer!.options.name;
       // console.log('TEO layer.name: ', wateren_potentie_gt1haLayer!.options.name);
+      const propertyStyle = layerName && propertyStyles[layerName];
       const legend = propertyStyle && propertyStyle.legend;
       // console.log('legend:', legend);
       // if (legend && legend.title) { console.log(`legend.title: ${legend.title}`) };
@@ -34,7 +35,7 @@ export const Legend_teo: MeiosisComponent = () => {
                 checked: item[0] ? 'checked' : undefined,
                 onclick: () => {
                   item[0] = !item[0];
-                  refreshLayer(selectedLayer);
+                  refreshLayer(layerName);
                 },
               }),
               m('span', item[3]),

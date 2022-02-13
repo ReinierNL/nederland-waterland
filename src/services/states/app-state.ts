@@ -10,7 +10,8 @@ import L, { LatLng, MarkerClusterGroup } from 'leaflet';
 
 // under the ./src folder
 import { NamedGeoJSONOptions } from '../../components';
-import { activeLayersAsString, isCareOrCureLayer, isCureLayer, isSportLayer, isVattenfallLayer } from '../../components/utils_rs';
+import { activeLayersAsString, isCareOrCureLayer, isCureLayer, isSportLayer,
+         isTEOLayer, isVattenfallLayer } from '../../components/utils_rs';
 import { highlightMarker, 
        // pointToGrayCircleMarkerLayer,
        //  pointToGreenCircleMarkerLayer, 
@@ -150,6 +151,7 @@ export interface IAppStateModel {
     selectedProvince: string;          // Currently selected province (for charts)
     showMainBranchOnly: boolean;       // for the Care layers
     size: number;                      // Bounding box size  (deprecated?)
+    teoActive: boolean;                // is the TEO layer active
     treeCollapsed: boolean;            // is the layer tree collapsed
     zoom: -1;                          // the current zoom level
     [key: string]: L.GeoJSON | any;
@@ -214,6 +216,7 @@ export const appStateMgmt = {
       vvtLayer: createMCG('vvt', 1),
       warmtenetten_nbr_lokaal,
       warmtenetten_nbr_infra,
+      wateren_potentie_gt1haLayer: createLeafletLayer('wateren_potentie_gt1ha', 'AVGwocGJ_1'),
       wko_gwi,
       wko_gwio,
       wko_gwoLayer: L.geoJSON(undefined, {
@@ -275,7 +278,6 @@ export const appStateMgmt = {
         name: 'wko_specprovbeleid',
       } as NamedGeoJSONOptions),
       wko_verbod,
-      wateren_potentie_gt1haLayer: createLeafletLayer('wateren_potentie_gt1ha', 'AVGwocGJ_1'),
 
       wn_vf_almereLayer: createLayerVF('wn_vf_almere', 'NETTYPE', undefined),
       wn_vf_amsterdamLayer: createLayerVF('wn_vf_amsterdam', 'NETTYPE', undefined),
@@ -295,6 +297,7 @@ export const appStateMgmt = {
       selectedMarkersLayer: L.geoJSON(undefined),
       selectedProvince: 'Gelderland',
       showMainBranchOnly: true,
+      teoActive: false,
     },
   } as IAppStateModel,
 
@@ -324,15 +327,19 @@ export const appStateMgmt = {
 
       mapClick: () => {
         const {
-          app: { selectedMarkersLayer, selectedLayer },
+          app: { selectedLayer, selectedMarkersLayer },
         } = states();
-        selectedMarkersLayer!.clearLayers();
-        var new_sl = selectedLayer;
-        if (isCareOrCureLayer(new_sl!) || isSportLayer(new_sl!)) {
-          // new_sl = undefined    // if setting it to undefined, the legend disappears
-          // console.log('mapclick calling update()');
-          update({ app: { selectedItem: undefined, selectedLayer: new_sl, selectedHospital: undefined } });
-        };
+        // console.log(`mapclick. selectedLayer=${selectedLayer}`);
+        if (selectedLayer && !isTEOLayer(selectedLayer)) {
+          selectedMarkersLayer!.clearLayers();
+          // var new_sl = selectedLayer;
+          // if (isCareOrCureLayer(new_sl!) || isSportLayer(new_sl!) !! teoActive ) {
+          //   // new_sl = undefined    // if setting it to undefined, the legend disappears
+          //   // console.log('mapclick calling update()');
+          //   update({ app: { selectedItem: undefined, selectedLayer: new_sl, selectedHospital: undefined } });
+          // };
+          update({ app: { selectedItem: undefined, selectedHospital: undefined } });
+        }
       },
 
       refreshLayer: async (layer?: string) => {
@@ -353,11 +360,8 @@ export const appStateMgmt = {
         //   return
         // }
         const {
-          app: { selectedMarkersLayer, ggz, ghz, vvt, selectedHospital: old_sh },
+          app: { selectedMarkersLayer, ggz, ghz, vvt },
         } = states();
-        var new_sh = old_sh;
-        if (selectedLayer != 'ziekenhuizen') new_sh = undefined;
-      // console.log('Highlighted layer: ' + highlightedLayer.name);
         if (highlightedLayer && highlightedLayer.setStyle) {
           highlightedLayer.setStyle({ color: highlightedColor });
           if (layer && (layer as L.Path).options) {
@@ -372,8 +376,10 @@ export const appStateMgmt = {
           }
         } else {
           if (!selectedMarkersLayer) return;
-          selectedMarkersLayer.clearLayers();
-          selectedMarkersLayer.bringToBack();
+          if (!isTEOLayer(selectedLayer!)) {
+            selectedMarkersLayer.clearLayers();
+            selectedMarkersLayer.bringToBack();
+          }
           const organisatie = f.properties?.Organisatie;
           if (organisatie && !/onbekend/i.test(organisatie)) {
             const overlay =
@@ -387,7 +393,7 @@ export const appStateMgmt = {
             highlightMarker(selectedMarkersLayer, f, selectedLayer!);
           }
         }
-        update({ app: { selectedItem: () => f, selectedLayer, selectedHospital: new_sh } });
+        update({ app: { selectedItem: () => f, selectedLayer } });
       }, // selectFeature
 
       selectHospital: async (f, layerName: string) => {
@@ -494,15 +500,15 @@ export const appStateMgmt = {
                 ghzLayer,
                 vvtLayer,
                 activeLayers, 
-                selectedHospital: old_sh,
-                selectedLayer: old_sl, 
+                selectedHospital: old_sH,
+                selectedLayer: old_sL, 
                 selectedMarkersLayer,
-                showMainBranchOnly } = app;
+                showMainBranchOnly,
+                teoActive: old_tA } = app;
         // console.log(`old_sl=${old_sl}; activeLayers=${activeLayersAsString(activeLayers!)}`)
-        var new_sl = selectedLayer;  // can be overruled later on
 
         // care layers: update if the showMainBranchOnly state has changed 
-        // (it is not checked whether there was a chage; the layer is just reloaded)
+        // (it is not checked whether there was a change; the layer is just reloaded)
         var new_ggzLayer = ggzLayer
         if (selectedLayer === 'ggz') {
           new_ggzLayer = loadMCG(ggzLayer, ggz, showMainBranchOnly)
@@ -523,23 +529,26 @@ export const appStateMgmt = {
         } else {
           // console.log('NOT calling loadGeoJSON_VF');
         };
-        var new_sh = old_sh;
+        var new_sL = old_sL;  // can be overruled later on
+        var new_sH = old_sH;
+        var new_tA = old_tA;
         if (add) {
           activeLayers!.add(selectedLayer);
+          new_sL = selectedLayer;
+          if (isTEOLayer(selectedLayer)) { new_tA = true }
         } else {
           activeLayers!.delete(selectedLayer);
-          if (old_sl === selectedLayer) selectedMarkersLayer?.clearLayers();
-          if (old_sl != selectedLayer) { new_sl = old_sl }
+          if (isTEOLayer(selectedLayer)) { new_tA = false }
+          if (old_sL === selectedLayer) selectedMarkersLayer?.clearLayers();
         };
-        // console.log(`new_sl=${new_sl}; activeLayers=${activeLayersAsString(activeLayers!)}`)
 
-        if (!isCureLayer(selectedLayer)) new_sh = undefined;
+        if (!isCureLayer(selectedLayer) && !new_tA) new_sH = undefined;
         // console.log(activeLayers);
-        if (add && new_sh && new_sh.properties && new_sh.properties.Locatienummer) {
-          const result = await loadGeoJSON(selectedLayer, new_sh, app);
-          update({ app: { activeLayers, selectedLayer: new_sl, selectedHospital: new_sh, ...result } });
+        if (add && new_sH && new_sH.properties && new_sH.properties.Locatienummer) {
+          const result = await loadGeoJSON(selectedLayer, new_sH, app);
+          update({ app: { activeLayers, selectedLayer: new_sL, selectedHospital: new_sH, teoActive: new_tA, ...result } });
         } else {
-          update({ app: { activeLayers, selectedLayer: new_sl, selectedHospital: new_sh } });
+          update({ app: { activeLayers, selectedLayer: new_sL, selectedHospital: new_sH, teoActive: new_tA } });
         };
         return
       }, // updateActiveLayers

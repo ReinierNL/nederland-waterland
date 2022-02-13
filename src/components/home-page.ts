@@ -84,6 +84,7 @@ export const HomePage: MeiosisComponent = () => {
         selectedLayer,
         selectedMarkersLayer,
         showMainBranchOnly,
+        teoActive,
         // layers and layer data objects (json):
         categorale_instellingen,
         effluent,
@@ -552,11 +553,10 @@ export const HomePage: MeiosisComponent = () => {
                         width: '110px',
                       })
                     ),
-                    // ((selectedLayer == undefined) || (!isDeltaresLayer(selectedLayer) && !isSyntraalLayer(selectedLayer))) &&
                     m('li.logo', m('img', { src: logoTNO, alt: 'logo TNO', width: '82px' })),
-                    selectedLayer && isDeltaresLayer(selectedLayer) && 
+                    selectedLayer && !teoActive && isDeltaresLayer(selectedLayer) && 
                     m('li.logo', m('img', { src: logoDeltares, alt: 'logo Deltares', width: '114px' })),
-                    selectedLayer && isSyntraalLayer(selectedLayer) && 
+                    selectedLayer && teoActive &&
                     m('li.logo', m('img', { src: logoSyntraal, alt: 'logo Syntraal', width: '140px' })),
                   ])
                 ),
