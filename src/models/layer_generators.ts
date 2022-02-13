@@ -131,12 +131,13 @@ export const loadCareLayer = async (layer: string, app: { [key: string]: MarkerC
 
 export const loadGeoJSON = async (layer: string, selectedHospital: Feature, app: { [key: string]: L.GeoJSON }) => {
 	const layerName = layer + 'Layer';
+	// console.log(`loadGeoJSON. layer=${layer}`);
 	const id = (selectedHospital.properties as any).Locatienummer;
 	const geojson = app[layerName] ? (app[layerName] as L.GeoJSON) : undefined;
 	if (geojson) {
-		console.log(`process.env.GIS_SERVER: ${process.env.GIS_SERVER}`);
+		// console.log(`process.env.GIS_SERVER: ${process.env.GIS_SERVER}`);
 		const the_url = `${process.env.GIS_SERVER || 'https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/geojson-server/api/'}${layer}/id/${id}`;
-		console.log(`URL: ${the_url}`);
+		// console.log(`URL: ${the_url}`);
 		const record = await m.request<{ id: number; data: FeatureCollection }>({
       method: 'GET',
       // url: `${process.env.GIS_SERVER || 'http://localhost:3366/api/'}${layer}/id/${id}`,

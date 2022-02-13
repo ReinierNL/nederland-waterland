@@ -40,6 +40,7 @@ export const toColorFactoryDiscrete = (layerName: string, legendPropName: string
 };
 
 export const toFilterFactory = (layerName: string, legendPropName: string): ((f?: Feature) => boolean) => {
+  // console.log(`toFilterFactory: ${layerName}`)
   const propertyStyle = propertyStyles[layerName];
   if (!propertyStyle || !propertyStyle.legend) return () => true;
   const items = propertyStyle.legend.items;

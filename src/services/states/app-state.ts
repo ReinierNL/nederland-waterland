@@ -1,4 +1,3 @@
-console.log('app-state.ts')
 import {
   Chart,
   ArcElement,
@@ -57,8 +56,9 @@ Chart.register(
   Tooltip,
   SubTitle
 );
-console.log('registered Chart elements')
-
+// console.log('app-state.ts')
+// console.log('imported Chart and chart elements')
+// console.log('registered Chart elements')
 
 import Stream from 'mithril/stream';
 import { IAppModel, UpdateStream } from '../meiosis';
@@ -403,8 +403,7 @@ export const appStateMgmt = {
       },
 
       selectFeature: async (f, selectedLayer?: string, layer?: L.Layer) => {
-        console.log('Select feature');
-        console.log('Selected layer: ' + selectedLayer);
+        console.log(`Select feature. selectedLayer: ${selectedLayer}`);
         // console.log(`Selected feature: ${f}`);
         // console.log(`Selected feature properties: ${f.properties}`);
         // if (!f) {
@@ -450,7 +449,7 @@ export const appStateMgmt = {
       }, // selectFeature
 
       selectHospital: async (f, layerName: string) => {
-        console.log('Select hospital (cure location); layerName = ' + layerName);
+        // console.log('Select hospital (cure location); layerName = ' + layerName);
         const { app } = states();
         const { activeLayers, selectedHospital, selectedMarkersLayer, categorale_instellingen, poliklinieken, ziekenhuizen } = app;
         var sActiveLayers = activeLayersAsString(activeLayers!);  // trailing comma and space are not removed (not necessary)

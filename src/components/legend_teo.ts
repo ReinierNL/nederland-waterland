@@ -12,12 +12,13 @@ export const Legend_teo: MeiosisComponent = () => {
         actions: { refreshLayer },
       },
     }) => {
-      console.log('getting legend (TEO)');
-      selectedLayer && console.log('selectedLayer: ', selectedLayer);
       const propertyStyle = selectedLayer && propertyStyles[selectedLayer];
+      // console.log('getting legend (TEO)');
+      // selectedLayer && console.log('selectedLayer: ', selectedLayer);
+      // console.log('TEO layer.name: ', wateren_potentie_gt1haLayer!.options.name);
       const legend = propertyStyle && propertyStyle.legend;
-      console.log('legend:', legend);
-      if (legend && legend.title) { console.log(`legend.title: ${legend.title}`) };
+      // console.log('legend:', legend);
+      // if (legend && legend.title) { console.log(`legend.title: ${legend.title}`) };
       const canUncheckItem = legend && legend.items.reduce((acc, cur) => (acc += cur[0] ? 1 : 0), 0) > 1;
       return (
         m('.legend', [

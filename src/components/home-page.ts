@@ -1,4 +1,4 @@
-console.log('home-page.ts')
+// console.log('home-page.ts')
 import m from 'mithril';
 import L, { GeoJSONOptions } from 'leaflet';
 import 'leaflet.markercluster';
@@ -72,7 +72,7 @@ export const HomePage: MeiosisComponent = () => {
   return {
     oninit: () => {
       // console.log(`m.route: ${m.route()}`);
-      console.log(`window.location.href: ${window.location.href}`);
+      // console.log(`window.location.href: ${window.location.href}`);
     },
     view: ({ attrs: { state, actions } }) => {
       // console.log(state);
@@ -126,7 +126,8 @@ export const HomePage: MeiosisComponent = () => {
       const { handleChartSelect, handleMoveEnd, mapClick, setZoomLevel, toggleChartsShown, toggleMainBranchOnly,
         updateActiveLayers } = actions;
 
-      console.log(`selectedLayer: ${selectedLayer}; activeLayers: ${activeLayersAsString(activeLayers!)}; charts shown: ${chartsShown}`);
+      // console.log(`selectedLayer: ${selectedLayer}; selectedHospital: ${selectedHospital}; teoActive: ${teoActive}; `+
+      //             `activeLayers: ${activeLayersAsString(activeLayers!)}; charts shown: ${chartsShown}`);
 
       return [
         m('.content', [
