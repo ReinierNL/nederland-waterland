@@ -278,9 +278,9 @@ export const HomePage: MeiosisComponent = () => {
                 //   name: 'vvt',
                 // } as NamedGeoJSONOptions).eachLayer((l) => vvtLayer_rk.addLayer(l));
                 if (origin === 'care' && vvtLayer) {
-                  map.addLayer(vvtLayer)
+                  map.addLayer(vvtLayer);
                   updateActiveLayers('vvt', true)
-                }
+                };
 
                 warmtenetten_nbr_lokaalLayer = L.geoJSON(warmtenetten_nbr_lokaal, {
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
@@ -393,12 +393,12 @@ export const HomePage: MeiosisComponent = () => {
                     });
                   },
                   name: 'ziekenhuizen',
-                } as NamedGeoJSONOptions)
+                } as NamedGeoJSONOptions);
                 
                 if (origin === 'cure' && ziekenhuizenLayer_rk) {
-                  map.addLayer(ziekenhuizenLayer_rk)
+                  map.addLayer(ziekenhuizenLayer_rk);
                   updateActiveLayers('ziekenhuizen', true); // cannot assign to activeLayers: it's a constant
-                }
+                };
 
                 selectedMarkersLayer?.addTo(map);
 
