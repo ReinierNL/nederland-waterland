@@ -65,12 +65,18 @@ export const HomePage: MeiosisComponent = () => {
   let wko_verbodLayer: L.GeoJSON;
   //let wn_vf_xxxLayer: L.GeoJSON; // dynamic (9 layers) // test //test 
   let ziekenhuizenLayer_rk: L.GeoJSON;
+  
+  let origin: 'cure' | 'care' | undefined = undefined
 
   
   return {
     oninit: () => {
       // console.log(`m.route: ${m.route()}`);
       // console.log(`window.location.href: ${window.location.href}`);
+      const href = window.location.href
+      const suffix = href.split('?')[1]
+      if (suffix === 'care') origin = 'care'
+      if (suffix === 'cure') origin = 'cure'
     },
     view: ({ attrs: { state, actions } }) => {
       // console.log(state);
@@ -271,6 +277,10 @@ export const HomePage: MeiosisComponent = () => {
                 //   },
                 //   name: 'vvt',
                 // } as NamedGeoJSONOptions).eachLayer((l) => vvtLayer_rk.addLayer(l));
+                if (origin === 'care' && vvtLayer) {
+                  map.addLayer(vvtLayer)
+                  updateActiveLayers('vvt', true)
+                }
 
                 warmtenetten_nbr_lokaalLayer = L.geoJSON(warmtenetten_nbr_lokaal, {
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
@@ -383,8 +393,12 @@ export const HomePage: MeiosisComponent = () => {
                     });
                   },
                   name: 'ziekenhuizen',
-                } as NamedGeoJSONOptions).addTo(map);
-                updateActiveLayers('ziekenhuizen', true); // cannot assign to activeLayers: it's a constant
+                } as NamedGeoJSONOptions)
+                
+                if (origin === 'cure' && ziekenhuizenLayer_rk) {
+                  map.addLayer(ziekenhuizenLayer_rk)
+                  updateActiveLayers('ziekenhuizen', true); // cannot assign to activeLayers: it's a constant
+                }
 
                 selectedMarkersLayer?.addTo(map);
 
