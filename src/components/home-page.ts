@@ -63,7 +63,7 @@ export const HomePage: MeiosisComponent = () => {
   let wko_ordeningLayer: L.GeoJSON;
   //let wko_specprovbeleidLayer: L.GeoJSON; // dynamic
   let wko_verbodLayer: L.GeoJSON;
-  //let wn_vf_xxxLayer: L.GeoJSON; // dynamic (9 layers) // test
+  //let wn_vf_xxxLayer: L.GeoJSON; // dynamic (9 layers) // test //test 
   let ziekenhuizenLayer_rk: L.GeoJSON;
 
   
