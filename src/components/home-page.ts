@@ -75,8 +75,8 @@ export const HomePage: MeiosisComponent = () => {
       // console.log(`window.location.href: ${window.location.href}`);
       const href = window.location.href
       const suffix = href.split('?')[1]
+      origin = 'cure'                           // default value
       if (suffix === 'care') origin = 'care'
-      if (suffix === 'cure') origin = 'cure'
     },
     view: ({ attrs: { state, actions } }) => {
       // console.log(state);
