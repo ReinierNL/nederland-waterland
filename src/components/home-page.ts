@@ -194,27 +194,9 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'effluent',
                 } as NamedGeoJSONOptions);
 
-                // ggzLayer_rk = (L as any).markerClusterGroup({ name: 'ggz' });
-                // L.geoJSON(ggz, {
-                //   pointToLayer: pointToLayerCare,
-                //   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                //     layer.on('click', () => {
-                //       actions.selectFeature(feature as Feature<Point>, 'ggz');
-                //     });
-                //   },
-                //   name: 'ggz',
-                // } as NamedGeoJSONOptions).eachLayer((l) => ggzLayer_rk.addLayer(l));
+                // ggzLayer: dynamic layer, declared in app-state (as part of state)
 
-                // ghzLayer_rk = (L as any).markerClusterGroup({ name: 'ghz' });
-                // L.geoJSON(ghz, {
-                //   pointToLayer: pointToLayerCare,
-                //   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                //     layer.on('click', () => {
-                //       actions.selectFeature(feature as Feature<Point>, 'ghz');
-                //     });
-                //   },
-                //   name: 'ghz',
-                // } as NamedGeoJSONOptions).eachLayer((l) => ghzLayer_rk.addLayer(l));
+                // ghzLayer: dynamic layer, declared in app-state (as part of state)
 
                 gl_wk_buLayer = L.geoJSON(gl_wk_bu, {
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
@@ -235,7 +217,7 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'poliklinieken',
                 } as NamedGeoJSONOptions);
 
-                // rioolleidingenLayer : dyamic layer, declared in app-state (as part of state)
+                // rioolleidingenLayer: dyamic layer, declared in app-state (as part of state)
 
                 rwzisLayer = L.geoJSON(rwzis, {
                   pointToLayer: pointToLayerSewage,
@@ -267,16 +249,7 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'swimming',
                 } as NamedGeoJSONOptions);
 
-                // vvtLayer_rk = (L as any).markerClusterGroup({ name: 'vvt' });
-                // L.geoJSON(vvt, {
-                //   pointToLayer: pointToLayerCare,
-                //   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-                //     layer.on('click', () => {
-                //       actions.selectFeature(feature as Feature<Point>, 'vvt');
-                //     });
-                //   },
-                //   name: 'vvt',
-                // } as NamedGeoJSONOptions).eachLayer((l) => vvtLayer_rk.addLayer(l));
+                // vvtLayer: dynamic layer, declared in app-state (as part of state)
                 if (origin === 'care' && vvtLayer) {
                   map.addLayer(vvtLayer);
                   updateActiveLayers('vvt', true)
