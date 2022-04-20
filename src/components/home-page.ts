@@ -250,9 +250,14 @@ export const HomePage: MeiosisComponent = () => {
                 } as NamedGeoJSONOptions);
 
                 // vvtLayer: dynamic layer, declared in app-state (as part of state)
+
                 if (origin === 'care' && vvtLayer) {
+                  map.addLayer(ghzLayer);
+                  updateActiveLayers('ghz', true);
+                  map.addLayer(ggzLayer);
+                  updateActiveLayers('ggz', true);
                   map.addLayer(vvtLayer);
-                  updateActiveLayers('vvt', true)
+                  updateActiveLayers('vvt', true);
                 };
 
                 warmtenetten_nbr_lokaalLayer = L.geoJSON(warmtenetten_nbr_lokaal, {
