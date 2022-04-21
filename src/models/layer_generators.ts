@@ -5,7 +5,7 @@ import L, { GeoJSONOptions, LeafletEvent, MarkerClusterGroup, MarkerClusterGroup
 import { actions } from '../services/meiosis';
 import { NamedGeoJSONOptions } from '../components';
 import { toColorFactoryDiscrete, toColorFactoryInterval, toFilterFactory } from '../models';
-import { pointToLayerCare } from '../components/markers'
+import { pointToLayerCare, pointToLayerSchool } from '../components/markers'
 import { showMainBranchFilter } from './feature-style';
 
 
@@ -107,12 +107,8 @@ export const loadCareLayer = async (layer: string, app: { [key: string]: MarkerC
 	const layerName = layer + 'Layer_rk';
 	const features = app[layer] ? (app[layer] as FeatureCollection) : undefined;
   var mcg = app[layerName] ? (app[layerName] as MarkerClusterGroup) : undefined;
-	//const geojson = app[layerName] ? (app[layerName] as L.GeoJSON) : undefined;
 	if (mcg && features) {
-    console.log(`mcg exists and features exists`);
-    // geojson.clearLayers();
-    // geojson.addData(features);
-    // mcg = (L as any).markerClusterGroup({ name: layer });
+    console.log(`mcg exists and features exist`);
     mcg?.clearLayers()
     L.geoJSON(features, {
       pointToLayer: pointToLayerCare,
@@ -216,6 +212,23 @@ export const loadMCG = (mcg: MarkerClusterGroup, features: FeatureCollection<Poi
   gj.eachLayer((l) => mcg.addLayer(l))
   return mcg as MarkerClusterGroup
 }; // loadMCG
+
+
+export const loadSchools = (mcg: MarkerClusterGroup, features: FeatureCollection<Point>) => {
+  // console.log(`loadSchools. mcg.options.name=${mcg.options.name}; kmbo=${keepMainBranchesOnly}`);
+  mcg.clearLayers();
+  const gj = L.geoJSON(features, {
+    // filter: showMainBranchFilter(keepMainBranchesOnly),
+    pointToLayer: pointToLayerSchool,
+    onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+      layer.on('click', () => {
+        actions.selectFeature(feature as Feature<Point>, mcg.options.name)
+      })
+    }
+  } as GeoJSONOptions);
+  gj.eachLayer((l) => mcg.addLayer(l))
+  return mcg as MarkerClusterGroup
+}; // loadSchools
 
 
 const pointToTitledLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {

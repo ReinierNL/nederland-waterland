@@ -45,6 +45,7 @@ export const HomePage: MeiosisComponent = () => {
   let polikliniekenLayer_rk: L.GeoJSON;
   //let rioolleidingenLayer: L.GeoJSON; // dynamic
   let rwzisLayer: L.GeoJSON;
+  //  let schoolsLayer: L.GeoJSON; // dynamic
   let skatingsLayer: L.GeoJSON;
   let swimmingsLayer: L.GeoJSON;
   // let tvwLayer: L.GeoJSON;  // dynamic
@@ -96,8 +97,9 @@ export const HomePage: MeiosisComponent = () => {
         ghzLayer,
         gl_wk_bu,
         poliklinieken,
-        rwzis,
         rioolleidingenLayer,
+        rwzis,
+        schoolsLayer,
         skatings,
         swimmings,
         tvwLayer,
@@ -228,6 +230,8 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'rwzis',
                 } as NamedGeoJSONOptions);
+
+                // schoolsLayer: dyamic layer, declared in app-state (as part of state)
 
                 skatingsLayer = L.geoJSON(skatings, {
                   pointToLayer: pointToLayerSkating,
@@ -404,10 +408,11 @@ export const HomePage: MeiosisComponent = () => {
                         ]
                       },
                       { 
-                        label: 'Sport',
-                        collapsed: true,
+                        label: 'Sport en scholen',
+                        // collapsed: true,
                         children: [
                           { label: 'IJsbanen', layer: skatingsLayer },
+                          { label: 'Scholen', layer: schoolsLayer },
                           { label: 'Zwembaden', layer: swimmingsLayer },
                         ]
                       },

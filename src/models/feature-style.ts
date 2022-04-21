@@ -342,6 +342,32 @@ export const propertyStyles = {
     },
   },
 
+  schools: {
+    properties: {
+      "Naam": {
+        title: () => 'Naam',
+        value: (s: string) => capitalize(s),
+      },
+      "Adres": {
+        title: () => 'Adres',
+        value: (s: string) => s,
+      },
+      "PC": {
+        title: () => 'Postcode',
+        value: (s: string) => s,
+      },
+      "Plts": {
+        title: () => 'Plaats',
+        value: (s: string) => s,
+      },
+      "Srt": {
+        title: () => 'Soort onderwijs',
+        value: (s: string) => s,
+      },
+    }
+  },
+
+
   skating: {
     properties: {
       "Naam": {

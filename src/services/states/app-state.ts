@@ -18,7 +18,7 @@ import { highlightMarker,
        //  pointToYellowCircleMarkerLayer 
        } from '../../components/markers'
 import { get_nearest_province } from '../../services/provinces';
-import { createMCG, loadMCG, createLayerTVW, createLayerVF, createLeafletLayer, 
+import { createMCG, loadMCG, loadSchools, createLayerTVW, createLayerVF, createLeafletLayer, 
          loadGeoJSON, loadGeoJSON_VF } from '../../models/layer_generators';
 
 // layer data:
@@ -29,8 +29,9 @@ import ghz from '../../data/ghz.json';
 // import rioolleidingen: loaded dynamically. see rioolleidingenLayer
 import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
 import poliklinieken from '../../data/poliklinieken.json';
-import skatings from '../../data/ijsbanen.json';
 import rwzis from '../../data/Syntraal_rwzis.json';
+import schools from '../../data/scholen.json';
+import skatings from '../../data/ijsbanen.json';
 import swimmings from '../../data/zwembaden.json';
 import tvw from '../../data/tvw_shapes.json';
 import vvt from '../../data/vvt.json';
@@ -111,6 +112,7 @@ export interface IAppStateModel {
     poliklinieken: FeatureCollection<Point>;
     rioolleidingenLayer: L.GeoJSON;
     rwzis: FeatureCollection<Point>;
+    schools: MarkerClusterGroup;
     skatings: FeatureCollection;
     swimmings: FeatureCollection;
     tvw: L.GeoJSON;
@@ -201,6 +203,7 @@ export const appStateMgmt = {
       gl_wk_bu,
       poliklinieken,
       rwzis,
+      schoolsLayer: createMCG('schools', 4),
       rioolleidingenLayer: L.geoJSON(undefined, {
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', (e) => {
@@ -499,6 +502,7 @@ export const appStateMgmt = {
         const { ggzLayer,
                 ghzLayer,
                 vvtLayer,
+                schoolsLayer,
                 activeLayers, 
                 selectedHospital: old_sH,
                 selectedLayer: old_sL, 
@@ -520,6 +524,10 @@ export const appStateMgmt = {
         var new_vvtLayer = vvtLayer
         if (selectedLayer === 'vvt') {
           new_vvtLayer = loadMCG(vvtLayer, vvt, showMainBranchOnly)
+        };
+        var new_schoolsLayer = schoolsLayer
+        if (selectedLayer === 'schools') {
+          new_schoolsLayer = loadSchools(schoolsLayer, schools)
         };
 
         if ( isVattenfallLayer(selectedLayer) && add ) {
