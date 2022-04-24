@@ -47,6 +47,7 @@ export const HomePage: MeiosisComponent = () => {
   let rwzisLayer: L.GeoJSON;
   //  let schoolsLayer: L.GeoJSON; // dynamic
   let skatingsLayer: L.GeoJSON;
+  //  let sportsLayer: L.GeoJSON; // dynamic
   let swimmingsLayer: L.GeoJSON;
   // let tvwLayer: L.GeoJSON;  // dynamic
   // let vvtLayer_rk: L.GeoJSON; // now dynamic: vvtLayer
@@ -101,6 +102,7 @@ export const HomePage: MeiosisComponent = () => {
         rwzis,
         schoolsLayer,
         skatings,
+        sportsLayer,
         swimmings,
         tvwLayer,
         vvtLayer,
@@ -242,6 +244,8 @@ export const HomePage: MeiosisComponent = () => {
                   },
                   name: 'skating',
                 } as NamedGeoJSONOptions);
+
+                // sportsLayer: dyamic layer, declared in app-state (as part of state)
 
                 swimmingsLayer = L.geoJSON(swimmings, {
                   pointToLayer: pointToLayerSwimming,
@@ -413,6 +417,7 @@ export const HomePage: MeiosisComponent = () => {
                         children: [
                           { label: 'IJsbanen', layer: skatingsLayer },
                           { label: 'Scholen', layer: schoolsLayer },
+                          { label: 'Sport', layer: sportsLayer },
                           { label: 'Zwembaden', layer: swimmingsLayer },
                         ]
                       },

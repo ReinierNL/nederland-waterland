@@ -19,8 +19,10 @@ import {
   careIconGreen4CC,
   careIconPurpleCC,
   careIconRed,
+  schoolIcon,
   sewageIcon,
   skatingIcon,
+  sportsIcon,
   swimmingIcon,
   ziekenhuisIconGreen,
   ziekenhuisIconPurple,
@@ -149,6 +151,13 @@ export const pointToLayerPurpleCircleMarker = (
   });
 }; // pointToLayerPurpleCircleMarker
 
+export const pointToLayerSchools = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+  return new L.Marker(latlng, {
+    icon: schoolIcon,
+    title: feature.properties.Name,
+  });
+}; // pointToLayerSchool
+
 export const pointToLayerSewage = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
   return new L.Marker(latlng, {
     icon: sewageIcon,
@@ -162,6 +171,13 @@ export const pointToLayerSkating = (feature: Feature<Point, any>, latlng: L.LatL
     title: feature.properties.Naam,
   });
 }; // pointToLayerSkating
+
+export const pointToLayerSports = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
+  return new L.Marker(latlng, {
+    icon: sportsIcon,
+    title: feature.properties.Name,
+  });
+}; // pointToLayerSports
 
 export const pointToLayerSwimming = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
   return new L.Marker(latlng, {

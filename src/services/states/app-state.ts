@@ -32,6 +32,7 @@ import poliklinieken from '../../data/poliklinieken.json';
 import rwzis from '../../data/Syntraal_rwzis.json';
 import schools from '../../data/scholen.json';
 import skatings from '../../data/ijsbanen.json';
+import sports from '../../data/sport.json';
 import swimmings from '../../data/zwembaden.json';
 import tvw from '../../data/tvw_shapes.json';
 import vvt from '../../data/vvt.json';
@@ -114,6 +115,7 @@ export interface IAppStateModel {
     rwzis: FeatureCollection<Point>;
     schools: MarkerClusterGroup;
     skatings: FeatureCollection;
+    sports: MarkerClusterGroup;
     swimmings: FeatureCollection;
     tvw: L.GeoJSON;
     vvt: FeatureCollection<Point>;
@@ -203,7 +205,6 @@ export const appStateMgmt = {
       gl_wk_bu,
       poliklinieken,
       rwzis,
-      schoolsLayer: createMCG('schools', 4),
       rioolleidingenLayer: L.geoJSON(undefined, {
         onEachFeature: (feature: Feature<Point>, layer: L.Layer) => {
           layer.on('click', (e) => {
@@ -212,7 +213,9 @@ export const appStateMgmt = {
         },
         name: 'rioolleidingen',
       } as NamedGeoJSONOptions),
+      schoolsLayer: createMCG('schools', 4),
       skatings,
+      sportsLayer: createMCG('sports', 5),
       swimmings,
       tvwLayer: createLayerTVW('tvw', 'TVW_status', tvw),
       vvt,
@@ -503,6 +506,7 @@ export const appStateMgmt = {
                 ghzLayer,
                 vvtLayer,
                 schoolsLayer,
+                sportsLayer,
                 activeLayers, 
                 selectedHospital: old_sH,
                 selectedLayer: old_sL, 
@@ -527,7 +531,11 @@ export const appStateMgmt = {
         };
         var new_schoolsLayer = schoolsLayer
         if (selectedLayer === 'schools') {
-          new_schoolsLayer = loadSchools(schoolsLayer, schools)
+          new_schoolsLayer = loadMCG(schoolsLayer, schools, false)
+        };
+        var new_sportsLayer = sportsLayer
+        if (selectedLayer === 'sports') {
+          new_sportsLayer = loadMCG(sportsLayer, sports, false)
         };
 
         if ( isVattenfallLayer(selectedLayer) && add ) {

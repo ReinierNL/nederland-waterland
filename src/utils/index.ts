@@ -17,10 +17,10 @@ import care_green4_cc_png from 'url:../assets/Care_icon_green_4_cc.png'
 import care_purple_cc_png from 'url:../assets/Care_icon_purple_cc.png'
 
 import school_png from 'url:../assets/school_34.png'
-
+import sewage_png from 'url:../assets/sewage_v2a.png';
 import skating_png from 'url:../assets/skating.png'
+import sports_png from 'url:../assets/sports_33.png'
 import swimming_png from 'url:../assets/swimming.png'
-import sewage from 'url:../assets/sewage_v2a.png';
 import ziekenhuis from 'url:../assets/ziekenhuis_32.png';
 import ziekenhuis_green from 'url:../assets/ziekenhuis_32.grn2.png';
 import ziekenhuis_purple from 'url:../assets/ziekenhuis_32.purple.png';
@@ -183,7 +183,7 @@ export const createIcon = (mapIconColor: string) =>
   
   export const sewageIcon = L.icon({
   className: 'leaflet-data-marker',
-  iconUrl: sewage,
+  iconUrl: sewage_png,
   iconAnchor: [17, 10],
   iconSize: [35, 20],
   popupAnchor: [0, -30],
@@ -194,6 +194,14 @@ export const skatingIcon = L.icon({
   iconUrl: skating_png,
   iconAnchor: [16, 16],
   iconSize: [32, 32],
+  popupAnchor: [0, -30],
+});
+
+export const sportsIcon = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: sports_png,
+  iconAnchor: [16, 16],
+  iconSize: [33, 33],
   popupAnchor: [0, -30],
 });
 

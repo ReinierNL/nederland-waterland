@@ -350,19 +350,44 @@ export const propertyStyles = {
       },
       "Adres": {
         title: () => 'Adres',
-        value: (s: string) => s,
+        value: (s: string) => capitalize(s),
       },
       "PC": {
         title: () => 'Postcode',
-        value: (s: string) => s,
+        value: (s: string) => s.toUpperCase(),
       },
       "Plts": {
         title: () => 'Plaats',
-        value: (s: string) => s,
+        value: (s: string) => capitalize(s),
       },
       "Srt": {
         title: () => 'Soort onderwijs',
         value: (s: string) => s,
+      },
+    }
+  },
+
+  sports: {
+    properties: {
+      "Naam": {
+        title: () => 'Naam',
+        value: (s: string) => capitalize(s),
+      },
+      "Adres": {
+        title: () => 'Adres',
+        value: (s: string) => capitalize(s),
+      },
+      "PC": {
+        title: () => 'Postcode',
+        value: (s: string) => s.toUpperCase(),
+      },
+      "Plts": {
+        title: () => 'Plaats',
+        value: (s: string) => capitalize(s),
+      },
+      "sport": {
+        title: () => 'Sport',
+        value: (s: string) => capitalize(s),
       },
     }
   },
