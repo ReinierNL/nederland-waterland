@@ -31,6 +31,8 @@ import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
 import poliklinieken from '../../data/poliklinieken.json';
 import rwzis from '../../data/Syntraal_rwzis.json';
 import schools from '../../data/scholen.json';
+import schoolsPO from '../../data/scholen_PO.json';
+import schoolsVO from '../../data/scholen_VO.json';
 import skatings from '../../data/ijsbanen.json';
 import sports from '../../data/sport.json';
 import swimmings from '../../data/zwembaden.json';
@@ -114,6 +116,8 @@ export interface IAppStateModel {
     rioolleidingenLayer: L.GeoJSON;
     rwzis: FeatureCollection<Point>;
     schools: MarkerClusterGroup;
+    schoolsPO: MarkerClusterGroup;
+    schoolsVO: MarkerClusterGroup;
     skatings: FeatureCollection;
     sports: MarkerClusterGroup;
     swimmings: FeatureCollection;
@@ -214,6 +218,8 @@ export const appStateMgmt = {
         name: 'rioolleidingen',
       } as NamedGeoJSONOptions),
       schoolsLayer: createMCG('schools', 4),
+      schoolsPOLayer: createMCG('schools PO', 4),
+      schoolsVOLayer: createMCG('schools VO', 4),
       skatings,
       sportsLayer: createMCG('sports', 5),
       swimmings,
@@ -506,6 +512,8 @@ export const appStateMgmt = {
                 ghzLayer,
                 vvtLayer,
                 schoolsLayer,
+                schoolsPOLayer,
+                schoolsVOLayer,
                 sportsLayer,
                 activeLayers, 
                 selectedHospital: old_sH,
@@ -532,6 +540,14 @@ export const appStateMgmt = {
         var new_schoolsLayer = schoolsLayer
         if (selectedLayer === 'schools') {
           new_schoolsLayer = loadMCG(schoolsLayer, schools, false)
+        };
+        var new_schoolsPOLayer = schoolsPOLayer
+        if (selectedLayer === 'schools PO') {
+          new_schoolsPOLayer = loadMCG(schoolsPOLayer, schoolsPO, false)
+        };
+        var new_schoolsVOLayer = schoolsVOLayer
+        if (selectedLayer === 'schools VO') {
+          new_schoolsVOLayer = loadMCG(schoolsVOLayer, schoolsVO, false)
         };
         var new_sportsLayer = sportsLayer
         if (selectedLayer === 'sports') {

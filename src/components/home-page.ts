@@ -101,6 +101,8 @@ export const HomePage: MeiosisComponent = () => {
         rioolleidingenLayer,
         rwzis,
         schoolsLayer,
+        schoolsPOLayer,
+        schoolsVOLayer,
         skatings,
         sportsLayer,
         swimmings,
@@ -417,6 +419,8 @@ export const HomePage: MeiosisComponent = () => {
                         children: [
                           { label: 'IJsbanen', layer: skatingsLayer },
                           { label: 'Scholen', layer: schoolsLayer },
+                          { label: 'Scholen PO', layer: schoolsPOLayer },
+                          { label: 'Scholen VO', layer: schoolsVOLayer },
                           { label: 'Sport', layer: sportsLayer },
                           { label: 'Zwembaden', layer: swimmingsLayer },
                         ]
