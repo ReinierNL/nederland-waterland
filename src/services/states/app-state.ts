@@ -18,7 +18,7 @@ import { highlightMarker,
        //  pointToYellowCircleMarkerLayer 
        } from '../../components/markers'
 import { get_nearest_province } from '../../services/provinces';
-import { createMCG, loadMCG, loadSchools, createLayerTVW, createLayerVF, createLeafletLayer, 
+import { createMCG, loadMCG, createLayerTVW, createLayerVF, createLeafletLayer, 
          loadGeoJSON, loadGeoJSON_VF } from '../../models/layer_generators';
 
 // layer data:
@@ -30,9 +30,8 @@ import ghz from '../../data/ghz.json';
 import gl_wk_bu from '../../data/gasloze wijken en buurten.json';
 import poliklinieken from '../../data/poliklinieken.json';
 import rwzis from '../../data/Syntraal_rwzis.json';
-import schools from '../../data/scholen.json';
+import schoolsNPO from '../../data/scholen_NPO.json';
 import schoolsPO from '../../data/scholen_PO.json';
-import schoolsVO from '../../data/scholen_VO.json';
 import skatings from '../../data/ijsbanen.json';
 import sports from '../../data/sport.json';
 import swimmings from '../../data/zwembaden.json';
@@ -115,9 +114,8 @@ export interface IAppStateModel {
     poliklinieken: FeatureCollection<Point>;
     rioolleidingenLayer: L.GeoJSON;
     rwzis: FeatureCollection<Point>;
-    schools: MarkerClusterGroup;
+    schoolsNPO: MarkerClusterGroup;
     schoolsPO: MarkerClusterGroup;
-    schoolsVO: MarkerClusterGroup;
     skatings: FeatureCollection;
     sports: MarkerClusterGroup;
     swimmings: FeatureCollection;
@@ -217,9 +215,8 @@ export const appStateMgmt = {
         },
         name: 'rioolleidingen',
       } as NamedGeoJSONOptions),
-      schoolsLayer: createMCG('schools', 4),
+      schoolsNPOLayer: createMCG('schools NPO', 4),
       schoolsPOLayer: createMCG('schools PO', 4),
-      schoolsVOLayer: createMCG('schools VO', 4),
       skatings,
       sportsLayer: createMCG('sports', 5),
       swimmings,
@@ -511,9 +508,8 @@ export const appStateMgmt = {
         const { ggzLayer,
                 ghzLayer,
                 vvtLayer,
-                schoolsLayer,
+                schoolsNPOLayer,
                 schoolsPOLayer,
-                schoolsVOLayer,
                 sportsLayer,
                 activeLayers, 
                 selectedHospital: old_sH,
@@ -537,17 +533,13 @@ export const appStateMgmt = {
         if (selectedLayer === 'vvt') {
           new_vvtLayer = loadMCG(vvtLayer, vvt, showMainBranchOnly)
         };
-        var new_schoolsLayer = schoolsLayer
-        if (selectedLayer === 'schools') {
-          new_schoolsLayer = loadMCG(schoolsLayer, schools, false)
+        var new_schoolsNPOLayer = schoolsNPOLayer
+        if (selectedLayer === 'schools NPO') {
+          new_schoolsNPOLayer = loadMCG(schoolsNPOLayer, schoolsNPO, false)
         };
         var new_schoolsPOLayer = schoolsPOLayer
         if (selectedLayer === 'schools PO') {
           new_schoolsPOLayer = loadMCG(schoolsPOLayer, schoolsPO, false)
-        };
-        var new_schoolsVOLayer = schoolsVOLayer
-        if (selectedLayer === 'schools VO') {
-          new_schoolsVOLayer = loadMCG(schoolsVOLayer, schoolsVO, false)
         };
         var new_sportsLayer = sportsLayer
         if (selectedLayer === 'sports') {

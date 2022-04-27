@@ -200,7 +200,7 @@ export const loadGeoJSON_VF = async (layer: string, app: { [key: string]: L.GeoJ
 export const loadMCG = (mcg: MarkerClusterGroup, features: FeatureCollection<Point>, keepMainBranchesOnly: boolean) => {
   // console.log(`loadMCG. mcg.options.name=${mcg.options.name}; kmbo=${keepMainBranchesOnly}`);
   let ptl = pointToLayerCare;
-  if ( (mcg.options.name == 'schools') || (mcg.options.name == 'schools PO') || (mcg.options.name == 'schools VO') )  {
+  if ( (mcg.options.name == 'schools') || (mcg.options.name == 'schools PO') || (mcg.options.name == 'schools NPO') )  {
     ptl = pointToLayerSchools
   } else if (mcg.options.name == 'sports') {
     ptl = pointToLayerSports

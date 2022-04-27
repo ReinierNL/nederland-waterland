@@ -5,6 +5,33 @@ import legend_ci from '../assets/legend_ci.json'
 import legend_pk from '../assets/legend_pk.json'
 import legend_zh from '../assets/legend_zh.json'
 
+
+const school_properties = {
+  properties: {
+    "Naam": {
+      title: () => 'Naam',
+      value: (s: string) => capitalize(s),
+    },
+    "Adres": {
+      title: () => 'Adres',
+      value: (s: string) => capitalize(s),
+    },
+    "PC": {
+      title: () => 'Postcode',
+      value: (s: string) => s.toUpperCase(),
+    },
+    "Plts": {
+      title: () => 'Plaats',
+      value: (s: string) => capitalize(s),
+    },
+    "Srt": {
+      title: () => 'Soort onderwijs',
+      value: (s: string) => s,
+    },
+  }
+};
+
+
 export const toColorFactoryInterval = (layerName: string, legendPropName: string): ((f?: Feature) => string) => {
 // returns a getColor function that maps a numeric value to a color (using propertyStyles[layerName])
   // console.log(`toColorFactoryInterval (layer=${layerName})`);
@@ -23,6 +50,7 @@ export const toColorFactoryInterval = (layerName: string, legendPropName: string
   };
 };
 
+
 export const toColorFactoryDiscrete = (layerName: string, legendPropName: string): ((f?: Feature) => string) => {
   // returns a getColor function that maps a property value to a color (using propertyStyles[layerName])
   // console.log(`toColorFactoryDiscrete (layer=${layerName})`);
@@ -38,6 +66,7 @@ export const toColorFactoryDiscrete = (layerName: string, legendPropName: string
     return items[items.length - 1][1];
   };
 };
+
 
 export const toFilterFactory = (layerName: string, legendPropName: string): ((f?: Feature) => boolean) => {
   // console.log(`toFilterFactory: ${layerName}`)
@@ -55,6 +84,7 @@ export const toFilterFactory = (layerName: string, legendPropName: string): ((f?
     return items[items.length - 1][0];
   };
 };
+
 
 export const showMainBranchFilter = (showMainBranchOnly: boolean): ((f?: Feature) => boolean) => {
   return (f?: Feature) => {
@@ -342,32 +372,7 @@ export const propertyStyles = {
     },
   },
 
-  schools: {
-    properties: {
-      "Naam": {
-        title: () => 'Naam',
-        value: (s: string) => capitalize(s),
-      },
-      "Adres": {
-        title: () => 'Adres',
-        value: (s: string) => capitalize(s),
-      },
-      "PC": {
-        title: () => 'Postcode',
-        value: (s: string) => s.toUpperCase(),
-      },
-      "Plts": {
-        title: () => 'Plaats',
-        value: (s: string) => capitalize(s),
-      },
-      "Srt": {
-        title: () => 'Soort onderwijs',
-        value: (s: string) => s,
-      },
-    }
-  },
-
-  schoolsVO: {
+  schoolsNPO: {
     properties: {
       "Naam": {
         title: () => 'Naam',
@@ -416,7 +421,7 @@ export const propertyStyles = {
       },
     }
   },
-
+  
   sports: {
     properties: {
       "Naam": {

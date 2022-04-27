@@ -100,9 +100,8 @@ export const HomePage: MeiosisComponent = () => {
         poliklinieken,
         rioolleidingenLayer,
         rwzis,
-        schoolsLayer,
+        schoolsNPOLayer,
         schoolsPOLayer,
-        schoolsVOLayer,
         skatings,
         sportsLayer,
         swimmings,
@@ -235,7 +234,8 @@ export const HomePage: MeiosisComponent = () => {
                   name: 'rwzis',
                 } as NamedGeoJSONOptions);
 
-                // schoolsLayer: dyamic layer, declared in app-state (as part of state)
+                // schoolsNPOLayer: dyamic layer, declared in app-state (as part of state)
+                // schoolsPOLayer: dyamic layer, declared in app-state (as part of state)
 
                 skatingsLayer = L.geoJSON(skatings, {
                   pointToLayer: pointToLayerSkating,
@@ -414,14 +414,19 @@ export const HomePage: MeiosisComponent = () => {
                         ]
                       },
                       { 
-                        label: 'Sport en scholen',
+                        label: 'Scholen',
                         // collapsed: true,
                         children: [
-                          { label: 'IJsbanen', layer: skatingsLayer },
-                          { label: 'Scholen', layer: schoolsLayer },
                           { label: 'Scholen PO', layer: schoolsPOLayer },
-                          { label: 'Scholen VO', layer: schoolsVOLayer },
+                          { label: 'Scholen overig', layer: schoolsNPOLayer },
+                        ]
+                      },
+                      { 
+                        label: 'Sport',
+                        // collapsed: true,
+                        children: [
                           { label: 'Sport', layer: sportsLayer },
+                          { label: 'IJsbanen', layer: skatingsLayer },
                           { label: 'Zwembaden', layer: swimmingsLayer },
                         ]
                       },
