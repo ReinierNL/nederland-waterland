@@ -215,8 +215,8 @@ export const appStateMgmt = {
         },
         name: 'rioolleidingen',
       } as NamedGeoJSONOptions),
-      schoolsNPOLayer: createMCG('schools NPO', 4),
-      schoolsPOLayer: createMCG('schools PO', 4),
+      schoolsNPOLayer: createMCG('schoolsNPO', 4),
+      schoolsPOLayer: createMCG('schoolsPO', 4),
       skatings,
       sportsLayer: createMCG('sports', 5),
       swimmings,
@@ -534,11 +534,11 @@ export const appStateMgmt = {
           new_vvtLayer = loadMCG(vvtLayer, vvt, showMainBranchOnly)
         };
         var new_schoolsNPOLayer = schoolsNPOLayer
-        if (selectedLayer === 'schools NPO') {
+        if (selectedLayer === 'schoolsNPO') {
           new_schoolsNPOLayer = loadMCG(schoolsNPOLayer, schoolsNPO, false)
         };
         var new_schoolsPOLayer = schoolsPOLayer
-        if (selectedLayer === 'schools PO') {
+        if (selectedLayer === 'schoolsPO') {
           new_schoolsPOLayer = loadMCG(schoolsPOLayer, schoolsPO, false)
         };
         var new_sportsLayer = sportsLayer

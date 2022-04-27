@@ -45,7 +45,8 @@ export const HomePage: MeiosisComponent = () => {
   let polikliniekenLayer_rk: L.GeoJSON;
   //let rioolleidingenLayer: L.GeoJSON; // dynamic
   let rwzisLayer: L.GeoJSON;
-  //  let schoolsLayer: L.GeoJSON; // dynamic
+  //  let schoolsNPOLayer: L.GeoJSON; // dynamic
+  //  let schoolsPOLayer: L.GeoJSON; // dynamic
   let skatingsLayer: L.GeoJSON;
   //  let sportsLayer: L.GeoJSON; // dynamic
   let swimmingsLayer: L.GeoJSON;
@@ -415,7 +416,7 @@ export const HomePage: MeiosisComponent = () => {
                       },
                       { 
                         label: 'Scholen',
-                        // collapsed: true,
+                        collapsed: true,
                         children: [
                           { label: 'Scholen PO', layer: schoolsPOLayer },
                           { label: 'Scholen overig', layer: schoolsNPOLayer },
@@ -423,7 +424,7 @@ export const HomePage: MeiosisComponent = () => {
                       },
                       { 
                         label: 'Sport',
-                        // collapsed: true,
+                        collapsed: true,
                         children: [
                           { label: 'Sport', layer: sportsLayer },
                           { label: 'IJsbanen', layer: skatingsLayer },
