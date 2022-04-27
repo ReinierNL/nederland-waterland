@@ -154,9 +154,9 @@ export const pointToLayerPurpleCircleMarker = (
 export const pointToLayerSchools = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
   return new L.Marker(latlng, {
     icon: schoolIcon,
-    title: feature.properties.Name,
+    title: feature.properties.Naam,
   });
-}; // pointToLayerSchool
+}; // pointToLayerSchools
 
 export const pointToLayerSewage = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
   return new L.Marker(latlng, {
@@ -175,7 +175,7 @@ export const pointToLayerSkating = (feature: Feature<Point, any>, latlng: L.LatL
 export const pointToLayerSports = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
   return new L.Marker(latlng, {
     icon: sportsIcon,
-    title: feature.properties.Name,
+    title: feature.properties.Naam,
   });
 }; // pointToLayerSports
 
