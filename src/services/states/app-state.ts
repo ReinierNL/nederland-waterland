@@ -10,7 +10,7 @@ import L, { LatLng, MarkerClusterGroup } from 'leaflet';
 
 // under the ./src folder
 import { NamedGeoJSONOptions } from '../../components';
-import { activeLayersAsString, isCareOrCureLayer, isCureLayer, isSportLayer,
+import { activeLayersAsString, isCareLayer, isCureLayer, isSportLayer,
          isTEOLayer, isVattenfallLayer } from '../../components/utils_rs';
 import { highlightMarker, 
        // pointToGrayCircleMarkerLayer,
@@ -402,7 +402,7 @@ export const appStateMgmt = {
             highlightMarker(selectedMarkersLayer, f, selectedLayer!);
           }
         }
-        update({ app: { selectedItem: () => f, selectedLayer } });
+        update({ app: { selectedItem: () => f, selectedLayer, selectedHospital: undefined } });
       }, // selectFeature
 
       selectHospital: async (f, layerName: string) => {
@@ -413,7 +413,9 @@ export const appStateMgmt = {
         if (selectedHospital && selectedHospital.properties?.Locatienummer === f.properties?.Locatienummer) return;
         const updating = [] as Array<Promise<{ [key: string]: L.GeoJSON }>>;
         activeLayers?.forEach((layer) => {
-          updating.push(loadGeoJSON(layer, f, app));
+          if (!isCareLayer(layer)) {
+            updating.push(loadGeoJSON(layer, f, app));
+          }
         });
         const result = (await Promise.all(updating)).reduce((acc, cur) => {
           Object.keys(cur)
