@@ -687,6 +687,7 @@ export const HomePage: MeiosisComponent = () => {
             'Data over WKO bronnen is afkomstig van de WKO-bodemenergietool (wkotool.nl). ' +
             'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
           ), // disclaimer
+          selectedLayer && isCareOrCureLayer(selectedLayer!) &&  m('.disclaimer', 'Portefeuilleroutekaart status voor het laatst bijgewerkt: 31 mei 2022'),
         ]), // content
       ]; // return ( function result of view() )
     }, // view
