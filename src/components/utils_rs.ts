@@ -63,3 +63,7 @@ export const isWKOLayer = (layerName: string): boolean => {
   return layerName.substring(0, 4) == 'wko_'
 }
 
+export const isWZVLayer = (layerName: string): boolean => {
+  return layerName == 'wzv'
+}
+

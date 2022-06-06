@@ -22,9 +22,9 @@ import logoDeltares from 'url:../assets/Deltares.png';
 import logoEVZ from 'url:../assets/evz.png';
 import logoSyntraal from 'url:../assets/Syntraal.png';
 import logoTNO from 'url:../assets/TNO.png';
-import { activeLayersAsString, isCareLayer, isCareOrCureLayer, isCureLayer, isDeltaresLayer, 
+import { isCareLayer, isCareOrCureLayer, isCureLayer, isDeltaresLayer, 
          isEnergyRelatedLayer, isSportLayer, isTVWLayer, isVattenfallLayer, 
-         isWKOLayer } from './utils_rs';
+         isWKOLayer, isWZVLayer } from './utils_rs';
 import { pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
          pointToLayerSewage, pointToLayerSkating, pointToLayerSwimming, pointToLayerZHrk } from './markers'
 import { RegionalCharts } from './regional_charts';
@@ -67,6 +67,7 @@ export const HomePage: MeiosisComponent = () => {
   //let wko_specprovbeleidLayer: L.GeoJSON; // dynamic
   let wko_verbodLayer: L.GeoJSON;
   //let wn_vf_xxxLayer: L.GeoJSON; // dynamic (9 layers)
+  //let wzvLayer: L.GeoJSON; // dynamic
   let ziekenhuizenLayer_rk: L.GeoJSON;
   
   let origin: 'cure' | 'care' | undefined = undefined
@@ -131,6 +132,7 @@ export const HomePage: MeiosisComponent = () => {
         wn_vf_nijmegenLayer,
         wn_vf_rotterdamLayer,
         wn_vf_vlielandLayer,
+        wzvLayer,
         ziekenhuizen,
       } = state.app;
 
@@ -374,6 +376,8 @@ export const HomePage: MeiosisComponent = () => {
 
                 // wn_vf_xxxLayer: dynamic layer (9 layers)
 
+                // wzvLayer: dynamic layer
+
                 ziekenhuizenLayer_rk = L.geoJSON(ziekenhuizen, {
                   pointToLayer: pointToLayerZHrk,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
@@ -443,8 +447,13 @@ export const HomePage: MeiosisComponent = () => {
                         children: [{ label: 'Gemeenten', layer: tvwLayer }],
                       },
                       {
+                        label: 'Woonzorgvisie',
+                        collapsed: true,
+                        children: [{ label: 'Gemeenten', layer: wzvLayer }],
+                      },
+                      {
                         label: 'Aquathermie - oppervlaktewater (TEO)',
-                        collapsed: false,  // temp
+                        collapsed: true,
                         children: [
                           { label: 'TEO potentie *', layer: wateren_potentie_gt1haLayer }
                         ],
@@ -675,10 +684,11 @@ export const HomePage: MeiosisComponent = () => {
             ), // panel on the right
           ), // container
 
-          // legend: five versions
+          // legend: six versions
           !chartsShown && !teoActive && selectedLayer && isCareLayer(selectedLayer!) && m(Legend_care, { state, actions }),
           !chartsShown && !teoActive && selectedLayer && isCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
           !chartsShown && !teoActive && selectedLayer && isTVWLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
+          !chartsShown && !teoActive && selectedLayer && isWZVLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
           !chartsShown && !teoActive && selectedLayer && isVattenfallLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
           !chartsShown && teoActive && m(Legend_teo, { state, actions }),
 

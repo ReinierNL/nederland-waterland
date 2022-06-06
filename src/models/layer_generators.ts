@@ -14,6 +14,7 @@ import { showMainBranchFilter } from './feature-style';
 // Uncaught ReferenceError: Cannot access 'pointToTitledLayer' before initialization
 // the pointToTitledLayer function has been moved to this source file
 
+const geojson_server_api = 'https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/geojson-server/api/'
 
 export interface NamedMarkerClusterGroupOptions extends MarkerClusterGroupOptions {
   name: string;
@@ -66,6 +67,30 @@ export const createLayerVF = (name: string, legendPropName: string, initialData?
     name,
   } as NamedGeoJSONOptions);
 }; // createLayerVF
+
+
+export const createLayerWZV = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
+  // this is used for the Woonzorgvisie layer. So far identical to createLayerVF. Except for the fillOpacity.
+  // console.log(`createLayerWZV: name=${name}; legendProp=${legendPropName}`)
+  const getColor = toColorFactoryDiscrete(name, legendPropName);
+  return L.geoJSON(initialData, {
+    onEachFeature: (feature: Feature<LineString, any>, layer: L.Layer) => {
+      layer.bindPopup(feature.properties.naam);
+      layer.on('click', (e: LeafletEvent) => {
+        actions.selectFeature(feature as Feature<LineString>, name, layer);
+      });
+    },
+    style: (f) => {
+      const color = getColor(f);
+      return {
+        color,
+        fillColor: color,
+        fillOpacity: 0.5,
+      };
+    },
+    name,
+  } as NamedGeoJSONOptions);
+}; // createLayerWZV
 
 
 export const createLeafletLayer = (name: string, legendPropName: string, initialData?: GeoJsonObject) => {
@@ -132,14 +157,14 @@ export const loadGeoJSON = async (layer: string, selectedHospital: Feature, app:
   const geojson = app[layerName] ? (app[layerName] as L.GeoJSON) : undefined;
   if (geojson) {
   	// console.log(`process.env.GIS_SERVER: ${process.env.GIS_SERVER}`);
-		const the_url = `${process.env.GIS_SERVER || 'https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/geojson-server/api/'}${layer}/id/${id}`;
+		const the_url = `${process.env.GIS_SERVER || geojson_server_api }${layer}/id/${id}`;
 		// console.log(`URL: ${the_url}`);
 		const record = await m.request<{ id: number; data: FeatureCollection }>({
       method: 'GET',
       // url: `${process.env.GIS_SERVER || 'http://localhost:3366/api/'}${layer}/id/${id}`,
       // url: `${process.env.GIS_SERVER || 'http://163.158.64.118:3366/api/'}${layer}/id/${id}`,
       // url: `${process.env.GIS_SERVER || 'https://assistance.hex.tno.nl/geojson-server/api/'}${layer}/id/${id}`,
-      url: `${process.env.GIS_SERVER || 'https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/geojson-server/api/'}${layer}/id/${id}`,
+      url: `${process.env.GIS_SERVER || geojson_server_api}${layer}/id/${id}`,
 		});
 		if (record && record.data) {
       geojson.clearLayers();
@@ -197,6 +222,44 @@ export const loadGeoJSON_VF = async (layer: string, app: { [key: string]: L.GeoJ
 }; // loadGeoJSON_VF
 
 
+export const loadGeoJSON_WZV = async (layer: string, app: { [key: string]: L.GeoJSON }) => {
+  // loads GeoJson data for the woonzorgvisie layer, if not already loaded
+  // console.log(`LoadGeoJSON_WZV`);
+  // console.log(`process.env.GIS_SERVER: ${process.env.GIS_SERVER}`);
+  const layerName = layer + 'Layer';
+  // console.log(`layerName: ${layerName}`);
+  const filename = `wzv_status.json`
+  const host = `${process.env.GIS_SERVER || geojson_server_api }../`
+  // console.log(`host: ${host}`);
+  // console.log(`preparing to request: ${layerName}`);
+  const geojson = app[layerName] ? (app[layerName] as L.GeoJSON) : undefined;
+  const url = `${host}${filename}`
+
+  if (geojson) {
+    if (Object.keys(geojson._layers).length > 0) { 
+      // if it already contains data there's no need to load it again
+      return {} 
+    }
+    const record = await m.request<{ id: number; features: FeatureCollection }>({
+      method: 'GET',
+      url: url,
+    });
+    if (record && record.features) {
+      // console.log(`Request returned data (features)`);
+      geojson.clearLayers();
+      geojson.addData(record.features);
+      return { [layerName]: geojson };
+    } else {
+      console.log(`NO data (or no features) was received; url=${url}`);
+      return {};
+    }
+  } else {
+      console.log(`sent no request (no geojson)`);
+  }
+  return {};
+}; // loadGeoJSON_WZV
+
+
 export const loadMCG = (mcg: MarkerClusterGroup, features: FeatureCollection<Point>, keepMainBranchesOnly: boolean) => {
   // console.log(`loadMCG. mcg.options.name=${mcg.options.name}; kmbo=${keepMainBranchesOnly}`);
   let ptl = pointToLayerCare;
@@ -232,6 +295,8 @@ const pointToTitledLayer = (feature: Feature<Point, any>, latlng: L.LatLng): L.M
          ? feature.properties.Name
          : feature.properties.Naam
          ? feature.properties.Naam
+         : feature.properties.naam
+         ? feature.properties.naam
          : feature.properties.NAAM
          ? feature.properties.NAAM
          : '',

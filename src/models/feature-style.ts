@@ -31,6 +31,12 @@ const school_properties = {
   }
 };
 
+const wzv_legend_items = [ 
+  'Thema niet genoemd in een gemeentelijke visie', 
+  'Thema is alleen benoemd of er zijn procesdoelen of procesafspraken beschreven', 
+  'Thema wordt onderzocht of zal onderzocht worden', 
+  'Aan thema zijn één of meer van deze concrete doelen verbonden: aantal, locatie of jaar. Er wordt mogelijk ook gemonitord' 
+];
 
 export const toColorFactoryInterval = (layerName: string, legendPropName: string): ((f?: Feature) => string) => {
 // returns a getColor function that maps a numeric value to a color (using propertyStyles[layerName])
@@ -851,6 +857,28 @@ export const propertyStyles = {
   wn_vf_rotterdam: wn_vf_featurestyle,
   wn_vf_vlieland: wn_vf_featurestyle,
   
+  wzv: {
+    discretelegend: {
+      "items": [
+          [1, "#A5285D", wzv_legend_items[0]],
+          [2, "#EB5C92", wzv_legend_items[1]],
+          [3, "#77C5B9", wzv_legend_items[2]],
+          [4, "#396F5D", wzv_legend_items[3]]
+          ],
+      "title": "Woonzorgvisie status"
+    },
+    properties: {
+      "status": {
+        title: () => 'Status',
+        value: (n: number) => wzv_legend_items[n-1],
+      },
+      "naam": {
+        title: () => 'Gemeente',
+        value: (s: string) => s,
+      },
+    },
+  },
+
   ziekenhuizen: {
     legend: legend_zh,
     properties: {

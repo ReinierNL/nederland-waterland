@@ -11,15 +11,15 @@ import L, { LatLng, MarkerClusterGroup } from 'leaflet';
 // under the ./src folder
 import { NamedGeoJSONOptions } from '../../components';
 import { activeLayersAsString, isCareLayer, isCureLayer, isSportLayer,
-         isTEOLayer, isVattenfallLayer } from '../../components/utils_rs';
+         isTEOLayer, isVattenfallLayer, isWZVLayer } from '../../components/utils_rs';
 import { highlightMarker, 
        // pointToGrayCircleMarkerLayer,
        //  pointToGreenCircleMarkerLayer, 
        //  pointToYellowCircleMarkerLayer 
        } from '../../components/markers'
 import { get_nearest_province } from '../../services/provinces';
-import { createMCG, loadMCG, createLayerTVW, createLayerVF, createLeafletLayer, 
-         loadGeoJSON, loadGeoJSON_VF } from '../../models/layer_generators';
+import { createMCG, loadMCG, createLayerTVW, createLayerVF, createLayerWZV, createLeafletLayer, 
+         loadGeoJSON, loadGeoJSON_VF, loadGeoJSON_WZV } from '../../models/layer_generators';
 
 // layer data:
 import categorale_instellingen from '../../data/categorale instellingen.json';
@@ -145,6 +145,7 @@ export interface IAppStateModel {
     wn_vf_nijmegenLayer: L.GeoJSON;
     wn_vf_rotterdamLayer: L.GeoJSON;
     wn_vf_vlielandLayer: L.GeoJSON;
+    wzvLayer: L.GeoJSON;
     ziekenhuizen: FeatureCollection<Point>;
     // other state variables:
     activeLayers: Set<string>;         // Layers that are loaded
@@ -287,7 +288,6 @@ export const appStateMgmt = {
         name: 'wko_specprovbeleid',
       } as NamedGeoJSONOptions),
       wko_verbod,
-
       wn_vf_almereLayer: createLayerVF('wn_vf_almere', 'NETTYPE', undefined),
       wn_vf_amsterdamLayer: createLayerVF('wn_vf_amsterdam', 'NETTYPE', undefined),
       wn_vf_arnhemLayer: createLayerVF('wn_vf_arnhem', 'NETTYPE', undefined),
@@ -297,7 +297,7 @@ export const appStateMgmt = {
       wn_vf_nijmegenLayer: createLayerVF('wn_vf_nijmegen', 'NETTYPE', undefined),
       wn_vf_rotterdamLayer: createLayerVF('wn_vf_rotterdam', 'NETTYPE', undefined),
       wn_vf_vlielandLayer: createLayerVF('wn_vf_vlieland', 'NETTYPE', undefined),
-
+      wzvLayer: createLayerWZV('wzv', 'status', undefined),
       ziekenhuizen,
 
       activeLayers: new Set(),
@@ -336,19 +336,20 @@ export const appStateMgmt = {
 
       mapClick: () => {
         const {
-          app: { selectedLayer, selectedMarkersLayer },
+          app: { selectedLayer },
+          // app: { selectedLayer, selectedMarkersLayer },
         } = states();
-        // console.log(`mapclick. selectedLayer=${selectedLayer}`);
-        if (selectedLayer && !isTEOLayer(selectedLayer)) {
-          selectedMarkersLayer!.clearLayers();
-          // var new_sl = selectedLayer;
-          // if (isCareOrCureLayer(new_sl!) || isSportLayer(new_sl!) !! teoActive ) {
-          //   // new_sl = undefined    // if setting it to undefined, the legend disappears
-          //   // console.log('mapclick calling update()');
-          //   update({ app: { selectedItem: undefined, selectedLayer: new_sl, selectedHospital: undefined } });
-          // };
-          update({ app: { selectedItem: undefined, selectedHospital: undefined } });
-        }
+        console.log(`mapclick. selectedLayer=${selectedLayer}`);
+        // if (selectedLayer && !isTEOLayer(selectedLayer)) {
+        //   selectedMarkersLayer!.clearLayers();
+        //   // var new_sl = selectedLayer;
+        //   // if (isCareOrCureLayer(new_sl!) || isSportLayer(new_sl!) !! teoActive ) {
+        //   //   // new_sl = undefined    // if setting it to undefined, the legend disappears
+        //   //   // console.log('mapclick calling update()');
+        //   //   update({ app: { selectedItem: undefined, selectedLayer: new_sl, selectedHospital: undefined } });
+        //   // };
+        //   update({ app: { selectedItem: undefined, selectedHospital: undefined } });
+        // }
       },
 
       refreshLayer: async (layer?: string) => {
@@ -361,17 +362,13 @@ export const appStateMgmt = {
       },
 
       selectFeature: async (f, selectedLayer?: string, layer?: L.Layer) => {
-        console.log(`Select feature. selectedLayer: ${selectedLayer}`);
+        // console.log(`Select feature. selectedLayer: ${selectedLayer}`);
         // console.log(`Selected feature: ${f}`);
-        // console.log(`Selected feature properties: ${f.properties}`);
-        // if (!f) {
-        //   console.log('Empty feature')
-        //   return
-        // }
         const {
           app: { selectedMarkersLayer, ggz, ghz, vvt },
         } = states();
         if (highlightedLayer && highlightedLayer.setStyle) {
+          // console.log(`Select feature. if block (highlightedLayer is assigned)`);
           highlightedLayer.setStyle({ color: highlightedColor });
           if (layer && (layer as L.Path).options) {
             const path = layer as L.Path;
@@ -384,23 +381,25 @@ export const appStateMgmt = {
             });
           }
         } else {
-          if (!selectedMarkersLayer) return;
-          if (!isTEOLayer(selectedLayer!)) {
-            selectedMarkersLayer.clearLayers();
-            selectedMarkersLayer.bringToBack();
-          }
-          const organisatie = f.properties?.Organisatie;
-          if (organisatie && !/onbekend/i.test(organisatie)) {
-            const overlay =
-              selectedLayer === 'ggz' ? ggz : selectedLayer === 'ghz' ? ghz : selectedLayer === 'vvt' ? vvt : undefined;
-            const id = f.properties?.Id;
-            overlay &&
-              overlay.features
-                .filter((z) => z.properties?.Organisatie === organisatie)
-                .forEach((z) => highlightMarker(selectedMarkersLayer, z, selectedLayer, z.properties?.Id === id));
-          } else {
-            highlightMarker(selectedMarkersLayer, f, selectedLayer!);
-          }
+          // console.log(`Select feature. else block (no highlightedLayer)`);
+          if (selectedMarkersLayer) {
+            if (!isTEOLayer(selectedLayer!)) {
+              selectedMarkersLayer.clearLayers();
+              selectedMarkersLayer.bringToBack();
+            }
+            const organisatie = f.properties?.Organisatie;
+            if (organisatie && !/onbekend/i.test(organisatie)) {
+              const overlay =
+                selectedLayer === 'ggz' ? ggz : selectedLayer === 'ghz' ? ghz : selectedLayer === 'vvt' ? vvt : undefined;
+              const id = f.properties?.Id;
+              overlay &&
+                overlay.features
+                  .filter((z) => z.properties?.Organisatie === organisatie)
+                  .forEach((z) => highlightMarker(selectedMarkersLayer, z, selectedLayer, z.properties?.Id === id));
+            } else {
+              highlightMarker(selectedMarkersLayer, f, selectedLayer!);
+            }
+          };
         }
         update({ app: { selectedItem: () => f, selectedLayer, selectedHospital: undefined } });
       }, // selectFeature
@@ -549,12 +548,15 @@ export const appStateMgmt = {
         };
 
         if ( isVattenfallLayer(selectedLayer) && add ) {
-          // await loadGeoJSON_VF(selectedLayer, app);
           const result = await loadGeoJSON_VF(selectedLayer, app);
-          // return result
         } else {
           // console.log('NOT calling loadGeoJSON_VF');
         };
+
+        if ( isWZVLayer(selectedLayer) && add ) {
+          const result = await loadGeoJSON_WZV(selectedLayer, app);
+        };
+
         var new_sL = old_sL;  // can be overruled later on
         var new_sH = old_sH;
         var new_tA = old_tA;
