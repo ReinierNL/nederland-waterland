@@ -644,14 +644,14 @@ export const HomePage: MeiosisComponent = () => {
                               "multiple": true, "onchange": handleChartSelect }, [
                   m("option", {"value": "bvo"}, "Bruto vloeroppervlakte" ),
                 // m("option", {"value": "elec_per_sector"}, "Electriciteitsverbruik t.o.v. sector" ),
-                  m("option", {"value": "elec"},  "Electriciteitsverbruik" ),
+                  m("option", {"value": "elec"},  "Elektriciteitsverbruik" ),
                   m("option", {"value": "gas"},  "Gasverbruik" ),
-                  m("option", {"value": "verdeling"}, "verdeling" ),
+                  m("option", {"value": "verdeling"}, "Energieverdeling" ),
                   m("option", {"value": "gas_per_m2"}, "Gasverbruik per m2" ),
-                  m("option", {"value": "elec_per_m2"}, "Electriciteitsverbruik per m2" ),
+                  m("option", {"value": "elec_per_m2"}, "Elektriciteitsverbruik per m2" ),
                   m("option", {"value": "total_per_m2"}, "Totaal verbruik per m2" ),
                   m("option", {"value": "gas_per_sector"}, "Gasverbruik t.o.v. sector" ),
-                  m("option", {"value": "elec_per_sector"}, "Electriciteitsverbruik t.o.v. sector" ),
+                  m("option", {"value": "elec_per_sector"}, "Elektriciteitsverbruik t.o.v. sector" ),
                   m("option", {"value": "build_years"}, "Bouwjaarklasse" ),
                 ]), 
                 // show the selected charts:
