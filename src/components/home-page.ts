@@ -560,7 +560,15 @@ export const HomePage: MeiosisComponent = () => {
             m('.panel',
               { style: 'position: absolute; top: 0px; left: 70vw; width: 29vw; height: 97vh; padding: 10px;' },
               [
-                m('h3', 'De zorgduurzaamkaart'),
+                m('h3', 'De Zorgduurzaamkaart'),
+                m('nav',
+                  { style: 'width:100%' },
+                  m('ul.list-inline', { style: 'right:15px' }, [
+                    m('li',
+                      m("a#uitleg[href='https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/Handleiding_ZDKaart.pdf']", 'Uitleg'),
+                    ),
+                  ])
+                ),
                 // the logos
                 m('nav',
                   { style: 'width:100%;height:130px' },
