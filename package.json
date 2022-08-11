@@ -9,7 +9,7 @@
     "clean": "rimraf ./public ./.cache ./.parcel-cache ./dist",
     "cleanup": "npm run clean",
     "start": "parcel serve ./src/index.html --port 1235",
-    "build:domain": "npm run clean && parcel build ./src/index.html --dist-dir ./docs --public-url https://assistance.hex.tno.nl/aquathermie",
+    "build:domain": "npm run clean && parcel build ./src/index.html --dist-dir ./docs --public-url https://dezorgduurzaamkaart.expertisecentrumverduurzamingzorg.nl/",
     "build:local": "parcel build index.html --dist-dir ./docs_local"
   },
   "repository": {
