@@ -28,8 +28,6 @@ import { isCareLayer, isCareOrCureLayer, isCureLayer, isDeltaresLayer,
 import { pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
          pointToLayerSewage, pointToLayerSkating, pointToLayerSwimming, pointToLayerZHrk } from './markers'
 import { RegionalCharts } from './regional_charts';
-//import { toFilterFactoryDiscrete } from '../models';
-import { showRoutekaartFilter } from '../models';
 
 
 export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
@@ -381,8 +379,6 @@ export const HomePage: MeiosisComponent = () => {
                 // wzvLayer: dynamic layer
 
                 ziekenhuizenLayer_rk = L.geoJSON(ziekenhuizen, {
-                  // filter: toFilterFactoryDiscrete('ziekenhuizen', 'Routekaart'),
-                  filter: showRoutekaartFilter('ziekenhuizen', 'Routekaart'),
                   pointToLayer: pointToLayerZHrk,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
