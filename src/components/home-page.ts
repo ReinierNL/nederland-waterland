@@ -28,6 +28,8 @@ import { isCareLayer, isCareOrCureLayer, isCureLayer, isDeltaresLayer,
 import { pointToLayerGreenCircleMarker, pointToLayerPurpleCircleMarker, 
          pointToLayerSewage, pointToLayerSkating, pointToLayerSwimming, pointToLayerZHrk } from './markers'
 import { RegionalCharts } from './regional_charts';
+//import { toFilterFactoryDiscrete } from '../models';
+import { showRoutekaartFilter } from '../models';
 
 
 export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
@@ -379,6 +381,8 @@ export const HomePage: MeiosisComponent = () => {
                 // wzvLayer: dynamic layer
 
                 ziekenhuizenLayer_rk = L.geoJSON(ziekenhuizen, {
+                  // filter: toFilterFactoryDiscrete('ziekenhuizen', 'Routekaart'),
+                  filter: showRoutekaartFilter('ziekenhuizen', 'Routekaart'),
                   pointToLayer: pointToLayerZHrk,
                   onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
                     layer.on('click', () => {
@@ -705,7 +709,7 @@ export const HomePage: MeiosisComponent = () => {
             'Data over WKO bronnen is afkomstig van de WKO-bodemenergietool (wkotool.nl). ' +
             'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
           ), // disclaimer
-          selectedLayer && isCareOrCureLayer(selectedLayer!) &&  m('.disclaimer', 'Portefeuilleroutekaart status voor het laatst bijgewerkt: 24 juli 2023'),
+          selectedLayer && isCareOrCureLayer(selectedLayer!) &&  m('.disclaimer', 'Portefeuilleroutekaart status voor het laatst bijgewerkt: 16 augustus 2023'),
         ]), // content
       ]; // return ( function result of view() )
     }, // view
