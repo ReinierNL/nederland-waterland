@@ -1,30 +1,32 @@
-import L from 'leaflet';
-import m from 'mithril';
-import { FeatureCollection } from 'geojson';
 import area from '@turf/area';
 import centroid from '@turf/centroid';
+import { FeatureCollection } from 'geojson';
+import L from 'leaflet';
+import m from 'mithril';
 
-import care_green1_png from 'url:../assets/Care_icon_green_1.png'
-import care_green2_png from 'url:../assets/Care_icon_green_2.png'
-import care_green3_png from 'url:../assets/Care_icon_green_3.png'
-import care_green4_png from 'url:../assets/Care_icon_green_4.png'
-import care_purple_png from 'url:../assets/Care_icon_purple.png'
-import care_red_png from 'url:../assets/Care_icon_red_34_t.png'
-import care_green1_cc_png from 'url:../assets/Care_icon_green_1_cc.png'
-import care_green2_cc_png from 'url:../assets/Care_icon_green_2_cc.png'
-import care_green3_cc_png from 'url:../assets/Care_icon_green_3_cc.png'
-import care_green4_cc_png from 'url:../assets/Care_icon_green_4_cc.png'
-import care_purple_cc_png from 'url:../assets/Care_icon_purple_cc.png'
+import care_green1_png from 'url:../assets/Care_icon_green_1.png';
+import care_green1_cc_png from 'url:../assets/Care_icon_green_1_cc.png';
+import care_green2_png from 'url:../assets/Care_icon_green_2.png';
+import care_green2_cc_png from 'url:../assets/Care_icon_green_2_cc.png';
+import care_green3_png from 'url:../assets/Care_icon_green_3.png';
+import care_green3_cc_png from 'url:../assets/Care_icon_green_3_cc.png';
+import care_green4_png from 'url:../assets/Care_icon_green_4.png';
+import care_green4_cc_png from 'url:../assets/Care_icon_green_4_cc.png';
+import care_purple_png from 'url:../assets/Care_icon_purple.png';
+import care_purple_cc_png from 'url:../assets/Care_icon_purple_cc.png';
+import care_red_png from 'url:../assets/Care_icon_red_34_t.png';
 
-import school_png from 'url:../assets/school_34.png'
+import school_png from 'url:../assets/school_34.png';
 import sewage_png from 'url:../assets/sewage_v2a.png';
-import skating_png from 'url:../assets/skating.png'
-import sports_png from 'url:../assets/sports_33.png'
-import swimming_png from 'url:../assets/swimming.png'
+import skating_png from 'url:../assets/skating.png';
+import sports_png from 'url:../assets/sports_33.png';
+import swimming_png from 'url:../assets/swimming.png';
+import ziekenhuis_darkgreen from 'url:../assets/ziekenhuis_32.darkgreen.png';
 import ziekenhuis from 'url:../assets/ziekenhuis_32.png';
-import ziekenhuis_green from 'url:../assets/ziekenhuis_32.grn2.png';
-import ziekenhuis_purple from 'url:../assets/ziekenhuis_32.purple.png';
+// import ziekenhuis_green from 'url:../assets/ziekenhuis_32.grn2.png';
 import ziekenhuis_red from 'url:../assets/ziekenhuis_32.d_red.png';
+import ziekenhuis_green from 'url:../assets/ziekenhuis_32.green.png';
+import ziekenhuis_purple from 'url:../assets/ziekenhuis_32.purple.png';
 
 export const formatNumber = (x: number) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
@@ -216,6 +218,14 @@ export const swimmingIcon = L.icon({
 export const ziekenhuisIcon = L.icon({
   className: 'leaflet-data-marker',
   iconUrl: ziekenhuis,
+  iconAnchor: [16, 16],
+  iconSize: [32, 32],
+  popupAnchor: [0, -30],
+});
+
+export const ziekenhuisIconDarkGreen = L.icon({
+  className: 'leaflet-data-marker',
+  iconUrl: ziekenhuis_darkgreen,
   iconAnchor: [16, 16],
   iconSize: [32, 32],
   popupAnchor: [0, -30],

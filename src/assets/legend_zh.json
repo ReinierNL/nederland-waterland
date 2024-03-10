@@ -1,8 +1,10 @@
 {
     "items": [
-        [true, 0, "#40aa40", "Definitief / vastgesteld RvB"],
+        [true, 0, "lightgreen", "Geactualiseerd (2023-2024)"],
+        [true, 0, "green", "Definitief / vastgesteld RvB (2019-2022)"],
         [true, 0, "purple", "Voorlopig"],
         [true, 0, "red", "Nog niet ingeleverd"]
-        ],
+    ],
     "title": "routekaart Ziekenhuizen"
 }
+

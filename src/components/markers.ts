@@ -9,14 +9,14 @@ import L from 'leaflet';
 import { actions } from '../services/meiosis';
 import {
   careIconGreen1,
-  careIconGreen2,
-  careIconGreen3,
-  careIconGreen4,
-  careIconPurple,
   careIconGreen1CC,
+  careIconGreen2,
   careIconGreen2CC,
+  careIconGreen3,
   careIconGreen3CC,
+  careIconGreen4,
   careIconGreen4CC,
+  careIconPurple,
   careIconPurpleCC,
   careIconRed,
   schoolIcon,
@@ -24,6 +24,7 @@ import {
   skatingIcon,
   sportsIcon,
   swimmingIcon,
+  ziekenhuisIconDarkGreen,
   ziekenhuisIconGreen,
   ziekenhuisIconPurple,
   ziekenhuisIconRed,
@@ -190,7 +191,13 @@ export const pointToLayerZHrk = (feature: Feature<Point, any>, latlng: L.LatLng)
   // for the ziekenhuizen_routekaarten layer: return green, orange or red icon
   var layerIcon = ziekenhuisIconRed;
   if (feature.properties && feature.properties['Routekaart']) {
-    if (feature.properties['Routekaart'] == 'Voorlopig') {
+    if (feature.properties['Geactualiseerd'] && feature.properties['Geactualiseerd'] == 'Ja') {
+      layerIcon = ziekenhuisIconGreen;
+    }
+    else if (feature.properties['Routekaart'] == 'Definitief en/of vastgesteld RvB') {
+      layerIcon = ziekenhuisIconDarkGreen;
+    }
+    else if (feature.properties['Routekaart'] == 'Voorlopig') {
       layerIcon = ziekenhuisIconPurple;
     } else {
       layerIcon = ziekenhuisIconGreen;
