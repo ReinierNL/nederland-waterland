@@ -188,7 +188,7 @@ export const pointToLayerSwimming = (feature: Feature<Point, any>, latlng: L.Lat
 }; // pointToLayerSwimming
 
 export const pointToLayerZHrk = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
-  // for the ziekenhuizen_routekaarten layer: return green, orange or red icon
+  // for the ziekenhuizen_routekaarten layer: return green, darkgreen, purple or red icon
   var layerIcon = ziekenhuisIconRed;
   if (feature.properties && feature.properties['Routekaart']) {
     if (feature.properties['Geactualiseerd'] && feature.properties['Geactualiseerd'] == 'Ja') {
