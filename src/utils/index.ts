@@ -4,6 +4,7 @@ import { FeatureCollection } from 'geojson';
 import L from 'leaflet';
 import m from 'mithril';
 
+import care_blue_png from 'url:../assets/Care_icon_blue.png';
 import care_green1_png from 'url:../assets/Care_icon_green_1.png';
 import care_green1_cc_png from 'url:../assets/Care_icon_green_1_cc.png';
 import care_green2_png from 'url:../assets/Care_icon_green_2.png';
@@ -87,6 +88,14 @@ export const createIcon = (mapIconColor: string) =>
     popupAnchor: [0, -30],
   });
 
+  export const careIconBlue = L.icon({
+    className: 'leaflet-data-marker',
+    iconUrl: care_blue_png,
+    iconAnchor: [16, 16],
+    iconSize: [33, 33],
+    popupAnchor: [0, -30],
+  });
+  
   export const careIconGreen1 = L.icon({
     className: 'leaflet-data-marker',
     iconUrl: care_green1_png,
