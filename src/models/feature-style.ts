@@ -236,6 +236,10 @@ export const propertyStyles = {
         title: () => 'Verduurzamingsstrategie',
         value: (s: string) => s.replace('+-', ''),
       },
+      "Versie": {
+        title: () => 'Versie',
+        value: (n: number) => `${n}`,
+      },
     },
   },
 
@@ -277,6 +281,10 @@ export const propertyStyles = {
       "Ambitie": {
         title: () => 'Verduurzamingsstrategie',
         value: (s: string) => s.replace('+-', ''),
+      },
+      "Versie": {
+        title: () => 'Versie',
+        value: (n: number) => `${n}`,
       },
     },
   },
@@ -560,6 +568,10 @@ export const propertyStyles = {
       "Ambitie": {
         title: () => 'Verduurzamingsstrategie',
         value: (s: string) => s.replace('+-', ''),
+      },
+      "Versie": {
+        title: () => 'Versie',
+        value: (n: number) => `${n}`,
       },
     },
   },
