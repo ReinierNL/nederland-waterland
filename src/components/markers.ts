@@ -8,17 +8,10 @@ import L from 'leaflet';
 
 import { actions } from '../services/meiosis';
 import {
+  careIconBlue,
   careIconGreen1,
-  careIconGreen1CC,
-  careIconGreen2,
-  careIconGreen2CC,
   careIconGreen3,
-  careIconGreen3CC,
-  careIconGreen4,
-  careIconGreen4CC,
   careIconPurple,
-  careIconPurpleCC,
-  careIconRed,
   schoolIcon,
   sewageIcon,
   skatingIcon,
@@ -84,41 +77,21 @@ export const pointToLayerCare = (feature: Feature<Point, any>, latlng: L.LatLng)
   //   return null as unknown as L.Marker 
   //   //opacity = 0
   // }
-  var layerIcon = careIconRed;
-  var ambitie = null
   var status = null
-  if (feature.properties && feature.properties['Ambitie']) {
-    ambitie = feature.properties['Ambitie'];
-  }
+  var version = null
   if (feature.properties && feature.properties['Routekaart']) {
     status = feature.properties['Routekaart'];
   }
-  // in practice, status and ambitie are always both true or both false
-  if (status && ambitie && status == 'Voorlopig') {
-    layerIcon = (ambitie == 'Niet bekend')
-              ? careIconPurple
-              : (ambitie == 'EM ingepland')
-              ? careIconGreen4
-              : (ambitie == 'Route tot +-2025')
-              ? careIconGreen3
-              : (ambitie == 'Route tot 2030')
-              ? careIconGreen2
-              : (ambitie == 'Route tot 2050')
-              ? careIconGreen1
-              : careIconRed;
+  if (feature.properties && feature.properties['Versie']) {
+    version = feature.properties['Versie'];
   }
-  if (status && ambitie && status == 'Vastgesteld') {
-    layerIcon = (ambitie == 'Niet bekend')
-              ? careIconPurpleCC
-              : (ambitie == 'EM ingepland')
-              ? careIconGreen4CC
-              : (ambitie == 'Route tot +-2025')
-              ? careIconGreen3CC
-              : (ambitie == 'Route tot 2030')
-              ? careIconGreen2CC
-              : (ambitie == 'Route tot 2050')
-              ? careIconGreen1CC
-              : careIconRed;
+  var layerIcon = careIconBlue;
+  if (status && (status != 'Vastgesteld')) {
+    layerIcon = careIconPurple
+  } else if (version && (version == 2.0)) {
+    layerIcon = careIconGreen3   // lighter green
+  } else {
+    layerIcon = careIconGreen1
   }
   let newMarker = new L.Marker(latlng, {
     icon: layerIcon,
