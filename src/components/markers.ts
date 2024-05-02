@@ -9,7 +9,7 @@ import L from 'leaflet';
 import { actions } from '../services/meiosis';
 import {
   careIconBlue,
-  careIconGreen1,
+  careIconDarkGreen,
   careIconGreen3,
   careIconPurple,
   schoolIcon,
@@ -86,12 +86,14 @@ export const pointToLayerCare = (feature: Feature<Point, any>, latlng: L.LatLng)
     version = feature.properties['Versie'];
   }
   var layerIcon = careIconBlue;
-  if (status && (status != 'Vastgesteld')) {
-    layerIcon = careIconPurple
-  } else if (version && (version == 2.0)) {
-    layerIcon = careIconGreen3   // lighter green
-  } else {
-    layerIcon = careIconGreen1
+  if (status) {
+    if (status != 'Vastgesteld') {
+      layerIcon = careIconPurple
+    } else if (version && (version == 2.0)) {
+      layerIcon = careIconGreen3   // lighter green
+    } else {
+      layerIcon = careIconDarkGreen
+    }
   }
   let newMarker = new L.Marker(latlng, {
     icon: layerIcon,
