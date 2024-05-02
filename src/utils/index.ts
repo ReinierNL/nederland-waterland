@@ -5,17 +5,9 @@ import L from 'leaflet';
 import m from 'mithril';
 
 import care_blue_png from 'url:../assets/Care_icon_blue.png';
-import care_green1_png from 'url:../assets/Care_icon_green_1.png';
-import care_green1_cc_png from 'url:../assets/Care_icon_green_1_cc.png';
-import care_green2_png from 'url:../assets/Care_icon_green_2.png';
-import care_green2_cc_png from 'url:../assets/Care_icon_green_2_cc.png';
+import care_darkgreen_png from 'url:../assets/Care_icon_darkgreen.png';
 import care_green3_png from 'url:../assets/Care_icon_green_3.png';
-import care_green3_cc_png from 'url:../assets/Care_icon_green_3_cc.png';
-import care_green4_png from 'url:../assets/Care_icon_green_4.png';
-import care_green4_cc_png from 'url:../assets/Care_icon_green_4_cc.png';
 import care_purple_png from 'url:../assets/Care_icon_purple.png';
-import care_purple_cc_png from 'url:../assets/Care_icon_purple_cc.png';
-import care_red_png from 'url:../assets/Care_icon_red_34_t.png';
 
 import school_png from 'url:../assets/school_34.png';
 import sewage_png from 'url:../assets/sewage_v2a.png';
@@ -24,7 +16,6 @@ import sports_png from 'url:../assets/sports_33.png';
 import swimming_png from 'url:../assets/swimming.png';
 import ziekenhuis_darkgreen from 'url:../assets/ziekenhuis_32.darkgreen.png';
 import ziekenhuis from 'url:../assets/ziekenhuis_32.png';
-// import ziekenhuis_green from 'url:../assets/ziekenhuis_32.grn2.png';
 import ziekenhuis_red from 'url:../assets/ziekenhuis_32.d_red.png';
 import ziekenhuis_green from 'url:../assets/ziekenhuis_32.green.png';
 import ziekenhuis_purple from 'url:../assets/ziekenhuis_32.purple.png';
@@ -96,17 +87,9 @@ export const createIcon = (mapIconColor: string) =>
     popupAnchor: [0, -30],
   });
   
-  export const careIconGreen1 = L.icon({
+  export const careIconDarkGreen = L.icon({
     className: 'leaflet-data-marker',
-    iconUrl: care_green1_png,
-    iconAnchor: [16, 16],
-    iconSize: [33, 33],
-    popupAnchor: [0, -30],
-  });
-  
-  export const careIconGreen2 = L.icon({
-    className: 'leaflet-data-marker',
-    iconUrl: care_green2_png,
+    iconUrl: care_darkgreen_png,
     iconAnchor: [16, 16],
     iconSize: [33, 33],
     popupAnchor: [0, -30],
@@ -120,54 +103,6 @@ export const createIcon = (mapIconColor: string) =>
     popupAnchor: [0, -30],
   });
   
-  export const careIconGreen4 = L.icon({
-    className: 'leaflet-data-marker',
-    iconUrl: care_green4_png,
-    iconAnchor: [16, 16],
-    iconSize: [33, 33],
-    popupAnchor: [0, -30],
-  });
-  
-  export const careIconGreen1CC = L.icon({
-    className: 'leaflet-data-marker',
-    iconUrl: care_green1_cc_png,
-    iconAnchor: [19, 19],
-    iconSize: [39, 39],
-    popupAnchor: [0, -30],
-  });
-  
-  export const careIconGreen2CC = L.icon({
-    className: 'leaflet-data-marker',
-    iconUrl: care_green2_cc_png,
-    iconAnchor: [19, 19],
-    iconSize: [39, 39],
-    popupAnchor: [0, -30],
-  });
-  
-  export const careIconGreen3CC = L.icon({
-    className: 'leaflet-data-marker',
-    iconUrl: care_green3_cc_png,
-    iconAnchor: [19, 19],
-    iconSize: [39, 39],
-    popupAnchor: [0, -30],
-  });
-  
-  export const careIconGreen4CC = L.icon({
-    className: 'leaflet-data-marker',
-    iconUrl: care_green4_cc_png,
-    iconAnchor: [19, 19],
-    iconSize: [39, 39],
-    popupAnchor: [0, -30],
-  });
-  
-  export const careIconPurpleCC = L.icon({
-    className: 'leaflet-data-marker',
-    iconUrl: care_purple_cc_png,
-    iconAnchor: [19, 19],
-    iconSize: [39, 39],
-    popupAnchor: [0, -30],
-  });
-  
   export const careIconPurple = L.icon({
     className: 'leaflet-data-marker',
     iconUrl: care_purple_png,
@@ -175,15 +110,7 @@ export const createIcon = (mapIconColor: string) =>
     iconSize: [33, 33],
     popupAnchor: [0, -30],
   });
-  
-  export const careIconRed = L.icon({
-    className: 'leaflet-data-marker',
-    iconUrl: care_red_png,
-    iconAnchor: [16, 16],
-    iconSize: [33, 33],
-    popupAnchor: [0, -30],
-  });
-  
+
   export const schoolIcon = L.icon({
     className: 'leaflet-data-marker',
     iconUrl: school_png,
