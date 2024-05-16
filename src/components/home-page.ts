@@ -572,13 +572,7 @@ export const HomePage: MeiosisComponent = () => {
                 // the logos
                 m('nav', { style: 'width:100%' },
                   m('ul.list-inline', { style: 'right:15px' }, [
-                    m('li',
-                      m('img', {
-                        src: logoEVZ,
-                        alt: 'logo EVZ',
-                        width: '110px',
-                      })
-                    ),
+                    m('li.logo', m('img', { src: logoEVZ, alt: 'logo EVZ', width: '110px' })),
                     m('li.logo', m('img', { src: logoTNO, alt: 'logo TNO', width: '82px' })),
                     selectedLayer && !teoActive && isDeltaresLayer(selectedLayer) && 
                     m('li.logo', m('img', { src: logoDeltares, alt: 'logo Deltares', width: '114px' })),
