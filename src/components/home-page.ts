@@ -570,8 +570,7 @@ export const HomePage: MeiosisComponent = () => {
                   ])
                 ),
                 // the logos
-                m('nav',
-                  { style: 'width:100%;height:130px' },
+                m('nav', { style: 'width:100%' },
                   m('ul.list-inline', { style: 'right:15px' }, [
                     m('li',
                       m('img', {
