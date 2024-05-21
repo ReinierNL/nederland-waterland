@@ -1,8 +1,7 @@
 {
     "items": [
-        ["white", "lightgreen", "white", "lightgreen", "Geactualiseerd (Versie 2.0)"],
-        ["white", "green", "white", "green", "Vastgesteld"],
-        ["white", "purple", "white", "purple", "Werkt aan"],
+        ["white", "green", "white", "green", "Actueel en vastgesteld"],
+        ["white", "purple", "white", "purple", "Wordt aan gewerkt"],
         ["white", "blue", "white", "blue", "Niet ingeleverd"],
         ],
     "title": "routekaart status langdurige zorg"
