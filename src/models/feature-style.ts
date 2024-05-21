@@ -233,7 +233,7 @@ export const propertyStyles = {
         value: (s: string) => s == undefined ? 'Niet ingeleverd' : s,
       },
       "Ambitie": {
-        title: () => 'Verduurzamingsstrategie',
+        title: () => 'Ambitie',
         value: (s: string) => s.replace('+-', ''),
       },
     },
@@ -275,7 +275,7 @@ export const propertyStyles = {
         value: (s: string) => s == undefined ? 'Niet ingeleverd' : s,
       },
       "Ambitie": {
-        title: () => 'Verduurzamingsstrategie',
+        title: () => 'Ambitie',
         value: (s: string) => s.replace('+-', ''),
       },
     },
@@ -558,7 +558,7 @@ export const propertyStyles = {
         value: (s: string) => s,
       },
       "Ambitie": {
-        title: () => 'Verduurzamingsstrategie',
+        title: () => 'Ambitie',
         value: (s: string) => s.replace('+-', ''),
       },
     },
