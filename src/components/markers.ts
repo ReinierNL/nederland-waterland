@@ -87,12 +87,10 @@ export const pointToLayerCare = (feature: Feature<Point, any>, latlng: L.LatLng)
   }
   var layerIcon = careIconBlue;
   if (status) {
-    if (status != 'Vastgesteld') {
-      layerIcon = careIconPurple
-    } else if (version && (version == 2.0)) {
-      layerIcon = careIconGreen3   // lighter green
-    } else {
+    if (status == 'Actueel en vastgesteld') {
       layerIcon = careIconDarkGreen
+    } else if (status == 'Wordt aan gewerkt') {
+      layerIcon = careIconPurple
     }
   }
   let newMarker = new L.Marker(latlng, {
