@@ -229,16 +229,12 @@ export const propertyStyles = {
         value: (s: string) => s,
       },
       "Routekaart": {
-        title: () => 'Routekaart',
+        title: () => 'Status CO2-routekaart',
         value: (s: string) => s == undefined ? 'Niet ingeleverd' : s,
       },
       "Ambitie": {
         title: () => 'Verduurzamingsstrategie',
         value: (s: string) => s.replace('+-', ''),
-      },
-      "Versie": {
-        title: () => 'Versie',
-        value: (n: number) => `${n}`,
       },
     },
   },
@@ -275,16 +271,12 @@ export const propertyStyles = {
         value: (s: string) => s,
       },
       "Routekaart": {
-        title: () => 'Routekaart',
+        title: () => 'Status CO2-routekaart',
         value: (s: string) => s == undefined ? 'Niet ingeleverd' : s,
       },
       "Ambitie": {
         title: () => 'Verduurzamingsstrategie',
         value: (s: string) => s.replace('+-', ''),
-      },
-      "Versie": {
-        title: () => 'Versie',
-        value: (n: number) => `${n}`,
       },
     },
   },
@@ -562,16 +554,12 @@ export const propertyStyles = {
         value: (s: string) => s,
       },
       "Routekaart": {
-        title: () => 'Routekaart',
-        value: (s: string) => s == undefined ? 'Niet ingeleverd' : s,
+        title: () => 'Status CO2-routekaart',
+        value: (s: string) => s,
       },
       "Ambitie": {
         title: () => 'Verduurzamingsstrategie',
         value: (s: string) => s.replace('+-', ''),
-      },
-      "Versie": {
-        title: () => 'Versie',
-        value: (n: number) => `${n}`,
       },
     },
   },
