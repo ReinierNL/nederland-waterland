@@ -29,6 +29,12 @@ export const Legend_care: MeiosisComponent = () => {
               m('.legend-circle-item', item[4]),    /* the item label */
             ])
           ),
+
+          m('div', [
+            m('text', { style: 'font-size: 0.75em' }, 'Voor toelichting, zie '),
+            m("a#[href='https://www.expertisecentrumverduurzamingzorg.nl/care/ingeleverde-routekaarten']", 
+              { style: 'font-size: 0.75em' }, 'de EVZ website'),
+          ])
         ])
       );
     },
