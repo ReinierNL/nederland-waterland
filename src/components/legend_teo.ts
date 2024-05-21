@@ -22,7 +22,7 @@ export const Legend_teo: MeiosisComponent = () => {
       // if (legend && legend.title) { console.log(`legend.title: ${legend.title}`) };
       const canUncheckItem = legend && legend.items.reduce((acc, cur) => (acc += cur[0] ? 1 : 0), 0) > 1;
       return (
-        m('.legend', [
+        legend && m('.legend', [
           legend && legend.title && m('b', `Legenda ${legend.title}`),
           legend && legend.items && (legend.items.length > 0) && 
           legend.items.map((item) =>
