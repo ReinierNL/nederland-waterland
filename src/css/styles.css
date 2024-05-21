@@ -231,16 +231,22 @@ table.hospital-feature-props {
 }
 
 .info-panel,
-.legend,
+.legend_deprecated,
 .bottom15,
 .bottom25 {
   left: 70vw;
   margin-left: 5px;
 }
-.legend {
+.legend_deprecated {
   position: absolute;
   bottom: 3vh;
 }
+
+.legend {
+  position: absolute;
+  bottom: 0vh; 
+}
+
 .legend-rectangle {
   display: inline-block;
   width: 30px;
