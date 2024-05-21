@@ -681,19 +681,20 @@ export const HomePage: MeiosisComponent = () => {
                     'Download overzicht langdurige zorg (Excel)'),
                   ],
                 ]), // routekaart information
+
+                // legend: six versions
+                !chartsShown && !teoActive && selectedLayer && isCareLayer(selectedLayer!) && m(Legend_care, { state, actions }),
+                !chartsShown && !teoActive && selectedLayer && isCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
+                !chartsShown && !teoActive && selectedLayer && isTVWLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
+                !chartsShown && !teoActive && selectedLayer && isWZVLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
+                !chartsShown && !teoActive && selectedLayer && isVattenfallLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
+                !chartsShown && teoActive && m(Legend_teo, { state, actions }),
+
               ], // elements of panel on the right
             ), // panel on the right
           ), // container
 
-          // legend: six versions
-          !chartsShown && !teoActive && selectedLayer && isCareLayer(selectedLayer!) && m(Legend_care, { state, actions }),
-          !chartsShown && !teoActive && selectedLayer && isCureLayer(selectedLayer!) && m(Legend_zh, { state, actions }),
-          !chartsShown && !teoActive && selectedLayer && isTVWLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
-          !chartsShown && !teoActive && selectedLayer && isWZVLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
-          !chartsShown && !teoActive && selectedLayer && isVattenfallLayer(selectedLayer!) && m(Legend_discr, { state, actions }),
-          !chartsShown && teoActive && m(Legend_teo, { state, actions }),
-
-          // disclaimer
+          // disclaimer, at the bottom (below the map)
           selectedLayer && isWKOLayer(selectedLayer!) && m('.disclaimer',
             'Data over WKO bronnen is afkomstig van de WKO-bodemenergietool (wkotool.nl). ' +
             'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
