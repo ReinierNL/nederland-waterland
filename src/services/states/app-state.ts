@@ -156,7 +156,7 @@ export interface IAppStateModel {
     selectedLayer: string;             // Last item's layer name
     selectedMarkersLayer: L.GeoJSON;   // Layer with selected markers 
     selectedProvince: string;          // Currently selected province (for charts)
-    showMainBranchOnly: boolean;       // for the Care layers
+    //showMain_BranchOnly: boolean;       // for the Care layers
     size: number;                      // Bounding box size  (deprecated?)
     teoActive: boolean;                // is the TEO layer active
     treeCollapsed: boolean;            // is the layer tree collapsed
@@ -174,7 +174,7 @@ export interface IAppStateActions {
   selectHospital: (f: Feature<Point>, layerName?: string) => Promise<void>;
   setZoomLevel: (zoom: number) => void;
   toggleChartsShown: () => boolean;
-  toggleMainBranchOnly: () => boolean;
+  //toggleMain_BranchOnly: () => boolean;
   toggleTreeCollapsed: () => boolean;
   updateActiveLayers: (layer: string, add: boolean) => Promise<void>;
   setSelectedProvince: (provinceName: string) => void;
@@ -305,7 +305,7 @@ export const appStateMgmt = {
       selectedCharts: '',
       selectedMarkersLayer: L.geoJSON(undefined),
       selectedProvince: 'Gelderland',
-      showMainBranchOnly: true,
+      // showMain_BranchOnly: true,
       teoActive: false,
     },
   } as IAppStateModel,
@@ -469,29 +469,29 @@ export const appStateMgmt = {
         return new_value
       },
 
-      toggleMainBranchOnly: () => {
-        console.log('toggleMainBranchOnly');
-        const { app } = states();
-        const { activeLayers, ggzLayer, ghzLayer, showMainBranchOnly, vvtLayer } = app;
-        const new_value = showMainBranchOnly == undefined ? true : !showMainBranchOnly;
-        console.log(`toggleMainBranchOnly: new_value = ${new_value}`);
-        const sActiveLayers = activeLayersAsString(activeLayers!);
-        var new_ggzLayer = ggzLayer;
-        if (sActiveLayers.includes('ggz')) {
-          new_ggzLayer = loadMCG(ggzLayer, ggz, new_value)
-        }
-        var new_ghzLayer = ghzLayer;
-        if (sActiveLayers.includes('ghz')) {
-          new_ghzLayer = loadMCG(ghzLayer, ghz, new_value)
-        }
-        var new_vvtLayer = vvtLayer;
-        if (sActiveLayers.includes('vvt')) {
-          new_vvtLayer = loadMCG(vvtLayer, vvt, new_value)
-        }
-        update({ app: { ggzLayer: new_ggzLayer, ghzLayer: new_ghzLayer,
-                        showMainBranchOnly: new_value, vvtLayer: new_vvtLayer } });
-        return new_value
-      },
+      // toggleMain_BranchOnly: () => {
+      //   console.log('toggleMain_BranchOnly');
+      //   const { app } = states();
+      //   const { activeLayers, ggzLayer, ghzLayer, showMain_BranchOnly, vvtLayer } = app;
+      //   const new_value = showMain_BranchOnly == undefined ? true : !showMain_BranchOnly;
+      //   console.log(`toggleMain_BranchOnly: new_value = ${new_value}`);
+      //   const sActiveLayers = activeLayersAsString(activeLayers!);
+      //   var new_ggzLayer = ggzLayer;
+      //   if (sActiveLayers.includes('ggz')) {
+      //     new_ggzLayer = loadMCG(ggzLayer, ggz, new_value)
+      //   }
+      //   var new_ghzLayer = ghzLayer;
+      //   if (sActiveLayers.includes('ghz')) {
+      //     new_ghzLayer = loadMCG(ghzLayer, ghz, new_value)
+      //   }
+      //   var new_vvtLayer = vvtLayer;
+      //   if (sActiveLayers.includes('vvt')) {
+      //     new_vvtLayer = loadMCG(vvtLayer, vvt, new_value)
+      //   }
+      //   update({ app: { ggzLayer: new_ggzLayer, ghzLayer: new_ghzLayer,
+      //                   showMain_BranchOnly: new_value, vvtLayer: new_vvtLayer } });
+      //   return new_value
+      // },
 
       toggleTreeCollapsed: () => {
         // console.log('toggleTreeCollapsed');
@@ -516,23 +516,23 @@ export const appStateMgmt = {
                 selectedHospital: old_sH,
                 selectedLayer: old_sL, 
                 selectedMarkersLayer,
-                showMainBranchOnly,
+                // showMain_BranchOnly,
                 teoActive: old_tA } = app;
         // console.log(`old_sl=${old_sl}; activeLayers=${activeLayersAsString(activeLayers!)}`)
 
-        // care layers: update if the showMainBranchOnly state has changed 
+        // care layers: update if the showMain_BranchOnly state has changed 
         // (it is not checked whether there was a change; the layer is just reloaded)
         var new_ggzLayer = ggzLayer
         if (selectedLayer === 'ggz') {
-          new_ggzLayer = loadMCG(ggzLayer, ggz, showMainBranchOnly)
+          new_ggzLayer = loadMCG(ggzLayer, ggz, true /*showMain_BranchOnly*/)
         };
         var new_ghzLayer = ghzLayer
         if (selectedLayer === 'ghz') {
-          new_ghzLayer = loadMCG(ghzLayer, ghz, showMainBranchOnly)
+          new_ghzLayer = loadMCG(ghzLayer, ghz, true /*showMain_BranchOnly*/)
         };
         var new_vvtLayer = vvtLayer
         if (selectedLayer === 'vvt') {
-          new_vvtLayer = loadMCG(vvtLayer, vvt, showMainBranchOnly)
+          new_vvtLayer = loadMCG(vvtLayer, vvt, true /*showMain_BranchOnly*/)
         };
         var new_schoolsNPOLayer = schoolsNPOLayer
         if (selectedLayer === 'schoolsNPO') {

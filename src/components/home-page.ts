@@ -91,7 +91,7 @@ export const HomePage: MeiosisComponent = () => {
         selectedHospital,
         selectedLayer,
         selectedMarkersLayer,
-        showMainBranchOnly,
+        // showMain_BranchOnly,
         teoActive,
         // layers and layer data objects (json):
         categorale_instellingen,
@@ -136,7 +136,7 @@ export const HomePage: MeiosisComponent = () => {
         ziekenhuizen,
       } = state.app;
 
-      const { handleChartSelect, handleMoveEnd, mapClick, setZoomLevel, toggleChartsShown, toggleMainBranchOnly,
+      const { handleChartSelect, handleMoveEnd, mapClick, setZoomLevel, toggleChartsShown, /*toggleMain_BranchOnly,*/
         updateActiveLayers } = actions;
 
       // console.log(`selectedLayer: ${selectedLayer}; selectedHospital: ${selectedHospital}; teoActive: ${teoActive}; `+
@@ -591,13 +591,13 @@ export const HomePage: MeiosisComponent = () => {
                   isEnergyRelatedLayer(selectedLayer) &&
                     selectedLayer && m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
     
-                // checkbox for showing IsMainBranch only
-                m('input[type=checkbox]', {
-                  checked: showMainBranchOnly,
-                  onclick: () => toggleMainBranchOnly(),
-                }),
-                m('b', 'Toon alleen hoofdvestigingen (care)'),
-                m('p'),
+                // checkbox for showing IsMain_Branch only
+                // m('input[type=checkbox]', {
+                //   checked: showMain_BranchOnly,
+                //   onclick: () => toggleMain_BranchOnly(),
+                // }),
+                // m('b', 'Toon alleen hoofdvestigingen (care)'),
+                // m('p'),
 
                 // checkbox for showing charts or not
                 m('input[type=checkbox]', {

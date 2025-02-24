@@ -6,7 +6,7 @@ import { actions } from '../services/meiosis';
 import { NamedGeoJSONOptions } from '../components';
 import { toColorFactoryDiscrete, toColorFactoryInterval, toFilterFactory } from '../models';
 import { pointToLayerCare, pointToLayerSchools, pointToLayerSports } from '../components/markers'
-import { showMainBranchFilter } from './feature-style';
+// import { showMain_BranchFilter } from './feature-style';
 
 
 // import { pointToTitledLayer } from '../components/markers'
@@ -127,31 +127,31 @@ export const createMCG = (name: string, flag: number) => {
 }; // createMCG
 
 
-export const loadCareLayer = async (layer: string, app: { [key: string]: MarkerClusterGroup|FeatureCollection }) => {
-  console.log(`loadCareLayer: ${layer}`);
-	const layerName = layer + 'Layer_rk';
-	const features = app[layer] ? (app[layer] as FeatureCollection) : undefined;
-  var mcg = app[layerName] ? (app[layerName] as MarkerClusterGroup) : undefined;
-	if (mcg && features) {
-    console.log(`mcg exists and features exist`);
-    mcg?.clearLayers()
-    L.geoJSON(features, {
-      pointToLayer: pointToLayerCare,
-      onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
-        layer.on('click', () => {
-          actions.selectFeature(feature as Feature<Point>, 'vvt');
-        });
-      },
-      name: 'vvt',
-    } as NamedGeoJSONOptions).eachLayer((l) => mcg.addLayer(l));
-    return mcg as MarkerClusterGroup;
-  }
-  return {}
-}; // loadCareLayer
+// export const loadCareLayer = async (layer: string, app: { [key: string]: MarkerClusterGroup|FeatureCollection }) => {
+//   console.log(`loadCareLayer: ${layer}`);
+// 	const layerName = layer + 'Layer_rk';
+// 	const features = app[layer] ? (app[layer] as FeatureCollection) : undefined;
+//   var mcg = app[layerName] ? (app[layerName] as MarkerClusterGroup) : undefined;
+// 	if (mcg && features) {
+//     console.log(`mcg exists and features exist`);
+//     mcg?.clearLayers()
+//     L.geoJSON(features, {
+//       pointToLayer: pointToLayerCare,
+//       onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
+//         layer.on('click', () => {
+//           actions.selectFeature(feature as Feature<Point>, 'vvt');
+//         });
+//       },
+//       name: 'vvt',
+//     } as NamedGeoJSONOptions).eachLayer((l) => mcg.addLayer(l));
+//     return mcg as MarkerClusterGroup;
+//   }
+//   return {}
+// }; // loadCareLayer
 
 
 export const loadGeoJSON = async (layer: string, selectedHospital: Feature, app: { [key: string]: L.GeoJSON }) => {
-  // console.log(`loadGeoJSON. layer=${layer}`);
+  console.log(`loadGeoJSON. layer=${layer}`);
   const layerName = layer + 'Layer';
   const id = (selectedHospital.properties as any).Locatienummer;
   const geojson = app[layerName] ? (app[layerName] as L.GeoJSON) : undefined;
@@ -260,8 +260,8 @@ export const loadGeoJSON_WZV = async (layer: string, app: { [key: string]: L.Geo
 }; // loadGeoJSON_WZV
 
 
-export const loadMCG = (mcg: MarkerClusterGroup, features: FeatureCollection<Point>, keepMainBranchesOnly: boolean) => {
-  // console.log(`loadMCG. mcg.options.name=${mcg.options.name}; kmbo=${keepMainBranchesOnly}`);
+export const loadMCG = (mcg: MarkerClusterGroup, features: FeatureCollection<Point>, keepMain_BranchesOnly: boolean) => {
+  // console.log(`loadMCG. mcg.options.name=${mcg.options.name}; kmbo=${keepMain_BranchesOnly}`);
   let ptl = pointToLayerCare;
   if ( (mcg.options.name == 'schools') || (mcg.options.name == 'schoolsPO') || (mcg.options.name == 'schoolsNPO') )  {
     ptl = pointToLayerSchools
@@ -272,7 +272,7 @@ export const loadMCG = (mcg: MarkerClusterGroup, features: FeatureCollection<Poi
   };
   mcg.clearLayers();
   const gj = L.geoJSON(features, {
-    filter: showMainBranchFilter(keepMainBranchesOnly),
+    // filter: showMain_BranchFilter(keepMain_BranchesOnly),
     pointToLayer: ptl,
     onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
       layer.on('click', () => {

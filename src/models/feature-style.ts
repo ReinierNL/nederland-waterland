@@ -92,13 +92,13 @@ export const toFilterFactory = (layerName: string, legendPropName: string): ((f?
 };
 
 
-export const showMainBranchFilter = (showMainBranchOnly: boolean): ((f?: Feature) => boolean) => {
-  return (f?: Feature) => {
-    if (!showMainBranchOnly) return true;
-    const value = f && f.properties ? f.properties['IsMainBranch'] : false;
-    return value
-  };
-};
+// export const showMain_BranchFilter = (showMain_BranchOnly: boolean): ((f?: Feature) => boolean) => {
+//   return (f?: Feature) => {
+//     if (!showMain_BranchOnly) return true;
+//     const value = f && f.properties ? f.properties['IsMain_Branch'] : false;
+//     return value
+//   };
+// };
 
 
 // feature style for all Warmtenetten Vattenfall layers:
@@ -203,10 +203,6 @@ export const propertyStyles = {
       "Organisatie": {
         title: () => 'Organisatie',
         value: (s: string) => s,
-      },
-      "IsMainBranch": {
-        title: () => 'Hoofdvestiging',
-        value: (b: boolean) => `${b}`,
       },
       "Soort zorg": {
         title: () => 'Soort zorg',

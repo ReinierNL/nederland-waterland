@@ -73,7 +73,7 @@ export const pointToGreenCircleMarkerLayer = (_feature: Feature<Point, any>, lat
 
 export const pointToLayerCare = (feature: Feature<Point, any>, latlng: L.LatLng): L.Marker<any> => {
   let opacity = 1
-  // if (feature.properties && !feature.properties['IsMainBranch']) {
+  // if (feature.properties && !feature.properties['IsMain_Branch']) {
   //   return null as unknown as L.Marker 
   //   //opacity = 0
   // }
