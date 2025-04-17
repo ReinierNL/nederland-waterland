@@ -7,6 +7,8 @@ import { NamedGeoJSONOptions } from '../components';
 import { toColorFactoryDiscrete, toColorFactoryInterval, toFilterFactory } from '../models';
 import { pointToLayerCare, pointToLayerSchools, pointToLayerSports } from '../components/markers'
 // import { showMain_BranchFilter } from './feature-style';
+import { showSelectedStatesFilter } from './feature-style';
+import { propertyStyles } from './feature-style';
 
 
 // import { pointToTitledLayer } from '../components/markers'
@@ -262,17 +264,24 @@ export const loadGeoJSON_WZV = async (layer: string, app: { [key: string]: L.Geo
 
 export const loadMCG = (mcg: MarkerClusterGroup, features: FeatureCollection<Point>, keepMain_BranchesOnly: boolean) => {
   // console.log(`loadMCG. mcg.options.name=${mcg.options.name}; kmbo=${keepMain_BranchesOnly}`);
+  let layerName = mcg.options.name
+  const propertyStyle = layerName && propertyStyles[layerName];
+  const legend = propertyStyle && propertyStyle.legend;
+  // console.log(`${layerName}, ${propertyStyle}, ${legend}`);
   let ptl = pointToLayerCare;
+  let states = []
   if ( (mcg.options.name == 'schools') || (mcg.options.name == 'schoolsPO') || (mcg.options.name == 'schoolsNPO') )  {
     ptl = pointToLayerSchools
   } else if (mcg.options.name == 'sports') {
     ptl = pointToLayerSports
   } else {
-    ptl = pointToLayerCare
+    ptl = pointToLayerCare;
+    states = [legend.items[0][5], legend.items[1][5], legend.items[2][5]];
+    // console.log(`States: ${states}`);
   };
   mcg.clearLayers();
   const gj = L.geoJSON(features, {
-    // filter: showMain_BranchFilter(keepMain_BranchesOnly),
+    filter: showSelectedStatesFilter(states),
     pointToLayer: ptl,
     onEachFeature: (feature: Feature<Point, any>, layer: L.Layer) => {
       layer.on('click', () => {
