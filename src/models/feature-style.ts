@@ -101,6 +101,26 @@ export const toFilterFactory = (layerName: string, legendPropName: string): ((f?
 // };
 
 
+export const showSelectedStatesFilter = (items: Array<[state1: boolean, state2: boolean, state3: boolean]>): ((f?: Feature) => boolean) => {
+   return (f?: Feature) => {
+    if (items.length === 0) { return true}  // this is the case when it is not a care layer
+    const value = f && f.properties ? f.properties['Routekaart'] : false;
+      if ((value === 'Actueel en vastgesteld') && items[0]) {
+        return true
+      }
+      else if ((value === 'Wordt aan gewerkt') && items[1]) {
+        return true
+      }
+      else if ((value === 'Niet ingeleverd') && items[2]) {
+        return true
+      }
+      else {
+        return false
+      }
+   };
+};
+
+
 // feature style for all Warmtenetten Vattenfall layers:
 
 const wn_legend = {
