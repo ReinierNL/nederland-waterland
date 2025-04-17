@@ -41,7 +41,7 @@ export const Legend_care: MeiosisComponent = () => {
 
           m('div', [
             m('text', { style: 'font-size: 0.75em' }, 'Voor toelichting, zie '),
-            m("a#[href='https://www.expertisecentrumverduurzamingzorg.nl/care/ingeleverde-routekaarten']", 
+            m("a#[href='https://www.expertisecentrumverduurzamingzorg.nl/goedopdekaart']", 
               { style: 'font-size: 0.75em' }, 'de EVZ website'),
           ])
         ])
