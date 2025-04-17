@@ -520,20 +520,16 @@ export const appStateMgmt = {
                 teoActive: old_tA } = app;
         // console.log(`old_sl=${old_sl}; activeLayers=${activeLayersAsString(activeLayers!)}`)
 
-        // care layers: update if the showMain_BranchOnly state has changed 
-        // (it is not checked whether there was a change; the layer is just reloaded)
+        // care layers: update if the showMain_BranchOnly state or the legend checkbox states have changed 
+        // (it is not checked whether there was a change; the layers are just reloaded)
         var new_ggzLayer = ggzLayer
-        if (selectedLayer === 'ggz') {
-          new_ggzLayer = loadMCG(ggzLayer, ggz, true /*showMain_BranchOnly*/)
-        };
         var new_ghzLayer = ghzLayer
-        if (selectedLayer === 'ghz') {
-          new_ghzLayer = loadMCG(ghzLayer, ghz, true /*showMain_BranchOnly*/)
-        };
         var new_vvtLayer = vvtLayer
-        if (selectedLayer === 'vvt') {
-          new_vvtLayer = loadMCG(vvtLayer, vvt, true /*showMain_BranchOnly*/)
-        };
+        if (selectedLayer === 'vvt' || selectedLayer === 'ggz' || selectedLayer === 'ghz') { 
+          new_vvtLayer = loadMCG(vvtLayer, vvt, true /*showMain_BranchOnly*/);
+          new_ggzLayer = loadMCG(ggzLayer, ggz, true /*showMain_BranchOnly*/);
+          new_ghzLayer = loadMCG(ghzLayer, ghz, true /*showMain_BranchOnly*/);
+        }
         var new_schoolsNPOLayer = schoolsNPOLayer
         if (selectedLayer === 'schoolsNPO') {
           new_schoolsNPOLayer = loadMCG(schoolsNPOLayer, schoolsNPO, false)
