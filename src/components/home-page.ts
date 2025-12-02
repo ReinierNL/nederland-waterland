@@ -700,7 +700,7 @@ export const HomePage: MeiosisComponent = () => {
             'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
           ), // disclaimer
           selectedLayer && isCureLayer(selectedLayer!) &&  m('.disclaimer', 'Portefeuilleroutekaart status `cure` voor het laatst bijgewerkt: 16 september 2025'),
-          selectedLayer && isCareLayer(selectedLayer!) &&  m('.disclaimer', 'Portefeuilleroutekaart status `care` voor het laatst bijgewerkt: 22 oktober 2025'),
+          selectedLayer && isCareLayer(selectedLayer!) &&  m('.disclaimer', 'Portefeuilleroutekaart status `care` voor het laatst bijgewerkt: 2 december 2025'),
         ]), // content
       ]; // return ( function result of view() )
     }, // view
