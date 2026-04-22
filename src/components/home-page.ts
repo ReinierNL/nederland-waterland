@@ -583,10 +583,10 @@ export const HomePage: MeiosisComponent = () => {
                 // layer title
                 selectedLayer && 
                   isCareOrCureLayer(selectedLayer) &&
-                    selectedLayer && m('h4.title', `Selectie zorgsector: ${layerTitles[selectedLayer] || selectedLayer}`),
+                    selectedLayer && m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
                 selectedLayer && 
                   isSportLayer(selectedLayer) &&
-                    selectedLayer && m('h4.title', `Selectie sport: ${layerTitles[selectedLayer] || selectedLayer}`),
+                    selectedLayer && m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
                 selectedLayer && 
                   isEnergyRelatedLayer(selectedLayer) &&
                     selectedLayer && m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
