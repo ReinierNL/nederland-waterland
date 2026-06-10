@@ -367,3 +367,21 @@ li.logo {
   overflow-y: auto;
   height: 70vh;
 }
+
+.zorg-tree-control {
+  margin-top: 10px;
+  width: 19vw;
+  max-width: 19vw;
+}
+
+.main-tree-control {
+  margin-top: 6px;
+  width: 19vw;
+  max-width: 19vw;
+}
+
+.zorg-tree-control label,
+.main-tree-control label {
+  width: 19vw;
+  max-width: 19vw;
+}

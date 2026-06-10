@@ -403,11 +403,11 @@ export const HomePage: MeiosisComponent = () => {
                   ],
                 } as any; //Control.Layers.TreeObject;
 
-                const overlayTree = [
+                const zorgOverlayTree = [
                   {
                     label: 'Maatschappelijk vastgoed',
                     children: [
-                      { 
+                      {
                         label: 'Zorg',
                         children: [
                           { label: 'Ziekenhuizen', layer: ziekenhuizenLayer_rk },
@@ -416,8 +416,16 @@ export const HomePage: MeiosisComponent = () => {
                           { label: 'Verpleging, verzorging en thuiszorg', layer: vvtLayer },
                           { label: 'Geesteljke gezondheidszorg', layer: ggzLayer },
                           { label: 'Gehandicaptenzorg', layer: ghzLayer },
-                        ]
+                        ],
                       },
+                    ],
+                  },
+                ] as any;
+
+                const overlayTree = [
+                  {
+                    label: 'Maatschappelijk vastgoed',
+                    children: [
                       { 
                         label: 'Scholen',
                         collapsed: true,
@@ -546,12 +554,21 @@ export const HomePage: MeiosisComponent = () => {
                   // { label: '<div class="leaflet-control-layers-separator"></div>' },
                 ] as any; // Control.Layers.TreeObject;
 
+                const zorgTreeWithLayers = (L.control.layers as any).tree(null, zorgOverlayTree, {
+                  collapsed: false,
+                  position: 'topright',
+                });
+                zorgTreeWithLayers.addTo(map);
+                zorgTreeWithLayers.getContainer()?.classList.add('zorg-tree-control');
+
                 const treeWithlayers = (L.control.layers as any).tree(baseTree, overlayTree, {
                   collapsed: true,
+                  position: 'topright',
                   // collapsed: false,
                   // collapsed: treeCollapsed,
                 });
                 treeWithlayers.addTo(map);
+                treeWithlayers.getContainer()?.classList.add('main-tree-control');
 
               },
             }), // map
