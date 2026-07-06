@@ -8,7 +8,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster/dist/leaflet.markercluster.js';
-import { Feature, Point } from 'geojson';
+import { Feature, FeatureCollection, Point } from 'geojson';
 
 import '../css/markercluster.overrule.css';   // overrules the default colors of MarkerCluster
 import { MeiosisComponent } from '../services/meiosis';
@@ -33,6 +33,31 @@ import { RegionalCharts } from './regional_charts';
 export interface NamedGeoJSONOptions<P = any> extends GeoJSONOptions<P> {
   name: string;
 }
+
+type SearchLayerName =
+  | 'ziekenhuizen'
+  | 'poliklinieken'
+  | 'categorale_instellingen'
+  | 'ggz'
+  | 'ghz'
+  | 'vvt';
+
+interface SearchResult {
+  key: string;
+  layerName: SearchLayerName;
+  organisatie: string;
+  features: Array<Feature<Point, any>>;
+  primaryFeature: Feature<Point, any>;
+}
+
+const normalizeSearchText = (value: unknown): string =>
+  String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+
+const toDisplayText = (value: unknown): string => String(value || '').trim();
 
 export const HomePage: MeiosisComponent = () => {
   let map: L.Map;
@@ -69,6 +94,8 @@ export const HomePage: MeiosisComponent = () => {
   //let wn_vf_xxxLayer: L.GeoJSON; // dynamic (9 layers)
   //let wzvLayer: L.GeoJSON; // dynamic
   let ziekenhuizenLayer_rk: L.GeoJSON;
+  let organisationSearch = '';
+  let organisationSearchOpen = false;
   
   let origin: 'cure' | 'care' | undefined = undefined
 
@@ -96,7 +123,9 @@ export const HomePage: MeiosisComponent = () => {
         // layers and layer data objects (json):
         categorale_instellingen,
         effluent,
+        ggz,
         ggzLayer,
+        ghz,
         ghzLayer,
         gl_wk_bu,
         poliklinieken,
@@ -108,6 +137,7 @@ export const HomePage: MeiosisComponent = () => {
         sportsLayer,
         swimmings,
         tvwLayer,
+        vvt,
         vvtLayer,
         warmtenetten_nbr_lokaal,
         warmtenetten_nbr_infra,
@@ -138,6 +168,105 @@ export const HomePage: MeiosisComponent = () => {
 
       const { handleChartSelect, handleMoveEnd, mapClick, setZoomLevel, toggleChartsShown, /*toggleMain_BranchOnly,*/
         updateActiveLayers } = actions;
+
+      const runOrganisationSearch = (query: string): SearchResult[] => {
+        const normalizedQuery = normalizeSearchText(query);
+        if (!normalizedQuery) return [];
+
+        const datasets: Array<{ layerName: SearchLayerName; data: FeatureCollection<Point, any> | undefined }> = [
+          { layerName: 'ziekenhuizen', data: ziekenhuizen },
+          { layerName: 'poliklinieken', data: poliklinieken },
+          { layerName: 'categorale_instellingen', data: categorale_instellingen },
+          { layerName: 'ggz', data: ggz },
+          { layerName: 'ghz', data: ghz },
+          { layerName: 'vvt', data: vvt },
+        ];
+
+        const grouped = new Map<string, SearchResult>();
+
+        datasets.forEach(({ layerName, data }) => {
+          data?.features?.forEach((feature) => {
+            if (!feature || feature.geometry?.type !== 'Point' || !feature.geometry.coordinates) return;
+            const organisatie = toDisplayText(feature.properties?.Organisatie) || toDisplayText(feature.properties?.Naam);
+            if (!organisatie) return;
+            const naam = toDisplayText(feature.properties?.Naam);
+            const searchable = normalizeSearchText(`${organisatie} ${naam}`);
+            if (!searchable.includes(normalizedQuery)) return;
+
+            const key = `${layerName}|${normalizeSearchText(organisatie)}`;
+            const existing = grouped.get(key);
+            if (existing) {
+              existing.features.push(feature as Feature<Point, any>);
+              if (normalizeSearchText(naam) === normalizedQuery) {
+                existing.primaryFeature = feature as Feature<Point, any>;
+              }
+              return;
+            }
+
+            grouped.set(key, {
+              key,
+              layerName,
+              organisatie,
+              features: [feature as Feature<Point, any>],
+              primaryFeature: feature as Feature<Point, any>,
+            });
+          });
+        });
+
+        return Array.from(grouped.values())
+          .sort((a, b) => a.organisatie.localeCompare(b.organisatie, 'nl'))
+          .slice(0, 30);
+      };
+
+      const ensureSearchLayerVisible = async (layerName: SearchLayerName): Promise<void> => {
+        if (!map) return;
+        const addIfMissing = (layer: L.Layer | undefined) => {
+          if (layer && !map.hasLayer(layer)) {
+            map.addLayer(layer);
+          }
+        };
+
+        if (layerName === 'ziekenhuizen') addIfMissing(ziekenhuizenLayer_rk);
+        if (layerName === 'poliklinieken') addIfMissing(polikliniekenLayer_rk);
+        if (layerName === 'categorale_instellingen') addIfMissing(categorale_instellingenLayer_rk);
+        if (layerName === 'ggz') addIfMissing(ggzLayer);
+        if (layerName === 'ghz') addIfMissing(ghzLayer);
+        if (layerName === 'vvt') addIfMissing(vvtLayer);
+
+        if (!activeLayers?.has(layerName)) {
+          await updateActiveLayers(layerName, true);
+        }
+      };
+
+      const focusSearchResult = (result: SearchResult) => {
+        const latLngs = result.features
+          .map((f) => f.geometry?.coordinates)
+          .filter((coords): coords is number[] => !!coords && coords.length >= 2)
+          .map((coords) => L.latLng(coords[1], coords[0]));
+
+        if (!latLngs.length || !map) return;
+        if (latLngs.length === 1) {
+          map.flyTo(latLngs[0], Math.max(map.getZoom(), 10));
+          return;
+        }
+        const bounds = L.latLngBounds(latLngs);
+        if (bounds.isValid()) {
+          map.fitBounds(bounds.pad(0.2));
+        }
+      };
+
+      const selectSearchResult = async (result: SearchResult) => {
+        await ensureSearchLayerVisible(result.layerName);
+        if (result.layerName === 'ziekenhuizen' || result.layerName === 'poliklinieken' || result.layerName === 'categorale_instellingen') {
+          await actions.selectHospital(result.primaryFeature, result.layerName);
+        } else {
+          actions.selectFeature(result.primaryFeature, result.layerName);
+        }
+        focusSearchResult(result);
+        organisationSearchOpen = false;
+      };
+
+      const searchResults = runOrganisationSearch(organisationSearch);
 
       // console.log(`selectedLayer: ${selectedLayer}; selectedHospital: ${selectedHospital}; teoActive: ${teoActive}; `+
       //             `activeLayers: ${activeLayersAsString(activeLayers!)}; charts shown: ${chartsShown}`);
@@ -598,6 +727,62 @@ export const HomePage: MeiosisComponent = () => {
                   ])
                 ),
                 // layer title
+                m('.organisation-search', [
+                  m('button.organisation-search-toggle[type=button]', {
+                    onclick: () => {
+                      organisationSearchOpen = !organisationSearchOpen;
+                      if (!organisationSearchOpen) {
+                        organisationSearch = '';
+                      }
+                    },
+                    title: organisationSearchOpen ? 'Zoek sluiten' : 'Zoek openen',
+                    'aria-label': organisationSearchOpen ? 'Zoek sluiten' : 'Zoek openen',
+                  }, '🔍'),
+                  organisationSearchOpen && m('.organisation-search-panel', [
+                    m('label.organisation-search-label[for=organisation-search-input]', 'Zoek organisatie'),
+                    m('input#organisation-search-input.organisation-search-input[type=text]', {
+                      value: organisationSearch,
+                      placeholder: 'Zoek in cure en care (GGZ/GHZ/VVT)',
+                      oninput: (evt: InputEvent) => {
+                        organisationSearch = ((evt.target as HTMLInputElement)?.value || '').replace(/^\s+/, '');
+                      },
+                      onkeydown: async (evt: KeyboardEvent) => {
+                        if (evt.key === 'Enter' && searchResults.length > 0) {
+                          evt.preventDefault();
+                          await selectSearchResult(searchResults[0]);
+                        }
+                        if (evt.key === 'Escape') {
+                          if (organisationSearch) {
+                            organisationSearch = '';
+                          } else {
+                            organisationSearchOpen = false;
+                          }
+                        }
+                      },
+                      'aria-label': 'Zoek organisatie',
+                    }),
+                    organisationSearch && searchResults.length === 0 && m('.organisation-search-empty', 'Geen organisaties gevonden'),
+                    organisationSearch && searchResults.length > 0 &&
+                      m('ul.organisation-search-results',
+                        searchResults.map((result) =>
+                          m('li',
+                            m('button.organisation-search-result[type=button]', {
+                              onclick: () => {
+                                selectSearchResult(result);
+                              },
+                            }, [
+                              m('span.organisation-search-result-name', result.organisatie),
+                              m(
+                                'span.organisation-search-result-meta',
+                                `${layerTitles[result.layerName as keyof typeof layerTitles] || result.layerName} (${result.features.length})`
+                              ),
+                            ])
+                          )
+                        )
+                      ),
+                  ]),
+                ]),
+
                 selectedLayer && 
                   isCareOrCureLayer(selectedLayer) &&
                     selectedLayer && m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
@@ -717,7 +902,7 @@ export const HomePage: MeiosisComponent = () => {
             'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
           ), // disclaimer
           selectedLayer && isCureLayer(selectedLayer!) &&  m('.disclaimer', 'Portefeuilleroutekaart status `cure` voor het laatst bijgewerkt: 1 april 2026'),
-          selectedLayer && isCareLayer(selectedLayer!) &&  m('.disclaimer', 'Portefeuilleroutekaart status `care` voor het laatst bijgewerkt: 3 juni 2026'),
+          selectedLayer && isCareLayer(selectedLayer!) &&  m('.disclaimer', 'Portefeuilleroutekaart status `care` voor het laatst bijgewerkt: 6 juli 2026'),
         ]), // content
       ]; // return ( function result of view() )
     }, // view
