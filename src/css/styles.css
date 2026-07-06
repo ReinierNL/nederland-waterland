@@ -210,6 +210,79 @@ table.hospital-feature-props {
   margin-left: 5px;
 }
 
+.organisation-search {
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
+.organisation-search-toggle {
+  border: 1px solid #8c8c8c;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 7px 10px;
+}
+
+.organisation-search-panel {
+  margin-top: 8px;
+}
+
+.organisation-search-label {
+  display: block;
+  width: auto;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.organisation-search-input {
+  width: 100%;
+  border: 1px solid #8c8c8c;
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+.organisation-search-results {
+  margin-top: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid #d7d7d7;
+  border-radius: 6px;
+  padding: 0;
+}
+
+.organisation-search-result {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #ececec;
+  text-align: left;
+  background: #fff;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.organisation-search-result:hover {
+  background: #f2f7ff;
+}
+
+.organisation-search-result-name {
+  display: block;
+  font-weight: 600;
+}
+
+.organisation-search-result-meta {
+  display: block;
+  font-size: 0.82em;
+  color: #4c4c4c;
+}
+
+.organisation-search-empty {
+  margin-top: 6px;
+  color: #666;
+  font-size: 0.9em;
+}
+
 .info-panel {
   font-size: 0.83em;
   margin-top: 1rem;
