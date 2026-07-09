@@ -726,7 +726,7 @@ export const HomePage: MeiosisComponent = () => {
                     m('li.logo', m('img', { src: logoSyntraal, alt: 'logo Syntraal', width: '140px' })),
                   ])
                 ),
-                // layer title
+                // search icon (with hidden search panel)
                 m('.organisation-search', [
                   m('button.organisation-search-toggle[type=button]', {
                     onclick: () => {
@@ -782,7 +782,7 @@ export const HomePage: MeiosisComponent = () => {
                       ),
                   ]),
                 ]),
-
+                // layer title
                 selectedLayer && 
                   isCareOrCureLayer(selectedLayer) &&
                     selectedLayer && m('h4.title', `Selectie: ${layerTitles[selectedLayer] || selectedLayer}`),
