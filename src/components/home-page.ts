@@ -742,7 +742,7 @@ export const HomePage: MeiosisComponent = () => {
                     m('label.organisation-search-label[for=organisation-search-input]', 'Zoek organisatie'),
                     m('input#organisation-search-input.organisation-search-input[type=text]', {
                       value: organisationSearch,
-                      placeholder: 'Zoek in cure en care (GGZ/GHZ/VVT)',
+                      placeholder: 'Zoek in cure en care',
                       oninput: (evt: InputEvent) => {
                         organisationSearch = ((evt.target as HTMLInputElement)?.value || '').replace(/^\s+/, '');
                       },
