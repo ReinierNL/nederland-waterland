@@ -5,6 +5,10 @@ import legend_ci from '../assets/legend_ci.json'
 import legend_pk from '../assets/legend_pk.json'
 import legend_zh from '../assets/legend_zh.json'
 
+export const LEGEND_TOP_TEXT = `• De kaart toont uitsluitend de hoofdlocatie van een zorgorganisatie maar representeert de gehele vastgoedportefeuille.
+• Thuiszorgorganisaties staan niet op de kaart. Zij hebben nauwelijks vastgoed en stellen dus geen CO₂-routekaart op.
+• Voor de Milieu Thermometer Zorg (MTZ) is het opstellen van een CO₂-routekaart verplicht.`;
+
 
 const school_properties = {
   properties: {
