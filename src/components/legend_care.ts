@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { propertyStyles } from '../models/feature-style';
+import { propertyStyles, LEGEND_TOP_TEXT } from '../models/feature-style';
 import { MeiosisComponent } from '../services/meiosis';
 
 export const Legend_care: MeiosisComponent = () => {
@@ -16,6 +16,7 @@ export const Legend_care: MeiosisComponent = () => {
       const legend = propertyStyle && propertyStyle.legend;
       return (
         legend && m('.legend', [
+          m('p', { style: 'margin: 0 0 6px 0; font-size: 0.85em; white-space: pre-line;' }, LEGEND_TOP_TEXT),
           m('h5', { style: 'margin-bottom: 10;' }, `Legenda ${legend.title}`),
           legend.items.map((item) =>
             m('.legend-item', [
