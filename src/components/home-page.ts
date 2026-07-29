@@ -95,7 +95,6 @@ export const HomePage: MeiosisComponent = () => {
   //let wzvLayer: L.GeoJSON; // dynamic
   let ziekenhuizenLayer_rk: L.GeoJSON;
   let organisationSearch = '';
-  let organisationSearchOpen = false;
   
   let origin: 'cure' | 'care' | undefined = undefined
 
@@ -726,61 +725,45 @@ export const HomePage: MeiosisComponent = () => {
                     m('li.logo', m('img', { src: logoSyntraal, alt: 'logo Syntraal', width: '140px' })),
                   ])
                 ),
-                // search icon (with hidden search panel)
-                m('.organisation-search', [
-                  m('button.organisation-search-toggle[type=button]', {
-                    onclick: () => {
-                      organisationSearchOpen = !organisationSearchOpen;
-                      if (!organisationSearchOpen) {
+                // search panel (always visible)
+                m('.organisation-search-panel', [
+                  m('label.organisation-search-label[for=organisation-search-input]', ['Zoek organisatie ', '🔍']),
+                  m('input#organisation-search-input.organisation-search-input[type=text]', {
+                    value: organisationSearch,
+                    placeholder: 'Zoek in cure en care',
+                    oninput: (evt: InputEvent) => {
+                      organisationSearch = ((evt.target as HTMLInputElement)?.value || '').replace(/^\s+/, '');
+                    },
+                    onkeydown: async (evt: KeyboardEvent) => {
+                      if (evt.key === 'Enter' && searchResults.length > 0) {
+                        evt.preventDefault();
+                        await selectSearchResult(searchResults[0]);
+                      }
+                      if (evt.key === 'Escape') {
                         organisationSearch = '';
                       }
                     },
-                    title: organisationSearchOpen ? 'Zoek sluiten' : 'Zoek openen',
-                    'aria-label': organisationSearchOpen ? 'Zoek sluiten' : 'Zoek openen',
-                  }, '🔍'),
-                  organisationSearchOpen && m('.organisation-search-panel', [
-                    m('label.organisation-search-label[for=organisation-search-input]', 'Zoek organisatie'),
-                    m('input#organisation-search-input.organisation-search-input[type=text]', {
-                      value: organisationSearch,
-                      placeholder: 'Zoek in cure en care',
-                      oninput: (evt: InputEvent) => {
-                        organisationSearch = ((evt.target as HTMLInputElement)?.value || '').replace(/^\s+/, '');
-                      },
-                      onkeydown: async (evt: KeyboardEvent) => {
-                        if (evt.key === 'Enter' && searchResults.length > 0) {
-                          evt.preventDefault();
-                          await selectSearchResult(searchResults[0]);
-                        }
-                        if (evt.key === 'Escape') {
-                          if (organisationSearch) {
-                            organisationSearch = '';
-                          } else {
-                            organisationSearchOpen = false;
-                          }
-                        }
-                      },
-                      'aria-label': 'Zoek organisatie',
-                    }),
-                    organisationSearch && searchResults.length === 0 && m('.organisation-search-empty', 'Geen organisaties gevonden'),
-                    organisationSearch && searchResults.length > 0 &&
-                      m('ul.organisation-search-results',
-                        searchResults.map((result) =>
-                          m('li',
-                            m('button.organisation-search-result[type=button]', {
-                              onclick: () => {
-                                selectSearchResult(result);
-                              },
-                            }, [
-                              m('span.organisation-search-result-name', result.organisatie),
-                              m(
-                                'span.organisation-search-result-meta',
-                                `${layerTitles[result.layerName as keyof typeof layerTitles] || result.layerName} (${result.features.length})`
-                              ),
-                            ])
-                          )
+                    'aria-label': 'Zoek organisatie',
+                  }),
+                  organisationSearch && searchResults.length === 0 && m('.organisation-search-empty', 'Geen organisaties gevonden'),
+                  organisationSearch && searchResults.length > 0 &&
+                    m('ul.organisation-search-results',
+                      searchResults.map((result) =>
+                        m('li',
+                          m('button.organisation-search-result[type=button]', {
+                            onclick: () => {
+                              selectSearchResult(result);
+                            },
+                          }, [
+                            m('span.organisation-search-result-name', result.organisatie),
+                            m(
+                              'span.organisation-search-result-meta',
+                              `${layerTitles[result.layerName as keyof typeof layerTitles] || result.layerName} (${result.features.length})`
+                            ),
+                          ])
                         )
-                      ),
-                  ]),
+                      )
+                    ),
                 ]),
                 // layer title
                 selectedLayer && 
@@ -901,8 +884,8 @@ export const HomePage: MeiosisComponent = () => {
             'Data over WKO bronnen is afkomstig van de WKO-bodemenergietool (wkotool.nl). ' +
             'Mogelijk worden niet alle WKO systemen getoond op de kaart omdat het bevoegd gezag niet alle systemen in het LGR registreert'
           ), // disclaimer
-          selectedLayer && isCureLayer(selectedLayer!) &&  m('.disclaimer', 'Portefeuilleroutekaart status `cure` voor het laatst bijgewerkt: 28 juli 2026'),
-          selectedLayer && isCareLayer(selectedLayer!) &&  m('.disclaimer', 'Portefeuilleroutekaart status `care` voor het laatst bijgewerkt: 6 juli 2026'),
+          selectedLayer && isCureLayer(selectedLayer!) &&  m('.disclaimer', 'Portefeuilleroutekaart status `cure` voor het laatst bijgewerkt: 8 juli 2026'),
+          selectedLayer && isCareLayer(selectedLayer!) &&  m('.disclaimer', 'Portefeuilleroutekaart status `care` voor het laatst bijgewerkt: 28 juli 2026'),
         ]), // content
       ]; // return ( function result of view() )
     }, // view
